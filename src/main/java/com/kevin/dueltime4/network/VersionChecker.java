@@ -46,7 +46,7 @@ public class VersionChecker {
                 String currentVersion = DuelTimePlugin.getInstance().getDescription().getVersion();
                 if (isNewerVersion(currentVersion, latestVersion)) {
                     String prefix = "§8[§a§lDuel§2§l§oTime§2§l4§8] §r";
-                    player.sendMessage("§8§m────────────────────────────────────────");
+                    player.sendMessage("§8§m───────────────────────────────────");
                     player.sendMessage(prefix + "§6§l有新版本可更新！");
                     player.sendMessage(prefix + "§7目前版本: §f" + currentVersion + " §8→ §7最新版本: §a" + latestVersion);
                     player.sendMessage(prefix + "§7更新重點:");
@@ -62,7 +62,7 @@ public class VersionChecker {
                         player.sendMessage("§8  • §7本次未提供更新摘要");
                     }
                     player.sendMessage(prefix + "§7建議儘快更新以獲得最佳相容性與修正。");
-                    player.sendMessage("§8§m────────────────────────────────────────");
+                    player.sendMessage("§8§m───────────────────────────────────");
                 }
             } catch (Exception ignored) {
             }
