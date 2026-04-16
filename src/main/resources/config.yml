@@ -1,0 +1,195 @@
+﻿####################################################################################################
+# +----------------------------------------------------------------------------------------------+ #
+# |                          ____             _ _ _____ _                                        | #
+# |                         |  _ \ _   _  ___| | |_   _(_)_ __ ___   ___                         | #
+# |                         | | | | | | |/ _ \ | __| | | | '_ ` _ \ / _ \                        | #
+# |                         | |_| | |_| |  __/ | |_  | | | | | | | |  __/                        | #
+# |                         |____/ \__,_|\___|_|\__| |_|_|_| |_| |_|\___|                        | #
+# |                                                                                              | #
+# |                                 DuelTime4 - Main Configuration                               | #
+# |                                                                                              | #
+# |  WIKI:         https://cloudxact.com/DuelTime4                                               | #
+# |  DISCORD:      https://discord.gg/JyQPpVrhsk                                                 | #
+# |  BUG REPORTS:  https://github.com/kevin/DuelTime4/issues                                     | #
+# |                                                                                              | #
+# |  Notes:                                                                                      | #
+# |   - This file controls plugin behavior and storage settings.                                 | #
+# |   - Use '&' for color codes in text values.                                                  | #
+# |   - Keep YAML indentation with spaces only.                                                  | #
+# +----------------------------------------------------------------------------------------------+ #
+####################################################################################################
+
+# +----------------------------------------------------------------------------------------------+ #
+# | Message Settings                                                                             | #
+# +----------------------------------------------------------------------------------------------+ #
+Message:
+  # Prefix shown before plugin chat messages.
+  prefix: "&7&l[&bDuelTime4&7&l] "
+
+  # Default language file name (without .yml), must exist in /plugins/DuelTime4/languages
+  # Available language codes:
+  #  - zh_tw (繁體中文)
+  #  - zh_cn (简体中文)
+  #  - en_us (English)
+  #  - ja_jp (日本語)
+  #  - ko_kr (한국어)
+  #  - fr_fr (Français)
+  #  - es_es (Español)
+  #  - de_de (Deutsch)
+  default-language: "en_us"
+
+# +----------------------------------------------------------------------------------------------+ #
+# | Database Settings                                                                            | #
+# +----------------------------------------------------------------------------------------------+ #
+Database:
+  # MySQL JDBC URL (only used by modules set to mysql below)
+  url: jdbc:mysql://localhost:3306/DuelTime4?useSSL=false
+  # MySQL username (only used when module type is mysql)
+  username: root
+  # MySQL password (only used when module type is mysql)
+  password: 1234567890
+  type:
+    # Storage type per module: mysql / sqlite
+    # If sqlite is selected, data is stored locally in plugin files.
+    arena: "sqlite"
+    location: "sqlite"
+    shop: "sqlite"
+    record: "sqlite"
+    player-data: "sqlite"
+    blacklist: "sqlite"
+
+# +----------------------------------------------------------------------------------------------+ #
+# | Arena Settings                                                                               | #
+# +----------------------------------------------------------------------------------------------+ #
+Arena:
+  classic:
+    reward:
+      # EXP given to winner in classic mode.
+      win-exp: 30
+      # Point given to winner in classic mode.
+      win-point: 1
+      # Loser EXP = winner EXP * lose-exp-rate (minimum 0).
+      lose-exp-rate: 0.3
+
+    auto-respawn:
+      # Enable auto-respawn during match.
+      enabled: true
+      # Respawn method: SPIGOT / SETHEALTH
+      code: "SPIGOT"
+
+    delayed-back:
+      # Teleport players back after game ends.
+      enabled: true
+      # Delay seconds before teleporting back (minimum 2).
+      time: 5
+
+# +----------------------------------------------------------------------------------------------+ #
+# | Record Settings                                                                              | #
+# +----------------------------------------------------------------------------------------------+ #
+Record:
+  show:
+    # Allow showing duel records in chat.
+    enabled: true
+    # Cooldown (seconds) between showing records (minimum 0).
+    cooldown: 10
+
+  print:
+    # Allow printing record to paper item.
+    enabled: true
+    # Point cost for printing one record (minimum 0).
+    cost: 1
+
+# +----------------------------------------------------------------------------------------------+ #
+# | Ranking Settings                                                                             | #
+# +----------------------------------------------------------------------------------------------+ #
+Ranking:
+  # Auto refresh interval for ranking data (seconds, minimum 5).
+  auto-refresh-interval: 30
+
+  hologram:
+    # Enable ranking holograms.
+    enabled: true
+    # Max rows shown in hologram.
+    size: 10
+    # Preferred hologram plugin name.
+    # Supported: HolographicDisplay / HolographicDisplays / CMI / DecentHolograms
+    plugin: "HolographicDisplays"
+
+# +----------------------------------------------------------------------------------------------+ #
+# | Level / Tier Settings                                                                        | #
+# +----------------------------------------------------------------------------------------------+ #
+Level:
+  tier:
+    showed-in-chat-box:
+      # Show tier title in chat messages.
+      enabled: true
+      # Display format in chat, %v = tier title.
+      format: "&f[&r%v&f]"
+
+    default:
+      # Tier title when no custom tier is matched.
+      title: "&7Beginner"
+      # EXP required to level up in default tier.
+      exp-for-level-up: 10
+
+    custom:
+      t1:
+        level: 1
+        title: "&8Iron I"
+        exp-for-level-up: 15
+      t2:
+        level: 4
+        title: "&8Iron II"
+        exp-for-level-up: 20
+      t3:
+        level: 7
+        title: "&7Bronze I"
+        exp-for-level-up: 26
+      t4:
+        level: 10
+        title: "&7Bronze II"
+        exp-for-level-up: 33
+      t5:
+        level: 14
+        title: "&fSilver I"
+        exp-for-level-up: 42
+      t6:
+        level: 18
+        title: "&fSilver II"
+        exp-for-level-up: 54
+      t7:
+        level: 23
+        title: "&6Gold I"
+        exp-for-level-up: 68
+      t8:
+        level: 28
+        title: "&6Gold II"
+        exp-for-level-up: 85
+      t9:
+        level: 34
+        title: "&bPlatinum I"
+        exp-for-level-up: 105
+      t10:
+        level: 40
+        title: "&bPlatinum II"
+        exp-for-level-up: 130
+      t11:
+        level: 47
+        title: "&3Diamond I"
+        exp-for-level-up: 160
+      t12:
+        level: 54
+        title: "&3Diamond II"
+        exp-for-level-up: 195
+      t13:
+        level: 62
+        title: "&dMaster"
+        exp-for-level-up: 235
+      t14:
+        level: 71
+        title: "&5Grandmaster"
+        exp-for-level-up: 280
+      t15:
+        level: 80
+        title: "&cLegend"
+        exp-for-level-up: 330

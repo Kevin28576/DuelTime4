@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <package name="com.kevin.dueltime4.data.pojo"/>
+    </typeAliases>
+    <typeHandlers>
+        <typeHandler handler="com.kevin.dueltime4.data.handler.ItemStackTypeHandler"/>
+        <typeHandler handler="com.kevin.dueltime4.data.handler.LocationTypeHandler"/>
+        <typeHandler handler="com.kevin.dueltime4.data.handler.ListStringTypeHandler"/>
+        <typeHandler handler="com.kevin.dueltime4.data.handler.FunctionMapTypeHandler"/>
+        <typeHandler handler="com.kevin.dueltime4.data.handler.ArenaRecordResultTypeHandler"/>
+    </typeHandlers>
+    <environments default="sqlite">
+        <environment id="mysql">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value=""/>
+                <property name="username" value=""/>
+                <property name="password" value=""/>
+            </dataSource>
+        </environment>
+        <environment id="sqlite">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="org.sqlite.JDBC"/>
+                <property name="url" value="jdbc:sqlite:{}sqlite.db"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mapper/ClassicArenaDataMapper.xml"/>
+        <mapper resource="mapper/BlacklistMapper.xml"/>
+        <mapper resource="mapper/PlayerDataMapper.xml"/>
+        <mapper resource="mapper/ShopMapper.xml"/>
+        <mapper resource="mapper/LocationMapper.xml"/>
+        <mapper resource="mapper/ClassicArenaRecordDataMapper.xml"/>
+    </mappers>
+</configuration>

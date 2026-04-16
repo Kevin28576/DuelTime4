@@ -1,0 +1,934 @@
+LanguageName: "&cEnglish (United States)"
+String:
+  none: "none"
+  true: "yes"
+  false: "no"
+  list: "{line} Row list: {brief_content}"
+  win: "&aVictory"
+  lose: "&c lost"
+  draw: "&6Tie"
+  games: "field"
+  seconds: "Second"
+  no-rank: "&6 is not listed"
+  command-executor:
+    player: "player"
+    op: "administrator"
+    console: "server"
+Exception:
+  arena:
+    initialize-fail-invalid-arena-type: "Arena {arena_name} (ID: {arena_id}) failed
+      to initialize. The arena type with ID '{arena_id}' cannot be found. Please confirm
+      whether the relevant accessory plug-ins have been installed correctly."
+Level:
+  level-up-message: "&aCongratulations! Your competitive level has been raised to
+    &fLv.{level}&a."
+  tier-up-message: "&6Congratulations! Your rank has been promoted to &r{tier}&6.
+    Go and see what new content can be unlocked in &cCompetition Mall&6."
+  tier-up-broadcast: "&6[Rank promotion] &f{player} &a has been successfully promoted
+    to &r{tier}&a!"
+  tier-down-message: "&c Unfortunately, your rank has dropped to &r{tier}&c."
+Arena:
+  wait:
+    start: "&7You have joined the waiting queue for &f{arena} &7."
+    switch: "&7You have been switched to the waiting queue for &f{arena} &7."
+    stop: "&7You have canceled the queue: &f{arena}"
+  protection:
+    walk-in-while-available: "&c&l[!] &c There are currently no events in progress,
+      and you cannot enter the &f{name} &c arena."
+    walk-in-while-in-progress: "&c&l[!] &c Arena &f{name} &c is currently in competition
+      and entry is prohibited."
+    teleport-to-while-available: "&c&l[!] &c There are currently no events in progress,
+      and you cannot teleport to the &f{name} &c arena."
+    teleport-to-while-in-progress: "&c&l[!] &c Arena &f{name} &c There is currently
+      a competition in progress and teleportation is prohibited."
+    attack-gamer: "&c&l[!] &cPlease do not interfere with &f{name} &c players who
+      are playing in the arena."
+    break: "&c&l[!] &cYou cannot break &f{name} &c blocks in the arena."
+    place: "&c&l[!] &cYou cannot place blocks in the &f{name} &c arena."
+    place-over: "&c&l[!] &cYou cannot place blocks within or above the &f{name} &c
+      arena."
+    interact: "&c&l[!] &cYou cannot interact with objects in the &f{name} &c arena."
+    pour-liquid: "&c&l[!] &cYou cannot pour liquids in the &f{name} &c arena."
+    get-liquid: "&c&l[!] &cYou cannot access liquids in the &f{name} &c arena."
+  type:
+    classic:
+      name: "classic war"
+      start:
+        title: "&7[&aThe competition officially begins&7]"
+        subtitle: "&fPlease win the glory for this battle"
+      end:
+        result-stopped: "&c This match has been forcibly terminated by the server
+          or administrator. No records will be left for this match."
+        result-stopped-with-reason: "&c This match has been forcibly terminated by
+          the server or administrator. No records will be left for this match. &7
+          Termination reason: &f{reason}"
+        result-win: "&aCongratulations! You win this game."
+        result-lose: "&c Unfortunately, you lost this game."
+        result-draw: "&bThe game ended in a draw."
+        notify-info:
+          - "&7&m───&f&l&m───────────────────────&7&m───"
+          - "&fVenue&7: &r{arena}"
+          - "&f Opponent &7: &f{player}&7(&r{level_display_name}&7)"
+          - "&f Duration&7: &3{time} seconds"
+          - "&fExperience&7: &r{exp_change}"
+          - "&fdata&7: &7[clickable]more_data::&7(&fHover to view details&7)::&f
+            &fTotal damage&7: &f{total_damage}&cdamage||||&f &fMaximum damage&7:
+            &f{max_damage}&cdamage||||&f &fAverage damage&7: &f{average_damage}&cdamage[clickable]"
+          - "&7&m───&f&l&m───────────────────────&7&m───"
+        broadcast: "&f{winner} &a defeated opponent &f{loser}&a in &f{arena}&a, which
+          lasted &f{time} seconds&a."
+        broadcast-draw: "&f{player1}&a and &f{player2}&a ended in a tie at &r{arena}&a,
+          which lasted &f{time} seconds&a."
+      damage-during-countdown: "&cThe competition has not officially started yet,
+        and it is temporarily unavailable to attack."
+      use-command-in-game: "&cThis command is prohibited during the competition."
+      quit-inform-opponent: "&dYour opponent has voluntarily withdrawn from the game."
+      leave-server-inform-opponent: "&cYour opponent has left the server."
+      win-title: "&7[&a wins&7]"
+      win-subtitle: "&eCongratulations! You win this game."
+      delayed-back:
+        gamer-title: "&b{countdown}"
+        gamer-subtitle: "&7 is about to teleport away from the competition venue..."
+        spectator-title: "&b{countdown}"
+        spectator-subtitle: "&7 is about to be teleported out of the viewing area..."
+      function:
+        time-limit:
+          name: "Competition time limit"
+          description: "&a Please set the competition time limit &7 (&f unit: seconds
+            &7) &a. If the time limit is exceeded, the winner or tie will be determined
+            according to the preset rules. You need to enter an integer."
+          bossbar-title: "&aThere are &f{time} seconds &a remaining in this game."
+          game-title: "&b{time}"
+          game-subtitle: "&fThe competition is about to start, please be ready to
+            fight"
+        countdown:
+          name: "Countdown to start"
+          description: "&a Please set the countdown seconds before the start of the
+            game &7 (&f unit: seconds &7) &a, you need to enter an integer, and additionally
+            set whether players are allowed to move during the countdown."
+        check-inventory-keyword:
+          name: "Backpack inspection before entry &7 (&f based on keyword &7)"
+        inventory-check-keyword:
+          description: "&a It is prohibited to bring certain special items into the
+            venue. The system will check the name in the backpack or Lore&7(&fThe
+            description below the item name&7)&a for items containing the specified
+            keyword."
+          detected-tip: "&c The system detected &f{arena_name} in your backpack. &c
+            Prohibited items: &7[clickable]item::&7[{item_name}&7]__ TOKEN_7__(&aClick
+            to view details&7)&c::{item_lore}[clickable]&c."
+          detected: "&c Players &f{player} &c brought &f{arena_name} special items
+            banned in the competition &c. The player has been notified of the details.
+            Please confirm the equipment of both parties before reinitiating the challenge."
+        inventory-check-type:
+          name: "Backpack inspection before entry&7(&fdepends on item type&7)"
+          description: "&a Please set the types of items that are prohibited from
+            carrying. If there are specified types of items in the backpack, the game
+            will be prohibited."
+          detected-tip: "&c The system detected &f{arena_name} in your backpack. &cBanned
+            type items: &7[clickable]item::&7[{item_name}&7]_ _TOKEN_7__(&aClick to
+            view details&7)&c::{item_lore}[clickable]&c."
+          detected: "&c Players &f{player} &c carried &f{arena_name} competition &c
+            banned items. The player has been notified of the details. Please confirm
+            the equipment of both parties before re-initiating the challenge."
+        pre-game-command:
+          name: "Pre-game execution instruction group"
+          description: "&a Please set the command group to be automatically executed
+            when the player enters the game. Different execution identities can be
+            set separately."
+        spectate:
+          name: "Watch the game"
+          description: "&a Please set the viewing area so that players can watch the
+            ongoing game through the &f/dueltime spectate &a command."
+          gamer-health-bossbar: "&a Player &f{player} &a Current blood volume: &7&a{health}&7/&a{max_health}"
+          fail-unavailable: "&cThis arena &f{arena} &c has not enabled the spectator
+            function."
+          successfully: "&a has teleported you to the viewing area of ​​&f{arena}
+            &a."
+          stop-successfully: "&aYou have finished watching &f{arena} &a's match."
+          over:
+            - "&aThe game you watched has ended. The results are as follows:"
+            - "&7&m───&f&l&m───────────────────────&7&m───"
+            - "&fVenue&7: &r{arena}"
+            - "&fContestant&7: &3{gamers}"
+            - "&fWinner&7: &f{winner}"
+            - "&f Duration&7: &f{time} seconds"
+            - "&7&m───&f&l&m───────────────────────&7&m───"
+          over-in-a-draw:
+            - "&aThe match you watched ended in a tie, with the following results:"
+            - "&7&m───&f&l&m───────────────────────&7&m───"
+            - "&fVenue&7: &r{arena}"
+            - "&fContestant&7: &3{gamers}"
+            - "&f Duration&7: &f{time} seconds"
+            - "&7&m───&f&l&m───────────────────────&7&m───"
+          over-by-stop: "The contest for &c{arena} has been forcibly terminated by
+            the administrator."
+          spectator-move-out-zone: "&c Please do not leave the viewing area. If you
+            want to end the viewing, please enter the &f/dueltime spectate &c command
+            again to end the viewing."
+        ban-entity-spawn:
+          name: "Prohibit the generation of entities (including natural and man-made)"
+          description: "Prohibits the generation of all entities (including natural
+            generation and artificial generation), and can set a whitelist"
+  earn-point: "&aCongratulations! You won the game and received &e{point} points&a
+    points, for a current total of: &e{point_now} points&a."
+
+Record:
+  type:
+    classic:
+      title: "&fClassic mode competition record"
+      content:
+        arena-name: "&fVenue&7: &f{arena_name}"
+        result: "&f results &7: &r{result}"
+        opponent: "&f Opponent &7: &f{opponent}"
+        time: "&f takes &7: &f{time} seconds"
+        exp-change: "&fExperience changes&7: &r{exp_change}"
+        total-damage: "&fTotal damage&7: &f{total_damage} points"
+        max-damage: "&fMaximum damage&7: &f{max_damage} points"
+        average-damage: "&fAverage damage&7: &f{average_damage} points"
+        date: "&fContest Date&7: &e{date}"
+
+Error:
+  no-permission: "&cYou do not have permission to perform this operation."
+  not-player-executor: "&cThis command can only be executed by players."
+  sub-command-not-exists: "&c subcommand &e'{enter}' &c does not exist, please check
+    the input content."
+  incorrect-number-format: "&e'{enter}' &c is not a valid number format."
+  incorrect-integer-format: "&e'{enter}' &c is not a valid integer format."
+  incorrect-id-format: "&e'{enter}' &c does not comply with the ID naming convention.
+    Only English letters, numbers and underscores are allowed."
+  value-is-not-positive: "&c Please enter a valid positive number, &e'{enter}' &c
+    does not meet the conditions."
+  value-is-negative: "&c Please enter a non-negative number, &e'{enter}' &c does not
+    meet the conditions."
+  incorrect-boolean-format: "&c Please enter the letter 'T' or 'F', which represents
+    &7 [&a is &7] &c and &7 [&f is not &7] respectively."
+  player-no-found: "&c Could not find player named &f'{player}' &c."
+  incorrect-string-integer-pair-format: "&c Please use &e text:number &c format, for
+    example &e'apple:3'"
+  incorrect-string-integer-pair-format-integer: "The &c delimiter &e':' must be an
+    integer after &c."
+  incorrect-executor-command-pair-format: "&c Please use &e execution identity: command
+    content &c format, for example &e'console:give {player} apple'"
+
+Progress:
+  repeatedly-join: "&cYou are currently in the process &f{progress} &c."
+  join-while-handling-other: "&c Please complete or exit the current process &f{progress}&c."
+  join-successfully: "&aYou have entered the process &f{progress} &a, please follow
+    the prompts to complete the settings step by step. &7 (During this period, you
+    can enter &f-r &7 to return to the previous step, &f-p &7 to pause the process,
+    &f-c &7 to continue the process, &f-e &7 to exit the process)"
+  boss-bar-tip: "&a{name} ({now}/{total}): {tip}"
+  boss-bar-free-tip:
+    - ""
+    - "&d{progress}&f:"
+    - "&bProgress&f: &3{now}/{total} &f[{progress_bar_progress_20_|_a_7}&f]"
+    - "&b prompt&f: &r{tip}"
+    - ""
+  boss-bar-message-finish-string: "&a Completed! All steps have been successfully
+    configured."
+  auto-upload:
+    location-different-world: "&cThe location you select must be in the same world
+      as the previous location."
+    location-the-same-block: "&cThe location you select cannot be on the same block
+      as the previous location."
+    location-overlay-with-other-arena: "&cThe current selected point overlaps with
+      the area and arena formed by the previous selected point &f{arena} &c. Please
+      reselect the location to avoid overlapping again."
+  finish:
+    message: "&fYou have completed the process&7: §f{progress}"
+    title: "&e✦"
+    subtitle: "&f Process completed&7: §f{progress}"
+  operation:
+    reverse:
+      title: "&6↺"
+      subtitle: "&7 Return to previous step"
+      the-first-step: "&c is now at the first step and cannot go back."
+    pause:
+      title: "&e┃┃"
+      subtitle: "&7 process has been suspended"
+      has-been-paused: "The &c process is currently suspended."
+    continue:
+      title: "&a▶"
+      subtitle: "&7 Continue process"
+      has-been-paused: "The &c process is currently in progress."
+    exit:
+      successfully: "&7You have exited the process: §f{progress}"
+    list:
+      enter:
+        title: "&7[&eT&7]"
+        subtitle: "&7 has added a new row, the current list: &f{brief_content}"
+      incorrect-data-type: "&cThe currently entered data type is not a list, and this
+        operation cannot be used."
+      empty-data: "&c Please enter the content first."
+  type:
+    upload-data-for-arena-function: "Upload data required for additional features"
+    create-classic-arena:
+      name: "Create a classic type of competition"
+      step:
+        1:
+          tip: "Left click on the square to select point A"
+          title: "&a✔"
+          subtitle: "&f has successfully selected point A, coordinates: &e{}"
+        2:
+          tip: "Left click on the square to select point B"
+          title: "&a✔"
+          subtitle: "&f has successfully selected point B, coordinates: &e{}"
+        3:
+          tip: "Left click to set the current screen position to player 1's spawn
+            point"
+          title: "&a✔"
+          subtitle: "&f has successfully set birth point No. 1, coordinates: &e{}"
+        4:
+          tip: "Left click to set the current screen position to player 2's spawn
+            point"
+          title: "&a✔"
+          subtitle: "&f has successfully set birth point No. 2, coordinates: &e{}"
+        5:
+          tip: "Enter contest ID &7 (&f English only, numbers, bottom line &7)"
+          title: "&a✔"
+          subtitle: "&f Successfully set ID: &f{}"
+        6:
+          tip: "Enter the competition name &7 (&f supports Chinese and color code
+            &7)"
+          title: "&a✔"
+          subtitle: "&f has successfully set the name: &f{}"
+    set-function-time-limit:
+      name: "&aNew additional features&7: &aTime limit"
+    set-function:
+      time-limit:
+        step:
+          1:
+            tip: "Enter the battle time limit (unit: seconds)"
+            title: "&a✔"
+            subtitle: "&f has successfully set the battle time limit: &f{} seconds"
+      countdown:
+        step:
+          1:
+            tip: "Enter the countdown seconds to the opening (unit: seconds)"
+            title: "&a✔"
+            subtitle: "&f has successfully set the opening countdown seconds: &f{}
+              seconds"
+          2:
+            tip: "Please enter T or F to indicate whether players are allowed to move
+              during the countdown."
+            title: "&a✔"
+            subtitle: "&f has successfully set whether the player can move during
+              the opening countdown: &f{}"
+      inventory-check-keyword:
+        step:
+          1:
+            tip: "Enter the detection scope: name=name only, lore=description only,
+              all=all"
+            title: "&a✔"
+            subtitle: "&f has successfully set the detection range: &f{}"
+            incorrect-range: "&e'{enter}' &c is not a valid detection range. Please
+              enter name (name only), lore (description only), or all (check all)."
+          2:
+            tip: "Upload the keyword list, enter the content and send it to add a
+              new line. Enter -l to end and submit the list."
+            title: "&a✔"
+            subtitle: "&f has successfully uploaded the keyword list: &f{}"
+      inventory-check-type:
+        step:
+          1:
+            tip: "Upload a list of item types in the format of Material: sub-ID. Enter
+              the content to add a new line. Enter -l to end and submit the list."
+            title: "&a✔"
+            subtitle: "&f Successfully uploaded item type list: &b{}"
+      pre-game-command:
+        step:
+          1:
+            tip: "Upload the command list in the format of execution identity: content.
+              Enter the content and send it to add a new line. Enter -l to end and
+              submit the list."
+            title: "&a✔"
+            subtitle: "&f has successfully uploaded the command group: &f{}"
+            incorrect-executor: "&e'{enter}' &c is not a valid execution identity.
+              &7 Tips: &cplayer=player execution, op=administrator execution, console=background
+              execution, console_single_time=background execution only once (not bound
+              to player)."
+      spectator:
+        step:
+          1:
+            tip: "Left-click on the square to select point A of the viewing area"
+            title: "&a✔"
+            subtitle: "&f has successfully selected point A, coordinates: &f{}"
+          2:
+            tip: "Left-click on the square to select point B of the viewing area"
+            title: "&a✔"
+            subtitle: "&f has successfully selected point B, coordinates: &f{}"
+          3:
+            tip: "Click to set the current screen position as the viewing teleport
+              point"
+            title: "&a✔"
+            subtitle: "&f has successfully set the viewing teleportation point, coordinates:
+              &f{}"
+          4:
+            tip: "Please enter T or F to indicate whether to display the actual blood
+              volume of both parties."
+            title: "&a✔"
+            subtitle: "&f has successfully set whether to display the actual blood
+              volume of both parties: &f{}"
+      ban-entity-spawn:
+        step:
+          1:
+            tip: "Upload the entity whitelist list. Enter the entity enumeration name
+              and send it to add an item. Enter -l to end and submit the entire list.
+              You can also enter -l directly to skip the whitelist setting."
+            title: "&a✔"
+            subtitle: "&f has successfully uploaded entity whitelist: &b{}"
+Command:
+  parameter:
+    player: "player name"
+    value: "numerical value"
+    arena-id: "Tournament ID"
+    source-arena-id: "Source match ID"
+    target-arena-id: "Target match ID"
+    arena-type: "Game type"
+    arena-function: "Additional function ID"
+    language-file-name: "File name"
+    point: "integral"
+    page: "page number"
+    row: "Number of columns"
+    line: "Number of lines"
+    description: "describe"
+    value-or-content: "value or content"
+    command-executor: "Execution identity"
+    index: "serial number"
+    ranking-type: "Ranking type ID"
+    ranking-page: "Ranking page number"
+    reason: "reason"
+  correct: "&6 Tips: &f{command}&6 [clickable]command::&7[&fClick to automatically
+    enter &7]::&fClick to quickly enter this command[clickable]"
+  suggest: "&6 Do you want to enter: &f{command}&6 [clickable]command::&7[&fClick
+    to automatically enter &7]::&fClick to quickly enter this command[clickable]"
+  title:
+    adminhelp: "&d Game Administrator Help"
+    help: "&f Player Help"
+    point: "&d Points System Help"
+    shop: "&d Points Mall Help"
+    level: "&aLevel System Help"
+    blacklist: "&7 Blacklist Help"
+    lobby: "&a Lobby system help"
+    arena: "&cArena Help"
+    rank: "&b Ranking Help"
+  main:
+    help: "&f View player help messages"
+    admin-help: "&fView administrator help messages"
+  sub:
+    arena:
+      series-description: "&f View arena related command help"
+      list-description: "&f View all arenas"
+      info-description: "&f View all arena types loaded on the server"
+      create-description: "&fCreate an arena of the specified type"
+      view-description: "&f View attribute information of the specified arena"
+      delete-description: "&fDelete the specified arena"
+      function-add-description: "&f Adds additional features to designated arenas"
+      function-remove-description: "&fRemove additional features from the specified
+        arena"
+      function-reset-description: "&fReset the additional function data of the designated
+        arena"
+      function-clear-description: "&fClear all additional functions in the specified
+        arena"
+      function-list-description: "&f View all additional features for a specified
+        arena"
+      function-type-description: "&f View additional features available for a specified
+        arena type"
+      function-copy-description: "&fCopy additional functions from one arena to another
+        arena"
+      list-empty: "&cThe server currently has no arena configured."
+      list-heading: "&fThe arena list is as follows:"
+      list-body: "&f{index}. &f{arena_name} &7[&f Type: {arena_type} ID: {arena_id}&7]"
+      list-ending: "&f total {number} arenas"
+      type-heading: "&f Arena types are as follows:"
+      type-body: "&f{index}. &f{arena_type_name} &7(&fID：{arena_type_id}&7)"
+      type-ending: "&fTotal {number} types"
+      create-fail-invalid-type: "&c does not exist of type &e'{enter}'&c. [clickable]view::&f&nClick
+        to view all types[clickable]"
+      invalid-id: "&cThe arena with ID &e'{enter}'&c does not exist. [clickable]view::&f&nClick
+        to view all arena ID[clickable]"
+      type:
+        invalid-id: "&cThe arena with type ID &e'{enter}'&c does not exist. [clickable]view::&f&nClick
+          to view all arenas of this type ID[clickable]"
+      function:
+        invalid-id: "&c{arena_type_entered} type arena does not define additional
+          function with ID &e'{function_entered}' &c. [clickable]view::&f&nClick to
+          view all functions ID[clickable]"
+        type-empty: "&c{arena_type} type arena does not define any additional functionality."
+        type-heading: "Additional functions available in the &b{arena_type} type arena
+          are as follows:"
+        type-body:
+          - "&f&l{index}. &b{arena_function_name} &3(ID:{arena_function_id})"
+          - "&7 Description: {arena_function_description}"
+        type-ending: "&f Total &e{number} &f additional functions"
+        copy-invalid-source-arena-id: "&cInvalid source arena ID, arena with ID &e'{enter}'&c
+          not found. [clickable]view::&f&nClick to view all arena ID[clickable]"
+        copy-invalid-target-arena-id: "&cInvalid target arena ID, arena with ID &e'{enter}'&c
+          not found. [clickable]view::&f&nClick to view all arena ID[clickable]"
+        copy-different-type: "&c Additional functionality cannot be replicated across
+          different arena types. Source: &e{source_arena_name}&c ({source_arena_type}),
+          target: &e{target_arena_name}&c ({target_arena_type})."
+        copy-empty-function: "&c Source Arena &e{source_arena_name} &c Additional
+          functions have not been set: &e{function} [clickable]view::&f&nClick to
+          view all functions ID[clickable]"
+        copy-successfully: "&a has successfully copied the additional functions &e{function}
+          &a of arena &3{source_arena} &a to arena &b{target_arena}&a."
+        copy-successfully-overwrite: "&a has successfully copied the additional functions
+          &e{function} &a of Arena &3{source_arena} &a to Arena &b{target_arena}&a,
+          and overwritten the original settings."
+        add-repeatedly: "&c Arena &6{arena} &c already contains additional function
+          ID: &e'{function_entered}'&c, no need to add it again."
+        add-enter-progress: "&d is adding additional functions &b{function}&d to Arena
+          &a{arena} &d. Please follow the prompts to complete the settings."
+        add-successfully: "&a has successfully added additional features &b{function}
+          to Arena &e{arena} &a"
+        remove-fail-not-exists: "&c Arena &e{arena} &c No additional function set
+          ID: &e'{function_id}'"
+        remove-successfully: "&a Successfully removed Arena &e{arena} Additional features
+          of &a &b{function}"
+        reset-fail-not-exists: "&c Arena &e{arena} &c No additional function set ID:
+          &e'{function_id}'"
+        reset-fail-no-data-needed: "&c Arena &e{arena} Additional features of &c &e'{function_id}'
+          &c No additional information required."
+        reset-enter-progress: "&d is resetting the arena &a{arena} Additional functions
+          of &d &b{function} &d data, please follow the prompts to complete the settings."
+        clear-successfully: "&a has successfully cleared all add-ons for arena &e{arena}
+          &a."
+        list-empty: "&c Arena &e{arena} &c No additional features have been set yet."
+        list-heading: "&bArena &r{arena} Additional features of &b are as follows:"
+        list-body:
+          - "&f{index}. &b{arena_function_name} &3(ID:{arena_function_id})"
+          - "&f Description&7: {arena_function_description}"
+          - "&7 information&7: {arena_function_data}"
+        list-ending: "&f Total &e{number} &f additional functions."
+      view:
+        - "&e=============================="
+        - "&a Name&7: &f{arena_name}"
+        - "&aID&7: &f{arena_id}"
+        - "&a type &7: &f{arena_type}"
+        - "&aAdditional functions&7: &b{function_number} items [clickable]view_function::&7(click
+          to view)::&fClick to view the added additional functions and information[clickable]"
+        - "&e=============================="
+      delete-successfully: "&a has successfully deleted the arena with ID &b{arena_id}
+        &a."
+    shop:
+      series-description: "&b View instructions related to points mall and help"
+      description: "&aOpen the points redemption mall"
+      help-description: "&fView points mall administrator help"
+      add-description: "&fAdd items in hand to points mall"
+      delete-description: "&aDelete the specified reward"
+      reset-description: "&aReset the price/description/level limit of the specified
+        reward"
+      command:
+        clear-description: "&fClear all redemption instructions for the specified
+          reward"
+        list-description: "&f View all redemption instructions for the specified reward"
+      add-successfully: "&a reward was added successfully, &7 (&f position: page {page},
+        row {row}, column {column} column &7)"
+      add-empty-itemstack: "&c Please hold the items you want to put on the shelves
+        in your hands first."
+      delete-successfully: "&a reward deleted successfully, &7 (&f position: page
+        {page}, row {row}, column {column} column &7)"
+      invalid-loc: "&c Unable to find reward at &f page {page}, row {row}, column
+        {column} &c, please confirm your entry again."
+      reset-point-successfully: "&a has been successfully modified to &f{point} points
+        &a, &7 (&f location: page {page}, row {row}, column {column} column &7)"
+      reset-description-successfully: "&a has successfully modified the reward description
+        to &f'&7{description}&f' &7 (&f location: page {page}, row {row}, column {column}
+        column &7)"
+      reset-level-limit-successfully: "&a has successfully modified the redemption
+        level limit to &f{level} level &a, &7 (&f location: page {page}, row {row},
+        column {column} column &7)"
+      command-add-successfully: "&a has successfully added the redemption instructions
+        &f{command_content} &a (Execution identity: &f{command_executor}&a) &7 (&f
+        Location: page {page}, line {row}, line {column} Column&7)"
+      command-add-tip-executor:
+        - "&7[&e Usage Tips&7]"
+        - "&7'{enter}' &f is not a valid execution identity"
+        - "&f Available identities &7: &f'player' / 'p' &7 = player execution, &f'op'
+          / 'o'&7 = administrator execution, &f'console' / 'c'&7 = background execution"
+        - "&fExample&7:&e{command_entered_corrected} [clickable]type::&7(&fClick to
+          automatically enter &7)::&fClick to quickly enter this command[clickable]"
+      command-remove-successfully: "&a Successfully deleted redemption instruction
+        &f'&7/{command}&f' &7 (&fBonus location: page {page}, line {row}, line {column}
+        Column; command number: {index}&7)"
+      command-index-is-not-found: "&e'{index}' &c is not a valid command number, please
+        reconfirm the input."
+      command-clear-successfully: "&a successfully cleared &b{number} &a redemption
+        instructions, &7 (&f location: page {page}, row {row}, column {column} column
+        &7)"
+      command-empty: "&c No redemption instructions have been set for this reward."
+      command-list-heading: "The list of &b redemption instructions is as follows:
+        &7 (&f position: page {page}, row {row}, column {column} column &7)"
+      command-list-body: "&f{index}. &a/{command_content} &7 (&f execution identity:
+        &f{command_executor}&7) [clickable]remove::&7[&cClick to remove&7]::&fClick
+        to remove this instruction[clickable]"
+      command-list-ending: "&fTotal &e{number} &f redemption instructions"
+    point:
+      series-description: "&f View help for points-related instructions"
+      view-self-description: "&f Check your points"
+      add-description: "&f adds points to the specified player"
+      set-description: "&fSet the points of the specified player"
+      view-player-description: "&f View the points of the specified player"
+      view-self: "&aYou currently have &f{point} &e points&a points"
+      add-successfully: "&a has been successfully added to players &f{player} &a &f{point}
+        &e points&a points"
+      set-successfully: "&a has successfully set the points of players &f{player}
+        &a to &f{point} &e points"
+      view-player: "&a Players &f{player} &a currently have &f{point} &e points&a
+        points"
+    level:
+      series-description: "&fView PvP level related command help"
+      view-self-description: "&f Check your level and experience information"
+      view-player-description: "&f View the level and experience of the specified
+        player"
+      exp-description: "&f Add/set experience points for the specified player"
+      view-self:
+        - "&7&m───&f&l&m──────────────────────────────────"
+        - "&fCurrent level&7: &f{level} level"
+        - "&fCurrent rank&7: &r{tier_title}"
+        - "&fTotal experience value&7: &a{total_exp}"
+        - "&fUpgrade requirements&7: &c{need_exp}"
+        - "&fUpgrade progress&7: &r{progress_bar_level_20_■_2_7} &f({progress_value}%)"
+        - "&7&m───&f&l&m──────────────────────────────────"
+      view-player:
+        - "&7&m───&f&l&m──────────────────────────────────"
+        - "&fPlayer name&7: &f{player}"
+        - "&fCurrent level&7: &f{level} level"
+        - "&fCurrent rank&7: &r{tier_title}"
+        - "&fTotal experience value&7: &a{exp}"
+        - "&7&m───&f&l&m──────────────────────────────────"
+      add-successfully: "&a has successfully added &f{exp} &a experience points to
+        players &f{player} &a."
+      set-successfully: "&a has successfully set the experience value of players &f{player}
+        &a to &f{exp} &a points."
+    rank:
+      series-description: "&f View the rankings related command help"
+      me-description: "&f Check your ranking in each ranking list"
+      view-description: "&f View the designated ranking list"
+      type-description: "&f View all ranking types and their IDs"
+      refresh-description: "&f Manually refresh the specified ranking list"
+      hologram-description: "&f manages the hologram of the specified ranking list"
+      me-heading:
+        - "&fYour ranking in each ranking is as follows:"
+        - "&7&m───&f&l&m──────────────────────────────────"
+        - ""
+      me-body: "&r{ranking_name} &a({rank}&2/{total}&a) [clickable]view_ranking::&7[&fClick
+        to view&7]::&fClick to view&r{ranking_name}&fDetails[clickable]"
+      me-body-no-data: "&r{ranking_name} &7(&fNo record&7) [clickable]view_ranking::&7[&fClick
+        to view&7]::&fClick to view&r{ranking_name}&fDetails[clickable]"
+      me-ending:
+        - ""
+        - "&7&m───&f&l&m──────────────────────────────────"
+      view-heading:
+        - "{ranking_name}[clickable]ranking_description::&7(&fView introduction&7)::{ranking_description}[clickable]"
+        - "&7&m──&f&l&m───────────────────────────"
+        - ""
+      view-body: "&f[&7{rank}&f&l] &b{player} &f- &3{data}{extra}"
+      view-ending:
+        - "[clickable]previous_page::&7[&aPrevious page&7]::Click to view the previous
+          page[clickable] &9{current_page}/{total_pages} [clickable]next_page::&7[&anext
+          page&7]::Click to view the next page[clickable]"
+        - "&7&m──&f&l&m───────────────────────────"
+        - ""
+      view-ending-show-me: "&fYou are ranked &6{rank}&7/&6{total}&f, data: &6{data}{extra}&f."
+      view-ending-show-me-no-data: "&eYou have not yet left any records in this ranking
+        list."
+      view-invalid-ranking-type-id: "&c There is no leaderboard with type ID &e'{enter}'
+        &c. [clickable]view::&f&nClick to view all types ID[clickable]"
+      view-empty: "&c Ranking &e{ranking} &c There is no information yet."
+      view-invalid-ranking-page: "&c Please enter a valid page number. There are &6{total_pages}
+        &c pages in this ranking list."
+      type-heading: "&fThe ranking types are as follows:"
+      type-body:
+        - "&f{index}. &b{type_name} &3(ID:{type_id})"
+        - "&f Description&7: &r{description}"
+      type-ending: "&fTotal &a{number} &f ranking list"
+      refresh-internal-successfully: "&a has successfully manually refreshed the built-in
+        ranking list: &r{ranking_name}&7 (ID: {ranking_id})"
+      hologram-disabled: "&c Currently no supported hologram plug-in has been detected
+        and this function cannot be used."
+      hologram-add-fail-already-exists: "&c Ranking &e{ranking} &c Hologram set, location:
+        &e{location}"
+      hologram-add-successfully: "&a has successfully added a hologram to the leaderboard
+        &b{ranking} &a, location: &e{location}"
+      hologram-delete-fail-not-exists: "&c cannot be deleted, leaderboard &e{ranking}
+        &c has not set a hologram."
+      hologram-delete-successfully: "&a has successfully deleted the hologram of &b{ranking}
+        from the leaderboard, original location: &e{location}"
+      hologram-move-fail-not-exists: "&c cannot be moved, leaderboard &e{ranking}
+        &c has not set the hologram."
+      hologram-move-successfully: "&a has successfully moved the hologram of leaderboard
+        &b{ranking} to the new position: &e{location}"
+    lobby:
+      series-description: "&f View instructions related to the competition hall and
+        help"
+      description: "&fTeleported to the competition hall"
+      help-description: "&fView the competition lobby administrator help"
+      set-description: "&fSet the current location as the competition hall"
+      delete-description: "&fDelete the teleportation point in the competition hall"
+      none: "&cThe server has not yet set the competition hall teleport point."
+      set-successfully: "&a has successfully set the current location as the transfer
+        point of the competition hall."
+      update-successfully: "&aThe transfer point in the competition hall has been
+        updated to your current location."
+      delete-fail-none: "&cThe server currently does not have a competition hall teleport
+        point set."
+      delete-successfully: "&a has successfully removed the teleportation point in
+        the competition hall."
+    blacklist:
+      series-description: "&fView blacklist related command help"
+      add-description: "&f Add the specified player to the blacklist"
+      remove-description: "&fRemove the specified player from the blacklist"
+      view-description: "&fView blacklist list"
+      add-successfully: "&a has successfully added &f{player} &a to the blacklist"
+      remove-successfully: "&a has successfully removed &f{player} &a from the blacklist"
+      the-player-has-been-in: "&f{player} &c is in the blacklist"
+      the-player-not-found: "&f{player} &c is currently not in the blacklist"
+      view-empty: "&cThere are currently no players in the blacklist"
+      view-heading: "&fThe blacklisted players are as follows:"
+      view-body: "&2{index}. &a{player}[clickable]remove::&7(&fClick to remove&7)::&fClick
+        to remove the player from the blacklist: &f{player}[clickable]"
+      view-ending: "&f Total &6{number} &f players"
+    stop:
+      description: "&fForcibly terminate the match in the specified arena"
+      fail-arena-not-exists: "&cArena &r'{arena}' &c does not exist and the stop operation
+        cannot be performed."
+      fail-no-game: "&c Arena &r{arena} &c is not currently in competition."
+      tentatively: "&7 is forcefully terminating a match in &f{arena_type} &7 type
+        arena &f{arena} &7..."
+    reload:
+      description: "&b Reload configuration file and all language files"
+      start: "&7 is reloading the configuration file and applying it..."
+      successfully: "The &a plug-in has been reloaded, which took &f{time} milliseconds
+        &a."
+    start:
+      description: "&fOpen the competition selection interface"
+      fail-self-in-black-list: "&cYou are currently on the competition blacklist and
+        cannot open the competition interface."
+    send:
+      description: "&fSends a battle invitation to the specified player"
+      fail-self-in-black-list: "&cYou are currently on the blacklist and cannot send
+        battle invitations."
+      fail-send-to-self: "&cYou cannot send yourself a battle invitation."
+      fail-no-arenas: "&cThe server has not set any arena yet and cannot send battle
+        invitations."
+      fail-offline: "&cUnable to send battle invitation, player &f'{player}' &c is
+        not currently online or does not exist."
+      fail-recipient-in-black-list: "Player &c &f{player} &c is currently on the blacklist
+        and cannot be sent a battle invitation."
+      fail-invalid-arena-id: "&cThe arena with ID &e'{enter}' &c does not exist, please
+        check your input."
+      fail-arena-disabled: "&c Arena &e{arena} &c is currently disabled, please choose
+        another arena."
+      fail-frequently: "&cYou have sent a battle invitation to &f{player} &c &f{second}
+        seconds ago, please wait for the other party's response."
+      successfully: "&a has successfully sent a battle invitation to player &f{player}
+        &a, please wait for the other party's response."
+      receive:
+        - "&7&m───&f&l&m──────────────────────────────────"
+        - ""
+        - "&fYou received a battle invitation from &f{player} &f [clickable]accept::&7[&a✔&7]::&aClick
+          to accept the invitation[clickable] [clickable]decline::&7[&c✘&7]::&cClick
+          to decline the invitation[clickable]"
+        - ""
+        - "&7&m───&f&l&m──────────────────────────────────"
+      receive-notify-designated-arena: "&fThe opponent’s designated arena: &r{arena_name}
+        &7(&f{arena_type}&7)"
+    accept:
+      description: "&aAccept battle invitations from other players"
+      fail-none: "&cYou currently do not have any pending battle invitations."
+      fail-time-out: "The invitation of &c has expired. The invitation of player &f{player}
+        &c has automatically expired due to too long waiting."
+      fail-offline: "&cThe invitation has expired, player &f'{player}' &c is currently
+        not online or does not exist."
+      fail-has-not-sent: "&cInvitation is invalid, player &f'{player}' &c has not
+        sent you a battle invitation."
+      fail-has-no-arenas: "&cThe server has not set any arena and the battle cannot
+        be started."
+      fail-has-no-available-arenas: "&cThe server has not yet set up any arena for
+        two-player battles."
+      fail-has-no-available-arenas-temporarily: "&c There are currently no two-player
+        arenas available."
+      success-receiver: "&aYou have accepted &f{player} &a's invitation to battle."
+      success-sender: "&f{player} &a accepted your invitation to fight."
+      success-notify-randomly-chosen-arena: "&a Since no arena has been specified,
+        the system has automatically selected randomly for you: &r{arena_name} &7(&r{arena_type}&7)"
+      choose-list-heading: "&fYou currently have multiple pending battle invitations.
+        Please select the invitation you want to accept:"
+      choose-list-body: "&f{index}. &f{player} &7(&fSpecified arena: {arena}&7) [clickable]accept::&a&l[Accept]::&aClick
+        to accept the invitation[clickable]"
+      choose-list-ending: "&f Total &3{number} &f pending invitations"
+      decline-none: "&cYou currently have no invitations to decline."
+    decline:
+      description: "&fReject battle invitations from other players"
+      fail-time-out: "&c invitation has expired: The invitation of player &f{player}
+        &c has automatically expired due to waiting for too long."
+      fail-offline: "&cInvalid invitation: Player &f'{player}' &c is currently not
+        online or does not exist."
+      fail-has-not-sent: "&cInvalid invitation: Player &f'{player}' &c has not sent
+        you a battle invitation."
+      success-receiver: "&aYou have declined &f{player} &a's invitation to fight."
+      success-sender: "&f{player} &c has declined your battle invitation."
+      choose-list-heading: "&bYou currently have multiple pending battle invitations.
+        Please select the player you want to reject:"
+      choose-list-body: "&f{index}. &f{player} [clickable]decline::&7[&cClick to decline&7]::&cClick
+        to decline this battle invitation[clickable]"
+      choose-list-ending: "&f Total &3{number} &f pending invitations"
+    wait:
+      description: "&fJoin the designated arena or its waiting queue"
+    spectate:
+      description: "&fWatch matches in designated arenas"
+      fail-arena-not-exists: "&c Arena &r'{arena}' &c does not exist and cannot be
+        watched."
+      fail-arena-disabled: "&c Arena &f{arena} &c is currently disabled and cannot
+        be watched."
+      fail-arena-no-games: "&cArena &f{arena} &cThere are currently no games in progress
+        and cannot be watched."
+    quit:
+      description: "&fExit the current match"
+      not-in-arena: "&cYou must be in a match to use this command."
+      successfully: "&fYou have exited the battle in &r{arena} &b."
+    record:
+      description: "&fOpen the battle record interface"
+    lang:
+      description: "&6Switch locale"
+      list-heading: "The available language files for &6 are as follows:"
+      list-body: "&2{index}. &a{file}[clickable]switch::&7(&fClick to switch&7)::&fClick
+        to switch the language: &a{file}[clickable]"
+      list-ending: "&fTotal &3{number} &f language files"
+      no-file-installed: "&cNo other language files have been installed on the server."
+      the-file-not-exists: "&cThe language file named &e'{file}' &c does not exist."
+      switch-successfully: "&a The language switch was successful. The current language
+        environment is: &7&r{language}"
+    join:
+      arena-not-exists: "&c Arena &r'{arena}' &c does not exist and cannot be added."
+      fail-arena-disabled: "&cArena &r{arena} &c is currently disabled and cannot
+        be joined at the moment."
+      arena-in-progress-closed: "&cArena &r{arena} &c is currently not allowed to
+        join midway."
+      arena-in-progress-opened-full: "&c Arena &r{arena} &c is currently full, please
+        try again later."
+      game-tentatively: "&a is trying to join the arena &r{arena}&a..."
+  shop:
+    command:
+      add-description: "&b Add a new redemption instruction for the specified reward"
+      remove-description: "&bRemove a redemption command for the specified reward"
+Item:
+  gui:
+    shop:
+      button-previous-page: "&7[&aprevious page&7]"
+      button-next-page: "&7[&anext page&7]"
+      reward-information:
+        - ""
+        - "&7[&fExchange requirements&7]: &e{point} points"
+        - "&7[&f Accumulated redemption of &7]: &6{volume} shares"
+        - "&7[&fReward Description&7]: &7{description}"
+        - ""
+      reward-level-limit-tip-yes: "&aYou have reached the required level to redeem
+        this item: &fLv.{level}"
+      reward-redeem-tip-yes: "&aClick to redeem &7：&e{point_now}&7/&e{point_need}"
+      reward-redeem-tip-no-enough-point: "&c Insufficient points &7: &c{point_now}&7/&c{point_need}"
+      reward-redeem-tip-no-enough-level: "&cInsufficient level &7：&cLv.{level_now}&7/&cLv.{level_need}"
+    record:
+      show-tip: "&7[&fLeft click on &7]: &f will send this record to the chat bar"
+      print-tip: "&7[&fright-click&7]: &fPrint this record to the paper in hand &7(&a
+        needs to consume &e{point} points&7)"
+    start:
+      arena-information:
+        - ""
+        - "&fBattlefield status&7: &r{state}"
+        - "&fNumber of people on the battlefield&7: &a{now_number}&7/&a{max_number}"
+        - ""
+        - "{button_message}"
+      arena-state:
+        waiting: "&aWaiting for players to join..."
+        in-progress-closed: "&c in progress &7 (&c cannot be added midway &7)"
+        in-progress-opened: "&a in progress &7 (&a can be added midway &7)"
+        disabled: "&c is temporarily disabled"
+      arena-button-message:
+        waiting-start: "&7[&aClick to start matching&7]"
+        waiting-stop: "&7[&aClick to cancel matching&7]"
+        in-progress-closed: "&7[&c is currently not available to join &7]"
+        in-progress-opened: "&7[&aClick to join &7]"
+        in-progress-opened-full: "&7[&cThe battlefield is full&7]"
+        disabled: "&7[&c cannot be used &7]"
+GUI:
+  already-the-first-page: "&cThis is already the first page"
+  already-the-last-page: "&cThis is the last page"
+  type:
+    shop:
+      title: "&9Sports Points Mall"
+      empty: "&c There are currently no items on the Points Mall."
+      redeem-unsuccessfully-insufficient-points: "&c You have insufficient points.
+        You need &e{point_need} points to redeem this item. &c. Currently, you only
+        have &e{point_now} points &c."
+      redeem-unsuccessfully-insufficient-level: "&c Your level is insufficient. You
+        need &aLv.{level_need}&c to redeem this item. Currently, you only have &aLv.{level_now}&c.
+        Please continue to work hard."
+      redeem-successfully: "&a Redemption successful! The item has been sent to your
+        backpack."
+      redeem-successfully-but-drop: "&a was redeemed successfully, &c but due to insufficient
+        space in the backpack &a, the items have fallen at your feet, a total of &f{number}
+        kinds of &a."
+    record:
+      title: "&f{player}&a's battle record"
+      empty: "&c currently does not have any combat records."
+      show-frequently: "&c Please wait &f{time} seconds before displaying the battle
+        record."
+      show-content: "&f{player} &7: [clickable]show::&7[&9My battle record&7]::{content}[clickable]&7
+        (&fMove the mouse above the text to view &7)"
+      print-insufficient-point: "&c Printing a battle record requires &e{point_need}
+        points &c. You currently only have &e{point_now} points &c."
+      print-fail-no-paper-in-hand: "&c Please hold the paper in your hand first."
+      print-fail-paper-has-meta: "&cThe printing paper must be plain paper and cannot
+        contain additional information."
+      print-successfully: "&a Printed successfully, please check the paper in your
+        hand."
+    start:
+      title: "&9Arena List"
+      empty: "&cThe server has not created any arena yet."
+      use-while-in-game: "&cYou are currently fighting in &r{arena} &c and cannot
+        perform this action."
+      state:
+        waiting-operation-cooldown: "&cPlease do not operate the matching function
+          too frequently."
+        in-progress-closed: "&c Arena &r{arena} &c is not allowed to join midway."
+        in-progress-opened-full: "&c Arena &r{arena} &c is currently full and cannot
+          be joined at the moment."
+        in-progress-opened: "&a is joining the arena &r{arena}&a..."
+        disabled: "&c Arena &r{arena} &c is currently disabled."
+    item-display:
+      title: "&9Item details"
+Ranking:
+  hologram:
+    heading:
+      - "{ranking_name}"
+      - "{ranking_description}"
+      - ""
+    body: "&7[&e No. {rank} &7] &f{player} &7- &f{data}"
+    ending: ""
+  type:
+    classic-wins:
+      name: "&eClassic Mode Win Ranking"
+      description: "&7[&6The higher the number of wins, the higher the ranking&7]"
+    classic-win-rate:
+      name: "&e Classic mode winning rate rankings"
+      description: "&7[&6The higher the winning rate, the higher the ranking&7]"
+    exp:
+      name: "&bClassic Mode Experience Ranking"
+      description: "&7[&6The higher the accumulated experience, the higher the ranking&7]"
+    total-game-number:
+      name: "&d Ranking of the number of battles in all modes"
+      description: "&7 counts the total number of participations in all classic modes
+        and DT affiliated modes"
+    total-game-time:
+      name: "&d All-mode battle duration rankings"
+      description: "&7 Counts the cumulative battle time (seconds) of all classic
+        modes and DT affiliated modes"
+    classic-game-number:
+      name: "&eClassic mode battle frequency ranking list"
+      description: "&7 counts the total number of participations in classic mode"
+    classic-game-time:
+      name: "&6 Classic mode battle duration rankings"
+      description: "&7 Statistics Classic mode cumulative battle time (seconds)"

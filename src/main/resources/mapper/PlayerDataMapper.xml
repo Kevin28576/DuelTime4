@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kevin.dueltime4.data.mapper.PlayerDataMapper">
+    <select id="getMap" resultType="com.kevin.dueltime4.data.pojo.PlayerData">
+        SELECT
+        id,
+        exp,
+        point,
+        language,
+        COALESCE(total_game_number, 0) AS totalGameNumber,
+        COALESCE(total_game_time, 0) AS totalGameTime,
+        COALESCE(arena_classic_wins, 0) AS arenaClassicWins,
+        COALESCE(arena_classic_draws, 0) AS arenaClassicDraws,
+        COALESCE(arena_classic_loses, 0) AS arenaClassicLoses,
+        COALESCE(arena_classic_time, 0) AS arenaClassicTime
+        FROM dueltime_playerdata
+    </select>
+    <select id="get" resultType="com.kevin.dueltime4.data.pojo.PlayerData">
+        SELECT
+        id,
+        exp,
+        point,
+        language,
+        COALESCE(total_game_number, 0) AS totalGameNumber,
+        COALESCE(total_game_time, 0) AS totalGameTime,
+        COALESCE(arena_classic_wins, 0) AS arenaClassicWins,
+        COALESCE(arena_classic_draws, 0) AS arenaClassicDraws,
+        COALESCE(arena_classic_loses, 0) AS arenaClassicLoses,
+        COALESCE(arena_classic_time, 0) AS arenaClassicTime
+        FROM dueltime_playerdata
+        WHERE id = #{id}
+    </select>
+    <insert id="insertOrUpdateMySQL" parameterType="com.kevin.dueltime4.data.pojo.PlayerData">
+        INSERT INTO dueltime_playerdata
+        (id, exp, point, language, total_game_number, total_game_time, arena_classic_wins, arena_classic_draws,
+        arena_classic_loses, arena_classic_time)
+        VALUES
+        (#{id},
+        #{exp},
+        #{point},
+        #{language},
+        CASE WHEN #{totalGameNumber} = 0 THEN NULL ELSE #{totalGameNumber} END,
+        CASE WHEN #{totalGameTime} = 0 THEN NULL ELSE #{totalGameTime} END,
+        CASE WHEN #{arenaClassicWins} = 0 THEN NULL ELSE #{arenaClassicWins} END,
+        CASE WHEN #{arenaClassicDraws} = 0 THEN NULL ELSE #{arenaClassicDraws} END,
+        CASE WHEN #{arenaClassicLoses} = 0 THEN NULL ELSE #{arenaClassicLoses} END,
+        CASE WHEN #{arenaClassicTime} = 0 THEN NULL ELSE #{arenaClassicTime} END)
+        ON DUPLICATE KEY UPDATE
+        <trim prefix="" suffixOverrides=",">
+            exp = #{exp},
+            point = #{point},
+            <if test="language != null">language = #{language},</if>
+            <if test="totalGameNumber != 0">total_game_number = CASE WHEN #{totalGameNumber} = 0 THEN NULL ELSE
+                #{totalGameNumber} END,
+            </if>
+            <if test="totalGameTime != 0">total_game_time = CASE WHEN #{totalGameTime} = 0 THEN NULL ELSE
+                #{totalGameTime} END,
+            </if>
+            <if test="arenaClassicWins != 0">arena_classic_wins = CASE WHEN #{arenaClassicWins} = 0 THEN NULL
+                ELSE #{arenaClassicWins} END,
+            </if>
+            <if test="arenaClassicDraws != 0">arena_classic_draws = CASE WHEN #{arenaClassicDraws} = 0 THEN NULL
+                ELSE #{arenaClassicDraws} END,
+            </if>
+            <if test="arenaClassicLoses != 0">arena_classic_loses = CASE WHEN #{arenaClassicLoses} = 0 THEN NULL
+                ELSE #{arenaClassicLoses} END,
+            </if>
+            <if test="arenaClassicTime != 0">arena_classic_time = CASE WHEN #{arenaClassicTime} = 0 THEN NULL
+                ELSE #{arenaClassicTime} END
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertOrUpdateSQLite" parameterType="com.kevin.dueltime4.data.pojo.PlayerData">
+        INSERT OR REPLACE INTO dueltime_playerdata (
+        id, exp, point, language,
+        total_game_number, total_game_time,
+        arena_classic_wins, arena_classic_draws, arena_classic_loses, arena_classic_time)
+        VALUES (
+        #{id}, #{exp}, #{point}, #{language},
+        #{totalGameNumber}, #{totalGameTime},
+        #{arenaClassicWins}, #{arenaClassicDraws}, #{arenaClassicLoses}, #{arenaClassicTime});
+    </insert>
+    <update id="createTableIfNotExists">
+        CREATE TABLE IF NOT EXISTS `dueltime_playerdata` (
+        `id` varchar(32) NOT NULL,
+        `exp` double NOT NULL DEFAULT 0,
+        `point` double NOT NULL DEFAULT 0,
+        `language` varchar(64) NULL DEFAULT NULL,
+        `total_game_number` int NULL DEFAULT NULL,
+        `total_game_time` int NULL DEFAULT NULL,
+        `arena_classic_wins` int NULL DEFAULT NULL,
+        `arena_classic_draws` int NULL DEFAULT NULL,
+        `arena_classic_loses` int NULL DEFAULT NULL,
+        `arena_classic_time` int NULL DEFAULT NULL,
+        PRIMARY KEY (`id`)
+        );
+    </update>
+    <select id="selectWinsRanking" resultType="com.kevin.dueltime4.ranking.RankingData">
+        SELECT id, COALESCE(arena_classic_wins, 0) AS data
+        FROM dueltime_playerdata
+        WHERE arena_classic_wins IS NOT NULL OR arena_classic_loses IS NOT NULL OR arena_classic_draws IS NOT NULL
+        ORDER BY data DESC;
+    </select>
+    <select id="selectWinRateRanking" resultType="com.kevin.dueltime4.ranking.RankingData">
+        SELECT
+        id,
+        ROUND(CAST(COALESCE(arena_classic_wins, 0) AS DOUBLE) / (COALESCE(arena_classic_wins, 0) +
+        COALESCE(arena_classic_loses, 0) + COALESCE(arena_classic_draws, 0)) * 100, 2) AS data
+        FROM
+        dueltime_playerdata
+        WHERE arena_classic_wins IS NOT NULL OR arena_classic_loses IS NOT NULL OR arena_classic_draws IS NOT NULL
+        ORDER BY
+        data DESC;
+    </select>
+    <select id="selectTotalGameNumberRanking" resultType="com.kevin.dueltime4.ranking.RankingData">
+        SELECT id, COALESCE(total_game_number, 0) AS data
+        FROM dueltime_playerdata
+        ORDER BY data DESC;
+    </select>
+    <select id="selectClassicGameNumberRanking" resultType="com.kevin.dueltime4.ranking.RankingData">
+        SELECT id, (COALESCE(arena_classic_wins, 0)+COALESCE(arena_classic_loses, 0)+COALESCE(arena_classic_draws, 0))
+        AS data
+        FROM dueltime_playerdata
+        WHERE arena_classic_wins IS NOT NULL OR arena_classic_loses IS NOT NULL OR arena_classic_draws IS NOT NULL
+        ORDER BY data DESC;
+    </select>
+    <select id="selectTotalGameTimeRanking" resultType="com.kevin.dueltime4.ranking.RankingData">
+        SELECT id, COALESCE(total_game_time, 0) AS data
+        FROM dueltime_playerdata
+        ORDER BY data DESC;
+    </select>
+    <select id="selectClassicGameTimeRanking" resultType="com.kevin.dueltime4.ranking.RankingData">
+        SELECT id, COALESCE(arena_classic_time, 0) AS data
+        FROM dueltime_playerdata
+        WHERE arena_classic_wins IS NOT NULL OR arena_classic_loses IS NOT NULL OR arena_classic_draws IS NOT NULL
+        ORDER BY data DESC;
+    </select>
+    <select id="selectExpRanking" resultType="com.kevin.dueltime4.ranking.RankingData">
+        SELECT id, ROUND(exp, 2) AS exp
+        FROM dueltime_playerdata
+        WHERE exp IS NOT NULL
+        ORDER BY exp DESC;
+    </select>
+</mapper>

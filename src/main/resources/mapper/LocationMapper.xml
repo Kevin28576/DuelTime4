@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kevin.dueltime4.data.mapper.LocationMapper">
+    <select id="getMap" resultType="com.kevin.dueltime4.data.pojo.LocationData">
+        select * from dueltime_location
+    </select>
+    <insert id="add" parameterType="com.kevin.dueltime4.data.pojo.LocationData">
+        insert into dueltime_location (id,location) values (#{id},#{location})
+    </insert>
+    <delete id="remove">
+        delete from dueltime_location where id = #{id}
+    </delete>
+    <update id="update">
+        update dueltime_location
+        <set>
+            location = #{location}
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <update id="createTableIfNotExists">
+        CREATE TABLE IF NOT EXISTS `dueltime_location` (
+        `id` varchar(32) NOT NULL,
+        `location` varchar(628),
+        PRIMARY KEY (`id`)
+        );
+    </update>
+</mapper>

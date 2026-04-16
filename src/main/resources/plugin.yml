@@ -1,0 +1,10 @@
+name: DuelTime4
+version: '${project.version}'
+main: com.kevin.dueltime4.DuelTimePlugin
+softdepend: [ HolographicDisplays, HolographicDisplay, PlaceholderAPI, CMI, DecentHolograms , Multiverse-Core ]
+api-version: '1.21'
+commands:
+  dueltime4:
+    description: Help of DuelTime4
+    usage: /<command>
+    aliases: [ dueltime, dt, dt4 ]

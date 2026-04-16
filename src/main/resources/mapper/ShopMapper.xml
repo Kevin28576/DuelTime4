@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kevin.dueltime4.data.mapper.ShopMapper">
+    <select id="getList" resultType="com.kevin.dueltime4.data.pojo.ShopRewardData">
+        select * from dueltime_shop
+    </select>
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into dueltime_shop(item_stack, point, level_limit, description, commands,
+        total_redemption_volume)
+        values
+        (
+        #{itemStack}, #{point}, #{levelLimit},
+        <bind name="descriptionValue" value="description != null ? description : null"/>
+        #{descriptionValue},
+        null, 0
+        )
+    </insert>
+    <delete id="remove">
+        delete from dueltime_shop where id = #{id}
+    </delete>
+    <update id="set">
+        update dueltime_shop
+        <set>
+            point = #{point},
+            level_limit = #{levelLimit},
+            total_redemption_volume = #{totalRedemptionVolume},
+            commands = #{commands}
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <update id="createTable">
+        <choose>
+            <when test="databaseType == 'MYSQL'">
+                create table if not exists `dueltime_shop` (
+                id int auto_increment primary key,
+                item_stack varchar(4096),
+                point double,
+                level_limit integer,
+                description varchar(256),
+                commands varchar(4096),
+                total_redemption_volume integer
+                ) AUTO_INCREMENT = 1;
+            </when>
+            <when test="databaseType == 'SQLITE'">
+                create table if not exists `dueltime_shop` (
+                id integer primary key autoincrement,
+                item_stack varchar(4096),
+                point real,
+                level_limit integer,
+                description varchar(256),
+                commands varchar(4096),
+                total_redemption_volume integer
+                );
+            </when>
+        </choose>
+    </update>
+</mapper>

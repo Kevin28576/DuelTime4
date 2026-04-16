@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kevin.dueltime4.data.mapper.ClassicArenaDataMapper">
+    <select id="getAll" resultType="com.kevin.dueltime4.data.pojo.ClassicArenaData">
+        select *
+        from dueltime_arena_classic
+    </select>
+    <insert id="add">
+        insert into dueltime_arena_classic
+        (id,name,diagonal_point_location_1,diagonal_point_location_2,functions,player_location_1,player_location_2)
+        values
+        (#{id},#{name},#{diagonalPointLocation1},#{diagonalPointLocation2},#{functions},#{playerLocation1},#{playerLocation2})
+    </insert>
+    <update id="update">
+        update dueltime_arena_classic
+        set
+        id = #{id},
+        name = #{name},
+        diagonal_point_location_1 = #{diagonalPointLocation1},
+        diagonal_point_location_2 = #{diagonalPointLocation2},
+        functions = #{functions},
+        player_location_1 = #{playerLocation1},
+        player_location_2 = #{playerLocation2}
+        where id = #{id}
+    </update>
+    <delete id="delete">
+        delete from dueltime_arena_classic where id = #{id}
+    </delete>
+    <update id="createTableIfNotExists">
+        CREATE TABLE IF NOT EXISTS `dueltime_arena_classic` (
+        `id` varchar(32) NOT NULL,
+        `name` varchar(128) NOT NULL,
+        `diagonal_point_location_1` varchar(1024),
+        `diagonal_point_location_2` varchar(1024),
+        `functions` varchar(10000),
+        `player_location_1` varchar(1024),
+        `player_location_2` varchar(1024),
+        PRIMARY KEY (`id`)
+        );
+    </update>
+</mapper>

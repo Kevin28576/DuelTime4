@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kevin.dueltime4.data.mapper.ClassicArenaRecordDataMapper">
+    <select id="getAll" resultType="com.kevin.dueltime4.data.pojo.ClassicArenaRecordData">
+        select *
+        from dueltime_arena_record_classic
+        where
+        `player_name` = #{playerName}
+    </select>
+    <insert id="add">
+        insert into `dueltime_arena_record_classic`
+        (`player_name`, `arena_id`, `opponent_name`, `result`, `time`,`exp_change`, `hit_time`, `total_damage`, `max_damage`, `average_damage`, `date`)
+        values
+        (#{playerName}, #{arenaId}, #{opponentName}, #{result}, #{time}, #{expChange}, #{hitTime}, #{totalDamage}, #{maxDamage}, #{averageDamage},#{date})
+    </insert>
+    <update id="createTableIfNotExists">
+        CREATE TABLE IF NOT EXISTS `dueltime_arena_record_classic` (
+        `player_name` varchar(32) NOT NULL,
+        `arena_id` varchar(32) NOT NULL,
+        `opponent_name` varchar(32),
+        `result` varchar(16),
+        `time` int,
+        `exp_change` double,
+        `hit_time` int,
+        `total_damage` double,
+        `max_damage` double,
+        `average_damage` double,
+        `date` varchar(64)
+        );
+    </update>
+</mapper>

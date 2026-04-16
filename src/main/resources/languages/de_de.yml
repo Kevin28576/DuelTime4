@@ -1,0 +1,982 @@
+LanguageName: "&cDeutsch (Deutschland)"
+String:
+  none: "keiner"
+  true: "Ja"
+  false: "NEIN"
+  list: "{line} Zeilenliste: {brief_content}"
+  win: "&aSieg"
+  lose: "&c verloren"
+  draw: "&6Unentschieden"
+  games: "Feld"
+  seconds: "Zweite"
+  no-rank: "&6 ist nicht aufgeführt"
+  command-executor:
+    player: "Spieler"
+    op: "Administrator"
+    console: "Server"
+Exception:
+  arena:
+    initialize-fail-invalid-arena-type: "Arena {arena_name} (ID: {arena_id}) konnte
+      nicht initialisiert werden. Der Arenatyp mit der ID „{arena_id}“ kann nicht
+      gefunden werden. Bitte überprüfen Sie, ob die entsprechenden Zubehör-Plug-Ins
+      korrekt installiert wurden."
+Level:
+  level-up-message: "&aHerzlichen Glückwunsch! Ihr Wettbewerbsniveau wurde auf &fLv.{level}&a
+    erhöht."
+  tier-up-message: "&6Herzlichen Glückwunsch! Ihr Rang wurde auf &r{tier}&6 erhöht.
+    Sehen Sie sich an, welche neuen Inhalte in der &cCompetition Mall&6 freigeschaltet
+    werden können."
+  tier-up-broadcast: "&6[Rangerhöhung] &f{player} &a wurde erfolgreich zu &r{tier}&a
+    befördert!"
+  tier-down-message: "&c Leider ist Ihr Rang auf &r{tier}&c gesunken."
+Arena:
+  wait:
+    start: "&7Sie haben sich der Warteschlange für &f{arena} &7 angeschlossen."
+    switch: "&7Sie wurden in die Warteschlange für &f{arena} &7 weitergeleitet."
+    stop: "&7Sie haben die Warteschlange abgebrochen: &f{arena}"
+  protection:
+    walk-in-while-available: "&c&l[!] &c Derzeit laufen keine Veranstaltungen und
+      Sie können die Arena &f{name} &c nicht betreten."
+    walk-in-while-in-progress: "&c&l[!] &c Arena &f{name} &c befindet sich derzeit
+      im Wettbewerb und die Teilnahme ist verboten."
+    teleport-to-while-available: "&c&l[!] &c Derzeit laufen keine Events und Sie können
+      sich nicht in die Arena &f{name} &c teleportieren."
+    teleport-to-while-in-progress: "&c&l[!] &c Arena &f{name} &c Derzeit läuft ein
+      Wettbewerb und Teleportation ist verboten."
+    attack-gamer: "&c&l[!] &cBitte stören Sie nicht die &f{name} &c Spieler, die in
+      der Arena spielen."
+    break: "&c&l[!] &cSie können &f{name} &c Blöcke in der Arena nicht zerstören."
+    place: "&c&l[!] &cSie können keine Blöcke in der Arena &f{name} &c platzieren."
+    place-over: "&c&l[!] &cSie können keine Blöcke innerhalb oder über der Arena &f{name}
+      &c platzieren."
+    interact: "&c&l[!] &cSie können nicht mit Objekten in der Arena &f{name} &c interagieren."
+    pour-liquid: "&c&l[!] &cSie können in der Arena &f{name} &c keine Flüssigkeiten
+      ausschütten."
+    get-liquid: "&c&l[!] &cSie haben keinen Zugriff auf Flüssigkeiten in der Arena
+      &f{name} &c."
+  type:
+    classic:
+      name: "klassischer Krieg"
+      start:
+        title: "&7[&aDer Wettbewerb beginnt offiziell&7]"
+        subtitle: "&fBitte erringen Sie den Ruhm für diesen Kampf"
+      end:
+        result-stopped: "&c Dieses Spiel wurde vom Server oder Administrator zwangsweise
+          beendet. Für dieses Spiel werden keine Aufzeichnungen hinterlassen."
+        result-stopped-with-reason: "&c Dieses Spiel wurde vom Server oder Administrator
+          zwangsweise beendet. Für dieses Spiel werden keine Aufzeichnungen hinterlassen.
+          &7 Beendigungsgrund: &f{reason}"
+        result-win: "&aHerzlichen Glückwunsch! Du gewinnst dieses Spiel."
+        result-lose: "&c Leider hast du dieses Spiel verloren."
+        result-draw: "&bDas Spiel endete unentschieden."
+        notify-info:
+          - "&7&m───&f&l__TOKE N_2__───────────────────────&7&m───"
+          - "&fVeranstaltungsort&7: &r{arena}"
+          - "&f Gegner &7: &f{player}&7(&r{level_display_name}&7)"
+          - "&f Dauer&7: &3{time} Sekunden"
+          - "&fErfahrung&7: &r{exp_change}"
+          - "&fdata&7: &7[clickable]more_data::&7(&fBewegen Sie den Mauszeiger, um
+            Details anzuzeigen&7)::&f &fGesamtschaden&7: &f{total_damage}&cSchaden||||&f
+            &fMaximaler Schaden&7: &f{max_damage}&cSchaden||||&f &fDurchschnittlicher
+            Schaden&7: &f{average_damage}&cdamage[clickable]"
+          - "&7&m───&f&l__TOKE N_2__───────────────────────&7&m───"
+        broadcast: "&f{winner} &a besiegte Gegner &f{loser}&a in &f{arena}&a, was
+          &f{time} Sekunden&a dauerte."
+        broadcast-draw: "&f{player1}&a und &f{player2}&a endeten mit einem Unentschieden
+          bei &r{arena}&a, das &f{time} Sekunden&a dauerte."
+      damage-during-countdown: "&cDer Wettbewerb hat noch nicht offiziell begonnen
+        und kann vorübergehend nicht angegriffen werden."
+      use-command-in-game: "&cDieser Befehl ist während des Wettbewerbs verboten."
+      quit-inform-opponent: "&dIhr Gegner hat sich freiwillig aus dem Spiel zurückgezogen."
+      leave-server-inform-opponent: "&cDein Gegner hat den Server verlassen."
+      win-title: "&7[&a gewinnt&7]"
+      win-subtitle: "&eHerzlichen Glückwunsch! Du gewinnst dieses Spiel."
+      delayed-back:
+        gamer-title: "&b{countdown}"
+        gamer-subtitle: "&7 ist dabei, sich vom Wettkampfort weg zu teleportieren
+          ..."
+        spectator-title: "&b{countdown}"
+        spectator-subtitle: "&7 wird gerade aus dem Sichtbereich teleportiert ..."
+      function:
+        time-limit:
+          name: "Zeitlimit für den Wettbewerb"
+          description: "&a Bitte legen Sie das Zeitlimit für den Wettbewerb fest:
+            &7 (&f Einheit: Sekunden &7) &a. Bei Überschreitung des Zeitlimits wird
+            der Sieger bzw. Unentschieden nach den vorgegebenen Regeln ermittelt.
+            Sie müssen eine Ganzzahl eingeben."
+          bossbar-title: "&aEs verbleiben noch &f{time} Sekunden &a in diesem Spiel."
+          game-title: "&b{time}"
+          game-subtitle: "&fDer Wettbewerb beginnt gleich, bitte seien Sie bereit
+            zu kämpfen"
+        countdown:
+          name: "Countdown zum Start"
+          description: "&a Bitte stellen Sie den Countdown Sekunden vor Spielbeginn
+            ein &7 (&f Einheit: Sekunden &7) &a, Sie müssen eine Ganzzahl eingeben
+            und zusätzlich festlegen, ob sich Spieler während des Countdowns bewegen
+            dürfen."
+        check-inventory-keyword:
+          name: "Rucksackkontrolle vor Eintritt &7 (&f basierend auf Schlüsselwort
+            &7)"
+        inventory-check-keyword:
+          description: "&a Es ist verboten, bestimmte besondere Gegenstände in den
+            Veranstaltungsort mitzubringen. Das System prüft den Namen im Rucksack
+            oder Lore&7(&fDie Beschreibung unter dem Artikelnamen&7)&a für Artikel,
+            die das angegebene Schlüsselwort enthalten."
+          detected-tip: "&c Das System hat &f{arena_name} in Ihrem Rucksack erkannt.
+            &c Verbotene Elemente: &7[clickable]item::&7[{item_name}&7]__ TOKEN_7__(&aKlicken
+            Sie hier, um Details anzuzeigen&7)&c::{item_lore}[clickable]&c."
+          detected: "&c Spieler &f{player} &c brachten &f{arena_name} besondere Gegenstände
+            mit, die im Wettbewerb verboten waren &c. Der Spieler wurde über die Einzelheiten
+            informiert. Bitte bestätigen Sie die Ausrüstung beider Parteien, bevor
+            Sie die Herausforderung erneut starten."
+        inventory-check-type:
+          name: "Rucksackkontrolle vor Eintritt&7(&fabhängig vom Artikeltyp&7)"
+          description: "&a Bitte legen Sie die Arten von Gegenständen fest, deren
+            Mitführen verboten ist. Befinden sich bestimmte Arten von Gegenständen
+            im Rucksack, wird das Spiel verboten."
+          detected-tip: "&c Das System hat &f{arena_name} in Ihrem Rucksack erkannt.
+            &cGesperrte Elemente des Typs: &7[clickable]item::&7[{item_name}&7]_ _TOKEN_7__(&aKlicken
+            Sie hier, um Details anzuzeigen&7)&c::{item_lore}[clickable]&c."
+          detected: "&c Spieler &f{player} &c trugen &f{arena_name} Wettbewerb &c
+            verbotene Gegenstände. Der Spieler wurde über die Einzelheiten informiert.
+            Bitte bestätigen Sie die Ausrüstung beider Parteien, bevor Sie die Herausforderung
+            erneut starten."
+        pre-game-command:
+          name: "Übungsgruppe vor dem Spiel"
+          description: "&a Bitte stellen Sie die Befehlsgruppe so ein, dass sie automatisch
+            ausgeführt wird, wenn der Spieler das Spiel betritt. Verschiedene Ausführungsidentitäten
+            können separat eingestellt werden."
+        spectate:
+          name: "Schau dir das Spiel an"
+          description: "&a Bitte legen Sie den Anzeigebereich so fest, dass Spieler
+            das laufende Spiel über den Befehl &f/dueltime spectate &a verfolgen können."
+          gamer-health-bossbar: "&a Spieler &f{player} &a Aktuelles Blutvolumen: &7&a{health}&7/&a{max_health}"
+          fail-unavailable: "&cDiese Arena &f{arena} &c hat die Zuschauerfunktion
+            nicht aktiviert."
+          successfully: "&a hat Sie in den Sichtbereich von &f{arena} &a teleportiert."
+          stop-successfully: "&aDu hast das Spiel von &f{arena} &a zu Ende gesehen."
+          over:
+            - "&aDas Spiel, das Sie gesehen haben, ist beendet. Die Ergebnisse sind
+              wie folgt:"
+            - "&7&m───&f&l__TOKE N_2__───────────────────────&7&m───"
+            - "&fVeranstaltungsort&7: &r{arena}"
+            - "&fTeilnehmer&7: &3{gamers}"
+            - "&fGewinner&7: &f{winner}"
+            - "&f Dauer&7: &f{time} Sekunden"
+            - "&7&m───&f&l__TOKE N_2__───────────────────────&7&m───"
+          over-in-a-draw:
+            - "&aDas Spiel, das Sie gesehen haben, endete unentschieden mit den folgenden
+              Ergebnissen:"
+            - "&7&m───&f&l__TOKE N_2__───────────────────────&7&m───"
+            - "&fVeranstaltungsort&7: &r{arena}"
+            - "&fTeilnehmer&7: &3{gamers}"
+            - "&f Dauer&7: &f{time} Sekunden"
+            - "&7&m───&f&l__TOKE N_2__───────────────────────&7&m───"
+          over-by-stop: "Der Wettbewerb um &c{arena} wurde vom Administrator gewaltsam
+            beendet."
+          spectator-move-out-zone: "&c Bitte verlassen Sie den Sichtbereich nicht.
+            Wenn Sie die Anzeige beenden möchten, geben Sie bitte den Befehl &f/dueltime
+            spectate &c erneut ein, um die Anzeige zu beenden."
+        ban-entity-spawn:
+          name: "Verbieten Sie die Erzeugung von Entitäten (einschließlich natürlicher
+            und künstlicher)"
+          description: "Verbietet die Generierung aller Entitäten (einschließlich
+            natürlicher und künstlicher Generierung) und kann eine Whitelist festlegen"
+  earn-point: "&aHerzlichen Glückwunsch! Sie haben das Spiel gewonnen und &e{point}
+    Punkte&a Punkte erhalten, also insgesamt: &e{point_now} Punkte&a."
+
+Record:
+  type:
+    classic:
+      title: "&fWettbewerbsrekord im klassischen Modus"
+      content:
+        arena-name: "&fVeranstaltungsort&7: &f{arena_name}"
+        result: "&f Ergebnisse &7: &r{result}"
+        opponent: "&f Gegner &7: &f{opponent}"
+        time: "&f dauert &7: &f{time} Sekunden"
+        exp-change: "&fÄnderungen erleben&7: &r{exp_change}"
+        total-damage: "&fGesamtschaden&7: &f{total_damage} Punkte"
+        max-damage: "&fMaximaler Schaden&7: &f{max_damage} Punkte"
+        average-damage: "&fDurchschnittlicher Schaden&7: &f{average_damage} Punkte"
+        date: "&fWettbewerbsdatum&7: &e{date}"
+
+Error:
+  no-permission: "&cSie haben keine Berechtigung, diesen Vorgang auszuführen."
+  not-player-executor: "&cDieser Befehl kann nur von Spielern ausgeführt werden."
+  sub-command-not-exists: "&c Unterbefehl &e'{enter}' &c existiert nicht, bitte überprüfen
+    Sie den Eingabeinhalt."
+  incorrect-number-format: "&e'{enter}' &c ist kein gültiges Zahlenformat."
+  incorrect-integer-format: "&e'{enter}' &c ist kein gültiges Ganzzahlformat."
+  incorrect-id-format: "&e'{enter}' &c entspricht nicht der ID-Namenskonvention. Es
+    sind nur englische Buchstaben, Zahlen und Unterstriche zulässig."
+  value-is-not-positive: "&c Bitte geben Sie eine gültige positive Zahl ein, &e'{enter}'
+    &c erfüllt die Bedingungen nicht."
+  value-is-negative: "&c Bitte geben Sie eine nicht negative Zahl ein. &e'{enter}'
+    &c erfüllt die Bedingungen nicht."
+  incorrect-boolean-format: "&c Bitte geben Sie den Buchstaben „T“ oder „F“ ein, der
+    jeweils für &7 [&a ist &7], &c und &7 [&f ist nicht &7] steht."
+  player-no-found: "&c Der Spieler mit dem Namen &f'{player}' &c konnte nicht gefunden
+    werden."
+  incorrect-string-integer-pair-format: "&c Bitte verwenden Sie das Format &e text:number
+    &c, zum Beispiel &e'apple:3'"
+  incorrect-string-integer-pair-format-integer: "Das Trennzeichen &c &e':' muss nach
+    &c eine Ganzzahl sein."
+  incorrect-executor-command-pair-format: "&c Bitte verwenden Sie das Format &e Ausführungsidentität:
+    Befehlsinhalt &c, zum Beispiel &e'console:give {player} apple'"
+
+Progress:
+  repeatedly-join: "&cSie befinden sich derzeit im Prozess &f{progress} &c."
+  join-while-handling-other: "&c Bitte schließen Sie den aktuellen Vorgang ab oder
+    beenden Sie ihn &f{progress}&c."
+  join-successfully: "&aSie haben den Prozess &f{progress} &a betreten. Bitte folgen
+    Sie den Anweisungen, um die Einstellungen Schritt für Schritt abzuschließen. &7
+    (Während dieser Zeit können Sie &f-r &7 eingeben, um zum vorherigen Schritt zurückzukehren,
+    &f-p &7, um den Prozess anzuhalten, &f-c &7, um den Prozess fortzusetzen, &f-e
+    &7, um den Prozess zu beenden)"
+  boss-bar-tip: "&a{name} ({now}/{total}): {tip}"
+  boss-bar-free-tip:
+    - ""
+    - "&d{progress}&f:"
+    - "&bFortschritt&f: &3{now}/{total} &f[{progress_bar_progress_20_|_a_7}&f]"
+    - "&b prompt&f: &r{tip}"
+    - ""
+  boss-bar-message-finish-string: "&a Abgeschlossen! Alle Schritte wurden erfolgreich
+    konfiguriert."
+  auto-upload:
+    location-different-world: "&cDer von Ihnen ausgewählte Standort muss sich in derselben
+      Welt wie der vorherige Standort befinden."
+    location-the-same-block: "&cDer von Ihnen ausgewählte Standort darf nicht im selben
+      Block wie der vorherige Standort liegen."
+    location-overlay-with-other-arena: "&cDer aktuell ausgewählte Punkt überlappt
+      mit der Fläche und Arena, die durch den zuvor ausgewählten Punkt &f{arena} &c
+      gebildet wird. Bitte wählen Sie den Standort erneut aus, um erneute Überschneidungen
+      zu vermeiden."
+  finish:
+    message: "&fSie haben den Vorgang abgeschlossen&7: §f{progress}"
+    title: "&e✦"
+    subtitle: "&f Prozess abgeschlossen&7: §f{progress}"
+  operation:
+    reverse:
+      title: "&6↺"
+      subtitle: "&7 Zurück zum vorherigen Schritt"
+      the-first-step: "&c befindet sich jetzt im ersten Schritt und kann nicht zurückgehen."
+    pause:
+      title: "&e┃┃"
+      subtitle: "Der Prozess &7 wurde angehalten"
+      has-been-paused: "Der Prozess &c ist derzeit ausgesetzt."
+    continue:
+      title: "&a▶"
+      subtitle: "&7 Vorgang fortsetzen"
+      has-been-paused: "Der &c-Prozess wird derzeit ausgeführt."
+    exit:
+      successfully: "&7Sie haben den Vorgang verlassen: §f{progress}"
+    list:
+      enter:
+        title: "&7[&eT&7]"
+        subtitle: "&7 hat eine neue Zeile hinzugefügt, die aktuelle Liste: &f{brief_content}"
+      incorrect-data-type: "&cDer aktuell eingegebene Datentyp ist keine Liste und
+        dieser Vorgang kann nicht verwendet werden."
+      empty-data: "&c Bitte geben Sie zuerst den Inhalt ein."
+  type:
+    upload-data-for-arena-function: "Für zusätzliche Funktionen erforderliche Daten
+      hochladen"
+    create-classic-arena:
+      name: "Erstellen Sie einen klassischen Wettbewerb"
+      step:
+        1:
+          tip: "Klicken Sie mit der linken Maustaste auf das Quadrat, um Punkt A auszuwählen"
+          title: "&a✔"
+          subtitle: "&f hat Punkt A erfolgreich ausgewählt, Koordinaten: &e{}"
+        2:
+          tip: "Klicken Sie mit der linken Maustaste auf das Quadrat, um Punkt B auszuwählen"
+          title: "&a✔"
+          subtitle: "&f hat Punkt B erfolgreich ausgewählt, Koordinaten: &e{}"
+        3:
+          tip: "Klicken Sie mit der linken Maustaste, um die aktuelle Bildschirmposition
+            auf den Spawnpunkt von Spieler 1 festzulegen"
+          title: "&a✔"
+          subtitle: "&f hat den Geburtspunkt Nr. 1 erfolgreich festgelegt, Koordinaten:
+            &e{}"
+        4:
+          tip: "Klicken Sie mit der linken Maustaste, um die aktuelle Bildschirmposition
+            auf den Spawnpunkt von Spieler 2 festzulegen"
+          title: "&a✔"
+          subtitle: "&f hat den Geburtspunkt Nr. 2 erfolgreich festgelegt, Koordinaten:
+            &e{}"
+        5:
+          tip: "Geben Sie die Wettbewerbs-ID &7 ein (&f nur Englisch, Zahlen, Endergebnis
+            &7)"
+          title: "&a✔"
+          subtitle: "&f ID erfolgreich festgelegt: &f{}"
+        6:
+          tip: "Geben Sie den Wettbewerbsnamen &7 ein (&f unterstützt Chinesisch und
+            den Farbcode &7)"
+          title: "&a✔"
+          subtitle: "&f hat den Namen erfolgreich festgelegt: &f{}"
+    set-function-time-limit:
+      name: "&aNeue Zusatzfunktionen&7: &aZeitlimit"
+    set-function:
+      time-limit:
+        step:
+          1:
+            tip: "Geben Sie das Kampfzeitlimit ein (Einheit: Sekunden)"
+            title: "&a✔"
+            subtitle: "&f hat das Kampfzeitlimit erfolgreich festgelegt: &f{} Sekunden"
+      countdown:
+        step:
+          1:
+            tip: "Geben Sie die Countdown-Sekunden bis zur Eröffnung ein (Einheit:
+              Sekunden)"
+            title: "&a✔"
+            subtitle: "&f hat die ersten Countdown-Sekunden erfolgreich eingestellt:
+              &f{} Sekunden"
+          2:
+            tip: "Bitte geben Sie T oder F ein, um anzugeben, ob sich Spieler während
+              des Countdowns bewegen dürfen."
+            title: "&a✔"
+            subtitle: "&f hat erfolgreich festgelegt, ob sich der Spieler während
+              des Eröffnungscountdowns bewegen kann: &f{}"
+      inventory-check-keyword:
+        step:
+          1:
+            tip: "Geben Sie den Erkennungsbereich ein: name=nur Name, lore=nur Beschreibung,
+              all=alle"
+            title: "&a✔"
+            subtitle: "&f hat den Erkennungsbereich erfolgreich festgelegt: &f{}"
+            incorrect-range: "&e'{enter}' &c ist kein gültiger Erkennungsbereich.
+              Bitte geben Sie den Namen (nur Name), die Geschichte (nur Beschreibung)
+              oder alle (alles markieren) ein."
+          2:
+            tip: "Laden Sie die Keyword-Liste hoch, geben Sie den Inhalt ein und senden
+              Sie ihn, um eine neue Zeile hinzuzufügen. Geben Sie -l ein, um die Liste
+              zu beenden und zu senden."
+            title: "&a✔"
+            subtitle: "&f hat die Keyword-Liste erfolgreich hochgeladen: &f{}"
+      inventory-check-type:
+        step:
+          1:
+            tip: "Laden Sie eine Liste der Artikeltypen im Format „Material: Unter-ID“
+              hoch. Geben Sie den Inhalt ein, um eine neue Zeile hinzuzufügen. Geben
+              Sie -l ein, um die Liste zu beenden und zu senden."
+            title: "&a✔"
+            subtitle: "&f Artikeltypliste erfolgreich hochgeladen: &b{}"
+      pre-game-command:
+        step:
+          1:
+            tip: "Laden Sie die Befehlsliste im Format „Ausführungsidentität: Inhalt“
+              hoch. Geben Sie den Inhalt ein und senden Sie ihn, um eine neue Zeile
+              hinzuzufügen. Geben Sie -l ein, um die Liste zu beenden und zu senden."
+            title: "&a✔"
+            subtitle: "&f hat die Befehlsgruppe erfolgreich hochgeladen: &f{}"
+            incorrect-executor: "&e'{enter}' &c ist keine gültige Ausführungsidentität.
+              &7 Tipps: &cplayer=Ausführung durch den Spieler, op=Ausführung durch
+              den Administrator, console=Ausführung im Hintergrund, console_single_time=Ausführung
+              im Hintergrund nur einmal (nicht an den Spieler gebunden)."
+      spectator:
+        step:
+          1:
+            tip: "Klicken Sie mit der linken Maustaste auf das Quadrat, um Punkt A
+              des Anzeigebereichs auszuwählen"
+            title: "&a✔"
+            subtitle: "&f hat Punkt A erfolgreich ausgewählt, Koordinaten: &f{}"
+          2:
+            tip: "Klicken Sie mit der linken Maustaste auf das Quadrat, um Punkt B
+              des Anzeigebereichs auszuwählen"
+            title: "&a✔"
+            subtitle: "&f hat Punkt B erfolgreich ausgewählt, Koordinaten: &f{}"
+          3:
+            tip: "Klicken Sie, um die aktuelle Bildschirmposition als Betrachtungsteleportpunkt
+              festzulegen"
+            title: "&a✔"
+            subtitle: "&f hat den Beobachtungsteleportationspunkt erfolgreich festgelegt,
+              Koordinaten: &f{}"
+          4:
+            tip: "Bitte geben Sie T oder F ein, um anzugeben, ob das tatsächliche
+              Blutvolumen beider Parteien angezeigt werden soll."
+            title: "&a✔"
+            subtitle: "&f hat erfolgreich festgelegt, ob das tatsächliche Blutvolumen
+              beider Parteien angezeigt werden soll: &f{}"
+      ban-entity-spawn:
+        step:
+          1:
+            tip: "Laden Sie die Entitäts-Whitelist-Liste hoch. Geben Sie den Namen
+              der Entitätsaufzählung ein und senden Sie ihn, um ein Element hinzuzufügen.
+              Geben Sie -l ein, um die gesamte Liste zu beenden und zu senden. Sie
+              können -l auch direkt eingeben, um die Whitelist-Einstellung zu überspringen."
+            title: "&a✔"
+            subtitle: "&f hat die Entitäts-Whitelist erfolgreich hochgeladen: &b{}"
+Command:
+  parameter:
+    player: "Spielername"
+    value: "Zahlenwert"
+    arena-id: "Turnier-ID"
+    source-arena-id: "Quell-Match-ID"
+    target-arena-id: "Ziel-Match-ID"
+    arena-type: "Spieltyp"
+    arena-function: "Zusätzliche Funktions-ID"
+    language-file-name: "Dateiname"
+    point: "Integral"
+    page: "Seitenzahl"
+    row: "Anzahl der Spalten"
+    line: "Anzahl der Zeilen"
+    description: "beschreiben"
+    value-or-content: "Wert oder Inhalt"
+    command-executor: "Ausführungsidentität"
+    index: "Seriennummer"
+    ranking-type: "Ranking-Typ-ID"
+    ranking-page: "Ranking-Seitenzahl"
+    reason: "Grund"
+  correct: "&6 Tipps: &f{command}&6 [clickable]Befehl::&7[&fKlicken, um automatisch
+    einzugeben &7]::&fKlicken, um diesen Befehl schnell einzugeben[clickable]"
+  suggest: "&6 Möchten Sie Folgendes eingeben: &f{command}&6 [clickable]Befehl::&7[&fKlicken
+    Sie, um automatisch einzugeben &7]::&fKlicken Sie, um diesen Befehl schnell einzugeben[clickable]"
+  title:
+    adminhelp: "&d Hilfe für Spieladministratoren"
+    help: "&f Spielerhilfe"
+    point: "&d Hilfe zum Punktesystem"
+    shop: "&d Points Mall-Hilfe"
+    level: "&aLevel-Systemhilfe"
+    blacklist: "&7 Blacklist-Hilfe"
+    lobby: "&a Hilfe zum Lobbysystem"
+    arena: "&cArena-Hilfe"
+    rank: "&b Ranking-Hilfe"
+  main:
+    help: "&f Hilfemeldungen des Spielers anzeigen"
+    admin-help: "&fAdministrator-Hilfemeldungen anzeigen"
+  sub:
+    arena:
+      series-description: "&f Arena-bezogene Befehlshilfe anzeigen"
+      list-description: "&f Alle Arenen anzeigen"
+      info-description: "&f Alle auf dem Server geladenen Arenatypen anzeigen"
+      create-description: "&fErstellt eine Arena des angegebenen Typs"
+      view-description: "&f Attributinformationen der angegebenen Arena anzeigen"
+      delete-description: "&fLöschen Sie die angegebene Arena"
+      function-add-description: "&f Fügt zusätzliche Funktionen zu bestimmten Arenen
+        hinzu"
+      function-remove-description: "&fEntfernen Sie zusätzliche Funktionen aus der
+        angegebenen Arena"
+      function-reset-description: "&fSetzen Sie die zusätzlichen Funktionsdaten der
+        angegebenen Arena zurück"
+      function-clear-description: "&fAlle zusätzlichen Funktionen im angegebenen Bereich
+        löschen"
+      function-list-description: "&f Alle zusätzlichen Funktionen für eine bestimmte
+        Arena anzeigen"
+      function-type-description: "&f Zusätzliche Funktionen anzeigen, die für einen
+        bestimmten Arenatyp verfügbar sind"
+      function-copy-description: "&fKopieren Sie zusätzliche Funktionen von einer
+        Arena in eine andere Arena"
+      list-empty: "&cAuf dem Server ist derzeit keine Arena konfiguriert."
+      list-heading: "&fDie Arenaliste lautet wie folgt:"
+      list-body: "&f{index}. &f{arena_name} &7[&f Typ: {arena_type} ID: {arena_id}&7]"
+      list-ending: "&f insgesamt {number} Arenen"
+      type-heading: "&f Arenatypen sind wie folgt:"
+      type-body: "&f{index}. &f{arena_type_name} &7(&fID:{arena_type_id}&7)"
+      type-ending: "&fInsgesamt {number} Typen"
+      create-fail-invalid-type: "&c existiert nicht vom Typ &e'{enter}'&c. [clickable]view::&f&nKlicken
+        Sie hier, um alle Typen anzuzeigen[clickable]"
+      invalid-id: "&cDie Arena mit der ID &e'{enter}'&c existiert nicht. [clickable]view::&f&nKlicken
+        Sie hier, um alle Arena-IDs anzuzeigen[clickable]"
+      type:
+        invalid-id: "&cDie Arena mit der Typ-ID &e'{enter}'&c existiert nicht. [clickable]view::&f&nKlicken
+          Sie hier, um alle Arenen dieses Typs anzuzeigen ID[clickable]"
+      function:
+        invalid-id: "&c{arena_type_entered} Typ Arena definiert keine zusätzliche
+          Funktion mit der ID &e'{function_entered}' &c. [clickable]view::&f&nKlicken
+          Sie hier, um alle Funktionen anzuzeigen ID[clickable]"
+        type-empty: "Die Arena vom Typ &c{arena_type} definiert keine zusätzlichen
+          Funktionen."
+        type-heading: "Zusätzliche Funktionen, die im Typbereich &b{arena_type} verfügbar
+          sind, sind wie folgt:"
+        type-body:
+          - "&f&l{index}. &b{arena_function_name} &3(ID:{arena_function_id})"
+          - "&7 Beschreibung: {arena_function_description}"
+        type-ending: "&f Insgesamt &e{number} &f zusätzliche Funktionen"
+        copy-invalid-source-arena-id: "&cUngültige Quell-Arena-ID, Arena mit ID &e'{enter}'&c
+          nicht gefunden. [clickable]view::&f&nKlicken Sie hier, um alle Arena-IDs
+          anzuzeigen[clickable]"
+        copy-invalid-target-arena-id: "&cUngültige Ziel-Arena-ID, Arena mit ID &e'{enter}'&c
+          nicht gefunden. [clickable]view::&f&nKlicken Sie hier, um alle Arena-IDs
+          anzuzeigen[clickable]"
+        copy-different-type: "&c Zusätzliche Funktionen können nicht über verschiedene
+          Arenatypen hinweg repliziert werden. Quelle: &e{source_arena_name}&c ({source_arena_type}),
+          Ziel: &e{target_arena_name}&c ({target_arena_type})."
+        copy-empty-function: "&c Source Arena &e{source_arena_name} &c Zusätzliche
+          Funktionen wurden nicht festgelegt: &e{function} [clickable]view::&f&nKlicken
+          Sie hier, um alle Funktionen anzuzeigen ID[clickable]"
+        copy-successfully: "&a hat die zusätzlichen Funktionen &e{function} &a von
+          Arena &3{source_arena} &a erfolgreich in Arena &b{target_arena}&a kopiert."
+        copy-successfully-overwrite: "&a hat die zusätzlichen Funktionen &e{function}
+          &a von Arena &3{source_arena} &a erfolgreich in Arena &b{target_arena}&a
+          kopiert und die ursprünglichen Einstellungen überschrieben."
+        add-repeatedly: "&c Arena &6{arena} &c enthält bereits die zusätzliche Funktions-ID:
+          &e'{function_entered}'&c, es ist nicht erforderlich, sie erneut hinzuzufügen."
+        add-enter-progress: "&d fügt der Arena zusätzliche Funktionen &b{function}&d
+          hinzu &a{arena} &d. Bitte folgen Sie den Anweisungen, um die Einstellungen
+          abzuschließen."
+        add-successfully: "&a hat erfolgreich zusätzliche Funktionen &b{function}
+          zur Arena hinzugefügt &e{arena} &a"
+        remove-fail-not-exists: "&c Arena &e{arena} &c Keine zusätzliche Funktionssatz-ID:
+          &e'{function_id}'"
+        remove-successfully: "&a Arena erfolgreich entfernt &e{arena} Zusätzliche
+          Funktionen von &a &b{function}"
+        reset-fail-not-exists: "&c Arena &e{arena} &c Keine zusätzliche Funktionssatz-ID:
+          &e'{function_id}'"
+        reset-fail-no-data-needed: "&c Arena &e{arena} Zusätzliche Funktionen von
+          &c &e'{function_id}' &c Keine zusätzlichen Informationen erforderlich."
+        reset-enter-progress: "&d setzt die Arena zurück &a{arena} Zusätzliche Funktionen
+          von &d &b{function} &d Daten, bitte folgen Sie den Anweisungen, um die Einstellungen
+          abzuschließen."
+        clear-successfully: "&a hat alle Add-ons für Arena &e{arena} &a erfolgreich
+          gelöscht."
+        list-empty: "&c Arena &e{arena} &c Es wurden noch keine zusätzlichen Funktionen
+          festgelegt."
+        list-heading: "&bArena &r{arena} Zusätzliche Funktionen von &b sind wie folgt:"
+        list-body:
+          - "&f{index}. &b{arena_function_name} &3(ID:{arena_function_id})"
+          - "&f Beschreibung&7: {arena_function_description}"
+          - "&7 Informationen&7: {arena_function_data}"
+        list-ending: "&f Insgesamt &e{number} &f zusätzliche Funktionen."
+      view:
+        - "&e============================="
+        - "&a Name&7: &f{arena_name}"
+        - "&aID&7: &f{arena_id}"
+        - "&a Typ &7: &f{arena_type}"
+        - "&aZusätzliche Funktionen&7: &b{function_number} Elemente [clickable]view_function::&7(zum
+          Anzeigen klicken)::&fKlicken, um die hinzugefügten zusätzlichen Funktionen
+          und Informationen anzuzeigen[clickable]"
+        - "&e============================="
+      delete-successfully: "&a hat die Arena mit der ID &b{arena_id} &a erfolgreich
+        gelöscht."
+    shop:
+      series-description: "&b Anweisungen zum Points Mall und Hilfe anzeigen"
+      description: "&aÖffnen Sie das Einkaufszentrum zum Einlösen von Punkten"
+      help-description: "&fPunkte-Hilfe für den Administrator des Einkaufszentrums
+        anzeigen"
+      add-description: "&fGegenstände in der Hand zum Punkte-Einkaufszentrum hinzufügen"
+      delete-description: "&aLöschen Sie die angegebene Belohnung"
+      reset-description: "&aSetzen Sie den Preis/die Beschreibung/das Stufenlimit
+        der angegebenen Belohnung zurück"
+      command:
+        clear-description: "&fLöschen Sie alle Einlösungsanweisungen für die angegebene
+          Belohnung"
+        list-description: "&f Alle Einlösungsanweisungen für die angegebene Belohnung
+          anzeigen"
+      add-successfully: "&a Belohnung wurde erfolgreich hinzugefügt, &7 (&f Position:
+        Seite {page}, Zeile {row}, Spalte {column}, Spalte &7)"
+      add-empty-itemstack: "&c Bitte halten Sie die Gegenstände, die Sie in die Regale
+        stellen möchten, zuerst in Ihren Händen."
+      delete-successfully: "&a Belohnung erfolgreich gelöscht, &7 (&f Position: Seite
+        {page}, Zeile {row}, Spalte {column}, Spalte &7)"
+      invalid-loc: "&c Die Belohnung konnte auf der Seite &f {page}, Zeile {row},
+        Spalte {column} &c nicht gefunden werden. Bitte bestätigen Sie Ihre Eingabe
+        erneut."
+      reset-point-successfully: "&a wurde erfolgreich in &f{point} Punkte &a, &7 (&f
+        Speicherort: Seite {page}, Zeile {row}, Spalte {column}, Spalte &7) geändert."
+      reset-description-successfully: "&a hat die Belohnungsbeschreibung erfolgreich
+        in &f'&7{description}&f' &7 (&f Speicherort: Seite {page}, Zeile {row}, Spalte
+        {column}, Spalte &7) geändert."
+      reset-level-limit-successfully: "&a hat das Einlösungsstufenlimit erfolgreich
+        auf &f{level} Stufe &a, &7 (&f Speicherort: Seite {page}, Zeile {row}, Spalte
+        {column}, Spalte &7) geändert."
+      command-add-successfully: "&a hat die Einlösungsanweisungen erfolgreich hinzugefügt
+        &f{command_content} &a (Ausführungsidentität: &f{command_executor}&a) &7 (&f
+        Standort: Seite {page}, Zeile {row}, Zeile {column} Spalte&7)"
+      command-add-tip-executor:
+        - "&7[&e Nutzungstipps&7]"
+        - "&7'{enter}' &f ist keine gültige Ausführungsidentität"
+        - "&f Verfügbare Identitäten &7: &f'player' / 'p' &7 = Spielerausführung,
+          &f'op' / 'o'&7 = Administratorausführung, &f'console' / 'c'&7 = Hintergrundausführung"
+        - "&fBeispiel&7:&e{command_entered_corrected} [clickable]type::&7(&fKlicken
+          Sie, um &7 automatisch einzugeben)::&fKlicken Sie, um diesen Befehl schnell
+          einzugeben[clickable]"
+      command-remove-successfully: "&a Einlöseanweisung wurde erfolgreich gelöscht
+        &f'&7/{command}&f' &7 (&fBonusort: Seite {page}, Zeile {row}, Zeile {column}
+        Spalte; Befehlsnummer: {index}&7)"
+      command-index-is-not-found: "&e'{index}' &c ist keine gültige Befehlsnummer,
+        bitte bestätigen Sie die Eingabe erneut."
+      command-clear-successfully: "&a erfolgreich gelöscht &b{number} &a Einlösungsanweisungen,
+        &7 (&f Speicherort: Seite {page}, Zeile {row}, Spalte {column}, Spalte &7)"
+      command-empty: "&c Für diese Belohnung wurden keine Einlösungsanweisungen festgelegt."
+      command-list-heading: "Die Liste der &b-Einlösungsanweisungen lautet wie folgt:
+        &7 (&f Position: Seite {page}, Zeile {row}, Spalte {column}, Spalte &7)"
+      command-list-body: "&f{index}. &a/{command_content} &7 (&f Ausführungsidentität:
+        &f{command_executor}&7) [clickable]remove::&7[&cZum Entfernen anklicken&7]::&fZum
+        Entfernen anklicken Anweisung[clickable]"
+      command-list-ending: "&fGesamt &e{number} &f Einlösungsanweisungen"
+    point:
+      series-description: "&f Sehen Sie sich die Hilfe für punktebezogene Anweisungen
+        an"
+      view-self-description: "&f Überprüfen Sie Ihre Punkte"
+      add-description: "&f fügt dem angegebenen Spieler Punkte hinzu"
+      set-description: "&fLegen Sie die Punkte des angegebenen Spielers fest"
+      view-player-description: "&f Zeigt die Punkte des angegebenen Spielers an"
+      view-self: "&aSie haben derzeit &f{point} &e Punkte&a Punkte"
+      add-successfully: "&a wurde erfolgreich zu den Spielern &f{player} &a &f{point}
+        &e Punkte&a Punkte hinzugefügt"
+      set-successfully: "&a hat die Punkte der Spieler &f{player} &a erfolgreich auf
+        &f{point} &e Punkte gesetzt"
+      view-player: "&a Spieler &f{player} &a haben derzeit &f{point} &e Punkte&a Punkte"
+    level:
+      series-description: "&fHilfe zu PvP-Level-bezogenen Befehlen anzeigen"
+      view-self-description: "&f Überprüfen Sie Ihr Level und Ihre Erfahrungsinformationen"
+      view-player-description: "&f Zeigen Sie das Level und die Erfahrung des angegebenen
+        Spielers an"
+      exp-description: "&f Erfahrungspunkte für den angegebenen Spieler hinzufügen/einstellen"
+      view-self:
+        - "&7&m───&f__TOKEN_1_ _&m──────────────────────────────────"
+        - "&fAktuelles Niveau&7: &f{level} Niveau"
+        - "&fAktueller Rang&7: &r{tier_title}"
+        - "&fGesamterfahrungswert&7: &a{total_exp}"
+        - "&fUpgrade-Anforderungen&7: &c{need_exp}"
+        - "&fUpgrade-Fortschritt&7: &r{progress_bar_level_20_■_2_7} &f({progress_value}%)"
+        - "&7&m───&f__TOKEN_1_ _&m──────────────────────────────────"
+      view-player:
+        - "&7&m───&f__TOKEN_1_ _&m──────────────────────────────────"
+        - "&fSpielername&7: &f{player}"
+        - "&fAktuelles Niveau&7: &f{level} Niveau"
+        - "&fAktueller Rang&7: &r{tier_title}"
+        - "&fGesamterfahrungswert&7: &a{exp}"
+        - "&7&m───&f__TOKEN_1_ _&m──────────────────────────────────"
+      add-successfully: "&a hat den Spielern &f{player} &a erfolgreich &f{exp} &a
+        Erfahrungspunkte hinzugefügt."
+      set-successfully: "&a hat den Erfahrungswert der Spieler &f{player} &a erfolgreich
+        auf &f{exp} &a Punkte gesetzt."
+    rank:
+      series-description: "&f Sehen Sie sich die Befehlshilfe zum Ranking an"
+      me-description: "&f Überprüfen Sie Ihr Ranking in jeder Rangliste"
+      view-description: "&f Sehen Sie sich die festgelegte Rangliste an"
+      type-description: "&f Alle Ranking-Typen und ihre IDs anzeigen"
+      refresh-description: "&f Aktualisieren Sie die angegebene Rangliste manuell"
+      hologram-description: "&f verwaltet das Hologramm der angegebenen Rangliste"
+      me-heading:
+        - "&fIhre Platzierung in jeder Rangliste ist wie folgt:"
+        - "&7&m───&f__TOKEN_1_ _&m──────────────────────────────────"
+        - ""
+      me-body: "&r{ranking_name} &a({rank}&2/{total}&a) [clickable]view_ranking::&7[&fZum
+        Ansehen anklicken&7]::&fAnklicken view&r{ranking_name}&fDetails[clickable]"
+      me-body-no-data: "&r{ranking_name} &7(&fKein Datensatz&7) [clickable]view_ranking::&7[&fZum
+        Ansehen anklicken&7]__TOKEN_5&fAnklicken view&r{ranking_name}&fDetails[clickable]"
+      me-ending:
+        - ""
+        - "&7&m───&f__TOKEN_1_ _&m──────────────────────────────────"
+      view-heading:
+        - "{ranking_name}[clickable]ranking_description::&7(&fEinführung anzeigen&7)::{ranking_description}[clickable]"
+        - "&7&m──&f__TOKEN _1__&m───────────────────────────"
+        - ""
+      view-body: "&f[&7{rank}&f&l] &b{player} &f- &3{data}{extra}"
+      view-ending:
+        - "[clickable]vorherige_Seite::&7[&aVorherige Seite&7]::Klicken Sie hier,
+          um die vorherige Seite anzuzeigen[clickable] &9{current_page}/{total_pages}
+          [clickable]next_page::&7[&anächste Seite&7]::Klicken Sie hier, um die nächste
+          Seite anzuzeigen[clickable]"
+        - "&7&m──&f__TOKEN _1__&m───────────────────────────"
+        - ""
+      view-ending-show-me: "&fSie sind auf Rang &6{rank}&7/&6{total}&f, Daten: &6{data}{extra}&f."
+      view-ending-show-me-no-data: "&eSie haben in dieser Rangliste noch keine Einträge
+        hinterlassen."
+      view-invalid-ranking-type-id: "&c Es gibt keine Bestenliste mit der Typ-ID &e'{enter}'
+        &c. [clickable]view::&f&nKlicken Sie hier, um alle Typen anzuzeigen ID[clickable]"
+      view-empty: "&c Ranking &e{ranking} &c Es liegen noch keine Informationen vor."
+      view-invalid-ranking-page: "&c Bitte geben Sie eine gültige Seitenzahl ein.
+        Es gibt &6{total_pages} &c Seiten in dieser Rangliste."
+      type-heading: "&fDie Ranking-Typen sind wie folgt:"
+      type-body:
+        - "&f{index}. &b{type_name} &3(ID:{type_id})"
+        - "&f Beschreibung&7: &r{description}"
+      type-ending: "&fGesamt &a{number} &f Rangliste"
+      refresh-internal-successfully: "&a hat die integrierte Rangliste erfolgreich
+        manuell aktualisiert: &r{ranking_name}&7 (ID: {ranking_id})"
+      hologram-disabled: "&c Derzeit wurde kein unterstütztes Hologramm-Plug-in erkannt
+        und diese Funktion kann nicht verwendet werden."
+      hologram-add-fail-already-exists: "&c Ranking &e{ranking} &c Hologramm-Set,
+        Standort: &e{location}"
+      hologram-add-successfully: "&a hat erfolgreich ein Hologramm zur Bestenliste
+        hinzugefügt &b{ranking} &a, Standort: &e{location}"
+      hologram-delete-fail-not-exists: "&c kann nicht gelöscht werden, Bestenliste
+        &e{ranking} &c hat kein Hologramm gesetzt."
+      hologram-delete-successfully: "&a hat das Hologramm von &b{ranking} erfolgreich
+        aus der Bestenliste gelöscht, ursprünglicher Speicherort: &e{location}"
+      hologram-move-fail-not-exists: "&c kann nicht verschoben werden, Bestenliste
+        &e{ranking} &c hat das Hologramm nicht gesetzt."
+      hologram-move-successfully: "&a hat das Hologramm der Bestenliste &b{ranking}
+        erfolgreich an die neue Position verschoben: &e{location}"
+    lobby:
+      series-description: "&f Anweisungen zur Wettkampfhalle anzeigen und helfen"
+      description: "&fIn die Wettkampfhalle teleportiert"
+      help-description: "&fSehen Sie sich die Administratorhilfe für die Wettbewerbslobby
+        an"
+      set-description: "&fLegen Sie den aktuellen Standort als Wettkampfhalle fest"
+      delete-description: "&fLöschen Sie den Teleportationspunkt in der Wettkampfhalle"
+      none: "&cDer Server hat den Teleportpunkt für die Wettkampfhalle noch nicht
+        festgelegt."
+      set-successfully: "&a hat den aktuellen Standort erfolgreich als Übergabepunkt
+        der Wettkampfhalle festgelegt."
+      update-successfully: "&aDer Transferpunkt in der Wettkampfhalle wurde auf Ihren
+        aktuellen Standort aktualisiert."
+      delete-fail-none: "&cAuf dem Server ist derzeit kein Teleportpunkt für die Wettbewerbshalle
+        festgelegt."
+      delete-successfully: "&a hat den Teleportationspunkt in der Wettkampfhalle erfolgreich
+        entfernt."
+    blacklist:
+      series-description: "&fHilfe zu Blacklist-bezogenen Befehlen anzeigen"
+      add-description: "&f Den angegebenen Spieler zur Blacklist hinzufügen"
+      remove-description: "&fEntfernen Sie den angegebenen Spieler von der Blacklist"
+      view-description: "&fBlacklist-Liste anzeigen"
+      add-successfully: "&a hat &f{player} &a erfolgreich zur Blacklist hinzugefügt"
+      remove-successfully: "&a hat &f{player} &a erfolgreich von der Blacklist entfernt"
+      the-player-has-been-in: "&f{player} &c ist in der Blacklist"
+      the-player-not-found: "&f{player} &c ist derzeit nicht in der Blacklist"
+      view-empty: "&cDerzeit sind keine Spieler auf der schwarzen Liste"
+      view-heading: "&fDie Spieler auf der schwarzen Liste sind wie folgt:"
+      view-body: "&2{index}. &a{player}[clickable]remove::&7(&fKlicken, um zu entfernen&7)::&fKlicken,
+        um den Spieler von der Blacklist zu entfernen: &f{player}[clickable]"
+      view-ending: "&f Insgesamt &6{number} &f Spieler"
+    stop:
+      description: "&fDas Spiel in der angegebenen Arena gewaltsam beenden"
+      fail-arena-not-exists: "&cArena &r'{arena}' &c existiert nicht und der Stoppvorgang
+        kann nicht durchgeführt werden."
+      fail-no-game: "&c Arena &r{arena} &c ist derzeit nicht im Wettbewerb."
+      tentatively: "&7 beendet gewaltsam ein Match in der Arena vom Typ &f{arena_type}
+        &7 &f{arena} &7..."
+    reload:
+      description: "&b Konfigurationsdatei und alle Sprachdateien neu laden"
+      start: "&7 lädt die Konfigurationsdatei neu und wendet sie an ..."
+      successfully: "Das Plug-in &a wurde neu geladen, was &f{time} Millisekunden
+        &a gedauert hat."
+    start:
+      description: "&fÖffnen Sie die Wettbewerbsauswahloberfläche"
+      fail-self-in-black-list: "&cSie befinden sich derzeit auf der schwarzen Liste
+        des Wettbewerbs und können die Wettbewerbsoberfläche nicht öffnen."
+    send:
+      description: "&fSendet eine Kampfeinladung an den angegebenen Spieler"
+      fail-self-in-black-list: "&cSie stehen derzeit auf der schwarzen Liste und können
+        keine Kampfeinladungen senden."
+      fail-send-to-self: "&cSie können sich selbst keine Kampfeinladung senden."
+      fail-no-arenas: "&cDer Server hat noch keine Arena eingerichtet und kann keine
+        Kampfeinladungen senden."
+      fail-offline: "&cKampfeinladung kann nicht gesendet werden, Spieler &f'{player}'
+        &c ist derzeit nicht online oder existiert nicht."
+      fail-recipient-in-black-list: "Spieler &c &f{player} &c steht derzeit auf der
+        schwarzen Liste und kann keine Kampfeinladung erhalten."
+      fail-invalid-arena-id: "&cDie Arena mit der ID &e'{enter}' &c existiert nicht,
+        bitte überprüfen Sie Ihre Eingabe."
+      fail-arena-disabled: "&c Arena &e{arena} &c ist derzeit deaktiviert, bitte wählen
+        Sie eine andere Arena."
+      fail-frequently: "&cSie haben vor Sekunden eine Kampfeinladung an &f{player}
+        &c &f{second} gesendet. Bitte warten Sie auf die Antwort der anderen Partei."
+      successfully: "&a hat erfolgreich eine Kampfeinladung an Spieler &f{player}
+        &a gesendet. Bitte warten Sie auf die Antwort der anderen Partei."
+      receive:
+        - "&7&m───&f__TOKEN_1_ _&m──────────────────────────────────"
+        - ""
+        - "&fDu hast eine Kampfeinladung erhalten von &f{player} &f [clickable]accept::&7[&a✔&7]::&aKlicken
+          Sie hier, um die Einladung anzunehmen[clickable] [clickable]decline::&7[&c✘&7]::&cKlicken
+          Sie, um die Einladung abzulehnen[clickable]"
+        - ""
+        - "&7&m───&f__TOKEN_1_ _&m──────────────────────────────────"
+      receive-notify-designated-arena: "&fDie vom Gegner festgelegte Arena: &r{arena_name}
+        &7(&f{arena_type}&7)"
+    accept:
+      description: "&aAkzeptiere Kampfeinladungen von anderen Spielern"
+      fail-none: "&cSie haben derzeit keine ausstehenden Kampfeinladungen."
+      fail-time-out: "Die Einladung von &c ist abgelaufen. Die Einladung des Spielers
+        &f{player} &c ist aufgrund zu langer Wartezeit automatisch abgelaufen."
+      fail-offline: "&cDie Einladung ist abgelaufen, Spieler &f'{player}' &c ist derzeit
+        nicht online oder existiert nicht."
+      fail-has-not-sent: "&cEinladung ist ungültig, Spieler &f'{player}' &c hat dir
+        keine Kampfeinladung gesendet."
+      fail-has-no-arenas: "&cDer Server hat keine Arena eingerichtet und der Kampf
+        kann nicht gestartet werden."
+      fail-has-no-available-arenas: "&cDer Server hat noch keine Arena für Zwei-Spieler-Kämpfe
+        eingerichtet."
+      fail-has-no-available-arenas-temporarily: "&c Derzeit sind keine Arenen für
+        zwei Spieler verfügbar."
+      success-receiver: "&aDu hast die Einladung von &f{player} &a zum Kampf angenommen."
+      success-sender: "&f{player} &a hat deine Einladung zum Kampf angenommen."
+      success-notify-randomly-chosen-arena: "&a Da keine Arena angegeben wurde, hat
+        das System automatisch zufällig für Sie ausgewählt: &r{arena_name} &7(&r{arena_type}&7)"
+      choose-list-heading: "&fSie haben derzeit mehrere ausstehende Kampfeinladungen.
+        Bitte wählen Sie die Einladung aus, die Sie annehmen möchten:"
+      choose-list-body: "&f{index}. &f{player} &7(&fAngegebener Bereich: {arena}&7)
+        [clickable]accept::&a&l[Akzeptieren]::&aKlicken Sie, um die Einladung anzunehmen[clickable]"
+      choose-list-ending: "&f Insgesamt &3{number} &f ausstehende Einladungen"
+      decline-none: "&cSie haben derzeit keine Einladungen zum Ablehnen."
+    decline:
+      description: "&fSchlachteinladungen von anderen Spielern ablehnen"
+      fail-time-out: "&c Einladung ist abgelaufen: Die Einladung des Spielers &f{player}
+        &c ist automatisch abgelaufen, weil zu lange gewartet wurde."
+      fail-offline: "&cUngültige Einladung: Spieler &f'{player}' &c ist derzeit nicht
+        online oder existiert nicht."
+      fail-has-not-sent: "&cUngültige Einladung: Spieler &f'{player}' &c hat dir keine
+        Kampfeinladung gesendet."
+      success-receiver: "&aDu hast die Einladung von &f{player} &a zum Kampf abgelehnt."
+      success-sender: "&f{player} &c hat deine Kampfeinladung abgelehnt."
+      choose-list-heading: "&bSie haben derzeit mehrere ausstehende Kampfeinladungen.
+        Bitte wählen Sie den Spieler aus, den Sie ablehnen möchten:"
+      choose-list-body: "&f{index}. &f{player} [clickable]decline::&7[&cKlicken Sie,
+        um abzulehnen&7]::&cKlicken Sie, um diese Kampfeinladung abzulehnen[clickable]"
+      choose-list-ending: "&f Insgesamt &3{number} &f ausstehende Einladungen"
+    wait:
+      description: "&fTreten Sie der angegebenen Arena oder ihrer Warteschlange bei"
+    spectate:
+      description: "&fSehen Sie sich Spiele in bestimmten Arenen an"
+      fail-arena-not-exists: "&c Arena &r'{arena}' &c existiert nicht und kann nicht
+        angesehen werden."
+      fail-arena-disabled: "&c Arena &f{arena} &c ist derzeit deaktiviert und kann
+        nicht angesehen werden."
+      fail-arena-no-games: "&cArena &f{arena} &cDerzeit laufen keine Spiele und können
+        nicht angeschaut werden."
+    quit:
+      description: "&fBeenden Sie das aktuelle Spiel"
+      not-in-arena: "&cSie müssen in einem Match sein, um diesen Befehl verwenden
+        zu können."
+      successfully: "&fDu hast den Kampf in &r{arena} &b verlassen."
+    record:
+      description: "&fÖffnen Sie die Kampfaufzeichnungsoberfläche"
+    lang:
+      description: "&6Gebietsschema wechseln"
+      list-heading: "Die verfügbaren Sprachdateien für &6 sind wie folgt:"
+      list-body: "&2{index}. &a{file}[clickable]switch::&7(&fKlicken, um zu wechseln&7)::&fKlicken,
+        um die Sprache zu wechseln: &a{file}[clickable]"
+      list-ending: "&fGesamt &3{number} &f Sprachdateien"
+      no-file-installed: "&cEs wurden keine anderen Sprachdateien auf dem Server installiert."
+      the-file-not-exists: "&cDie Sprachdatei mit dem Namen &e'{file}' &c existiert
+        nicht."
+      switch-successfully: "&a Der Sprachwechsel war erfolgreich. Die aktuelle Sprachumgebung
+        ist: &7&r{language}"
+    join:
+      arena-not-exists: "&c Arena &r'{arena}' &c existiert nicht und kann nicht hinzugefügt
+        werden."
+      fail-arena-disabled: "&cArena &r{arena} &c ist derzeit deaktiviert und kann
+        derzeit nicht betreten werden."
+      arena-in-progress-closed: "&cArena &r{arena} &c darf derzeit nicht auf halbem
+        Weg beitreten."
+      arena-in-progress-opened-full: "&c Arena &r{arena} &c ist derzeit voll, bitte
+        versuchen Sie es später noch einmal."
+      game-tentatively: "&a versucht, der Arena beizutreten &r{arena}&a..."
+  shop:
+    command:
+      add-description: "&b Fügen Sie eine neue Einlösungsanweisung für die angegebene
+        Belohnung hinzu"
+      remove-description: "&bEntfernen Sie einen Einlösungsbefehl für die angegebene
+        Belohnung"
+Item:
+  gui:
+    shop:
+      button-previous-page: "&7[&avorherige Seite&7]"
+      button-next-page: "&7[&anächste Seite&7]"
+      reward-information:
+        - ""
+        - "&7[&fUmtauschanforderungen&7]: &e{point} Punkte"
+        - "&7[&f Kumulierte Rückzahlung von &7]: &6{volume} Aktien"
+        - "&7[&fBelohnungsbeschreibung&7]: &7{description}"
+        - ""
+      reward-level-limit-tip-yes: "&aSie haben das erforderliche Level erreicht, um
+        diesen Artikel einzulösen: &fLv.{level}"
+      reward-redeem-tip-yes: "&aZum Einlösen klicken &7:&e{point_now}&7/&e{point_need}"
+      reward-redeem-tip-no-enough-point: "&c Unzureichende Punkte &7: &c{point_now}&7/&c{point_need}"
+      reward-redeem-tip-no-enough-level: "&cUnzureichendes Niveau &7:&cLv.{level_now}&7/&cLv.{level_need}"
+    record:
+      show-tip: "&7[&fLinksklick auf &7]: &f sendet diesen Datensatz an die Chatleiste"
+      print-tip: "&7[&fRechtsklick&7]: &fDrucken Sie diesen Datensatz auf das Papier
+        in der Hand &7(&a muss &e{point} Punkte verbrauchen&7)"
+    start:
+      arena-information:
+        - ""
+        - "&fBattlefield-Status&7: &r{state}"
+        - "&fAnzahl der Personen auf dem Schlachtfeld&7: &a{now_number}&7/&a{max_number}"
+        - ""
+        - "{button_message}"
+      arena-state:
+        waiting: "&aWarten auf den Beitritt von Spielern..."
+        in-progress-closed: "&c in Bearbeitung &7 (&c kann nicht auf halbem Weg hinzugefügt
+          werden &7)"
+        in-progress-opened: "&a in Bearbeitung &7 (&a kann auf halbem Weg hinzugefügt
+          werden &7)"
+        disabled: "&c ist vorübergehend deaktiviert"
+      arena-button-message:
+        waiting-start: "&7[&aKlicken Sie hier, um den Abgleich zu starten&7]"
+        waiting-stop: "&7[&aKlicken Sie hier, um den Abgleich abzubrechen&7]"
+        in-progress-closed: "&7[&c ist derzeit nicht verfügbar, um &7 beizutreten]"
+        in-progress-opened: "&7[&aKlicken Sie hier, um &7 beizutreten]"
+        in-progress-opened-full: "&7[&cDas Schlachtfeld ist voll&7]"
+        disabled: "&7[&c kann nicht verwendet werden &7]"
+GUI:
+  already-the-first-page: "&cDies ist bereits die erste Seite"
+  already-the-last-page: "&cDies ist die letzte Seite"
+  type:
+    shop:
+      title: "&9Sports Points Mall"
+      empty: "&c Derzeit gibt es keine Artikel im Points Mall."
+      redeem-unsuccessfully-insufficient-points: "&c Sie haben nicht genügend Punkte.
+        Sie benötigen &e{point_need} Punkte, um diesen Artikel einzulösen. &c. Derzeit
+        haben Sie nur &e{point_now} Punkte &c."
+      redeem-unsuccessfully-insufficient-level: "&c Ihr Level ist unzureichend. Sie
+        benötigen &aLv.{level_need}&c, um diesen Artikel einzulösen. Derzeit haben
+        Sie nur &aLv.{level_now}&c. Bitte arbeiten Sie weiterhin hart."
+      redeem-successfully: "&a Einlösung erfolgreich! Der Artikel wurde an Ihren Rucksack
+        gesendet."
+      redeem-successfully-but-drop: "&a wurde erfolgreich eingelöst, &c aber aufgrund
+        von Platzmangel im Rucksack &a sind Ihnen die Gegenstände zu Füßen gefallen,
+        insgesamt &f{number} Arten von &a."
+    record:
+      title: "&f{player}&as Kampfrekord"
+      empty: "&c verfügt derzeit über keine Kampfaufzeichnungen."
+      show-frequently: "&c Bitte warten Sie &f{time} Sekunden, bevor Sie die Kampfaufzeichnung
+        anzeigen."
+      show-content: "&f{player} &7: [clickable]show::&7[&9Mein Kampfrekord&7]::{content}[clickable]&7
+        (&fBewegen Sie die Maus über den Text, um &7 anzuzeigen)"
+      print-insufficient-point: "&c Das Drucken eines Kampfprotokolls erfordert &e{point_need}
+        Punkte &c. Sie haben derzeit nur &e{point_now} Punkte &c."
+      print-fail-no-paper-in-hand: "&c Bitte halten Sie das Papier zuerst in der Hand."
+      print-fail-paper-has-meta: "&cDas Druckpapier muss Normalpapier sein und darf
+        keine zusätzlichen Informationen enthalten."
+      print-successfully: "&a Erfolgreich gedruckt, bitte überprüfen Sie das Papier
+        in Ihrer Hand."
+    start:
+      title: "&9Arena-Liste"
+      empty: "&cDer Server hat noch keine Arena erstellt."
+      use-while-in-game: "&cDu kämpfst derzeit in &r{arena} &c und kannst diese Aktion
+        nicht ausführen."
+      state:
+        waiting-operation-cooldown: "&cBitte führen Sie die Matching-Funktion nicht
+          zu häufig aus."
+        in-progress-closed: "&c Arena &r{arena} &c darf auf halbem Weg nicht beitreten."
+        in-progress-opened-full: "&c Arena &r{arena} &c ist derzeit voll und kann
+          im Moment nicht betreten werden."
+        in-progress-opened: "&a betritt die Arena &r{arena}&a..."
+        disabled: "&c Arena &r{arena} &c ist derzeit deaktiviert."
+    item-display:
+      title: "&9Artikeldetails"
+Ranking:
+  hologram:
+    heading:
+      - "{ranking_name}"
+      - "{ranking_description}"
+      - ""
+    body: "&7[&e Nr. {rank} &7] &f{player} &7- &f{data}"
+    ending: ""
+  type:
+    classic-wins:
+      name: "&eGewinnrangliste im klassischen Modus"
+      description: "&7[&6Je höher die Anzahl der Siege, desto höher das Ranking&7]"
+    classic-win-rate:
+      name: "&e Rangliste der Gewinnquoten im klassischen Modus"
+      description: "&7[&6Je höher die Gewinnquote, desto höher das Ranking&7]"
+    exp:
+      name: "&bErfahrungsranking im klassischen Modus"
+      description: "&7[&6Je höher die gesammelte Erfahrung, desto höher das Ranking&7]"
+    total-game-number:
+      name: "&d Rangfolge der Anzahl der Gefechte in allen Modi"
+      description: "&7 zählt die Gesamtzahl der Teilnahmen an allen klassischen Modi
+        und mit DT verbundenen Modi"
+    total-game-time:
+      name: "&d Rangliste der Kampfdauer in allen Modi"
+      description: "&7 Zählt die kumulierte Kampfzeit (Sekunden) aller klassischen
+        Modi und mit DT verbundenen Modi"
+    classic-game-number:
+      name: "&eRangliste der Kampfhäufigkeit im klassischen Modus"
+      description: "&7 zählt die Gesamtzahl der Teilnahmen im klassischen Modus"
+    classic-game-time:
+      name: "&6 Rangliste der Kampfdauer im klassischen Modus"
+      description: "&7 Statistiken: Kumulierte Kampfzeit im klassischen Modus (Sekunden)"

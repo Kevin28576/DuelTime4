@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kevin.dueltime4.data.mapper.BlacklistMapper">
+    <select id="get" resultType="java.lang.String">
+        select *
+        from dueltime_blacklist
+    </select>
+    <insert id="add">
+        insert into dueltime_blacklist (id) values (#{id})
+    </insert>
+    <delete id="remove">
+        insert into dueltime_blacklist (id) values (#{id})
+    </delete>
+    <update id="createTableIfNotExists">
+        CREATE TABLE IF NOT EXISTS `dueltime_blacklist` (
+        `id` varchar(32) NOT NULL,
+        PRIMARY KEY (`id`)
+        );
+    </update>
+</mapper>

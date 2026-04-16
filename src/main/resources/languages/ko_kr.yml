@@ -1,0 +1,804 @@
+LanguageName: "&c한국어(대한민국)"
+String:
+  none: "없음"
+  true: "예"
+  false: "아니요"
+  list: "{line} 행 목록: {brief_content}"
+  win: "&a승리"
+  lose: "&c 분실"
+  draw: "&6동점"
+  games: "필드"
+  seconds: "두번째"
+  no-rank: "&6이(가) 목록에 없습니다."
+  command-executor:
+    player: "플레이어"
+    op: "관리자"
+    console: "섬기는 사람"
+Exception:
+  arena:
+    initialize-fail-invalid-arena-type: "Arena {arena_name}(ID: {arena_id})을 초기화하지
+      못했습니다. ID가 '{arena_id}'인 경기장 유형을 찾을 수 없습니다. 관련 액세서리 플러그인이 올바르게 설치되었는지 확인하세요."
+Level:
+  level-up-message: "&a축하합니다! 귀하의 경쟁 수준이 &fLv.{level}&a로 상승했습니다."
+  tier-up-message: "&6축하합니다! 귀하의 순위는 &r{tier}&6로 승격되었습니다. &c경쟁 몰&6에서 어떤 새로운 콘텐츠를 잠금
+    해제할 수 있는지 확인해 보세요."
+  tier-up-broadcast: "&6[순위 승격] &f{player} &a이(가) &r{tier}&a(으)로 승격되었습니다!"
+  tier-down-message: "&c 안타깝게도 귀하의 순위는 &r{tier}&c으로 떨어졌습니다."
+Arena:
+  wait:
+    start: "&7&f{arena} &7에 대한 대기 대기열에 합류했습니다."
+    switch: "&7&f{arena} &7에 대한 대기 대기열로 전환되었습니다."
+    stop: "&7큐를 취소했습니다: &f{arena}"
+  protection:
+    walk-in-while-available: "&c&l[!] &c 현재 진행 중인 이벤트가 없으므로 &f{name} &c 경기장에 입장할 수
+      없습니다."
+    walk-in-while-in-progress: "&c&l[!] &c Arena &f{name} &c은(는) 현재 경쟁 중이므로 입장이 금지되어
+      있습니다."
+    teleport-to-while-available: "&c&l[!] &c 현재 진행 중인 이벤트가 없으며 &f{name} &c 경기장으로 순간이동할
+      수 없습니다."
+    teleport-to-while-in-progress: "&c&l[!] &c Arena &f{name} &c 현재 대회가 진행 중이므로 순간이동이
+      금지되어 있습니다."
+    attack-gamer: "&c&l[!] &c 경기장에서 플레이 중인 &f{name} &c 플레이어를 방해하지 마세요."
+    break: "&c&l[!] &c경기장에서는 &f{name} &c 블록을 깨뜨릴 수 없습니다."
+    place: "&c&l[!] &c &f{name} &c 경기장에는 블록을 배치할 수 없습니다."
+    place-over: "&c&l[!] &c &f{name} &c 경기장 내부 또는 위에 블록을 배치할 수 없습니다."
+    interact: "&c&l[!] &c &f{name} &c 경기장의 개체와 상호 작용할 수 없습니다."
+    pour-liquid: "&c&l[!] &c&f{name} &c 경기장에는 액체를 부을 수 없습니다."
+    get-liquid: "&c&l[!] &c &f{name} &c 경기장에서는 액체에 접근할 수 없습니다."
+  type:
+    classic:
+      name: "고전적인 전쟁"
+      start:
+        title: "&7[&a대회가 공식적으로 시작됩니다&7]"
+        subtitle: "&f이 전투에서 영광을 얻으세요"
+      end:
+        result-stopped: "&c 이 매치는 서버 또는 관리자에 의해 강제 종료되었습니다. 이번 경기에는 기록이 남지 않습니다."
+        result-stopped-with-reason: "&c 이 매치는 서버 또는 관리자에 의해 강제 종료되었습니다. 이번 경기에는 기록이
+          남지 않습니다. &7 종료 이유: &f{reason}"
+        result-win: "&a축하합니다! 당신은 이 게임에서 승리했습니다."
+        result-lose: "&c 안타깝게도 이 게임에서 졌습니다."
+        result-draw: "&b게임은 무승부로 끝났습니다."
+        notify-info:
+          - "&7&m───&f&l&m──────────────────────&7&m───"
+          - "&f장소&7: &r{arena}"
+          - "&f 상대 &7: &f{player}&7(&r{level_display_name}&7)"
+          - "&f 기간&7: &3{time}초"
+          - "&f경험&7: &r{exp_change}"
+          - "&fdata&7: &7[clickable]more_data::&7(&f세부정보를 보려면 마우스를 올리세요&7)::&f &f총계
+            피해&7: &f{total_damage}&cdamage||||&f &f최대 피해&7: &f{max_damage}&cdamage||||&f
+            &f평균 피해&7: &f{average_damage}&cdamage[clickable]"
+          - "&7&m───&f&l&m──────────────────────&7&m───"
+        broadcast: "&f{winner} &a이(가) 상대 &f{loser}&a을(를) &f{arena}&a로 이겼고, 이는 &f{time}초&a
+          동안 지속되었습니다."
+        broadcast-draw: "&f{player1}&a 및 &f{player2}&a은 &r{arena}&a에서 동점으로 끝났으며 &f{time}초&a
+          동안 지속되었습니다."
+      damage-during-countdown: "&c대회는 아직 공식적으로 시작되지 않았으며 일시적으로 공격이 불가능합니다."
+      use-command-in-game: "&c이 명령은 대회 중에 금지됩니다."
+      quit-inform-opponent: "&d상대가 자발적으로 게임에서 탈퇴했습니다."
+      leave-server-inform-opponent: "&c상대가 서버를 떠났습니다."
+      win-title: "&7[&a 승리&7]"
+      win-subtitle: "&e축하합니다! 당신은 이 게임에서 승리했습니다."
+      delayed-back:
+        gamer-title: "&b{countdown}"
+        gamer-subtitle: "&7이(가) 대회 장소에서 멀리 순간이동하려고 합니다..."
+        spectator-title: "&b{countdown}"
+        spectator-subtitle: "&7이(가) 보기 영역 밖으로 순간이동되려고 합니다..."
+      function:
+        time-limit:
+          name: "대회 시간 제한"
+          description: "&a 대회 시간 제한 &7(&f 단위: 초 &7) &a을(를) 설정하세요. 제한 시간을 초과한 경우 사전
+            설정된 규칙에 따라 승자와 동점자가 결정됩니다. 정수를 입력해야 합니다."
+          bossbar-title: "&a이 게임에는 &f{time}초 &a 남았습니다."
+          game-title: "&b{time}"
+          game-subtitle: "&f대회가 곧 시작됩니다. 싸울 준비를 하세요."
+        countdown:
+          name: "시작 카운트다운"
+          description: "&a 게임 시작 전 카운트다운 초를 설정하세요 &7 (&f 단위: 초 &7) &a, 정수를 입력해야 하며
+            추가로 카운트다운 동안 플레이어의 이동 허용 여부를 설정해야 합니다."
+        check-inventory-keyword:
+          name: "입국 전 배낭 검사 &7 (&f 키워드 &7 기준)"
+        inventory-check-keyword:
+          description: "&a 특정 특별 물품을 행사장에 반입하는 것은 금지되어 있습니다. The system will check
+            the name in the backpack or Lore&7(&fThe description below the item name&7)&a
+            for items containing the specified keyword."
+          detected-tip: "&c 시스템이 배낭에서 &f{arena_name}을 감지했습니다. &c 금지된 항목: &7[clickable]item::&7[{item_name}&7]__
+            TOKEN_7__(&a보려면 클릭하세요. 세부정보&7)&c::{item_lore}[clickable]&c."
+          detected: "&c 플레이어 &f{player} &c이 대회에서 금지된 &f{arena_name} 특별 아이템 &c을(를)
+            가져왔습니다. 플레이어에게 자세한 내용이 통보되었습니다. 챌린지를 다시 시작하기 전에 양측의 장비를 확인하세요."
+        inventory-check-type:
+          name: "입국 전 배낭 검사&7(&f항목 유형에 따라 다름&7)"
+          description: "&a 휴대가 금지된 물품의 종류를 설정해주세요. 배낭에 특정 종류의 아이템이 있으면 게임이 금지됩니다."
+          detected-tip: "&c 시스템이 배낭에서 &f{arena_name}을 감지했습니다. &c금지된 유형 항목: &7[clickable]item::&7[{item_name}&7]_
+            _TOKEN_7__(&a보려면 클릭하세요. 세부정보&7)&c::{item_lore}[clickable]&c."
+          detected: "&c 플레이어 &f{player} &c이 &f{arena_name} 경쟁 &c 금지 항목을 휴대했습니다. 플레이어에게
+            자세한 내용이 통보되었습니다. 챌린지를 다시 시작하기 전에 양측의 장비를 확인하세요."
+        pre-game-command:
+          name: "게임 전 실행 지시 그룹"
+          description: "&a 플레이어가 게임에 입장할 때 자동으로 실행될 명령 그룹을 설정하세요. 다양한 실행 ID를 별도로 설정할
+            수 있습니다."
+        spectate:
+          name: "게임 시청"
+          description: "&a &f/dueltime spectate &a 명령을 통해 플레이어가 진행 중인 게임을 시청할 수 있도록
+            시청 영역을 설정하세요."
+          gamer-health-bossbar: "&a 플레이어 &f{player} &a 현재 혈액량: &7&a{health}&7/&a{max_health}"
+          fail-unavailable: "&c이 경기장 &f{arena} &c은 관전자 기능을 활성화하지 않았습니다."
+          successfully: "&a이(가) &f{arena} &a의 보기 영역으로 순간이동했습니다."
+          stop-successfully: "&a&f{arena} &a의 경기 시청을 마쳤습니다."
+          over:
+            - "&a시청한 게임이 종료되었습니다. 결과는 다음과 같습니다:"
+            - "&7&m───&f&l&m──────────────────────&7&m───"
+            - "&f장소&7: &r{arena}"
+            - "&f참가자&7: &3{gamers}"
+            - "&f승자&7: &f{winner}"
+            - "&f 기간&7: &f{time}초"
+            - "&7&m───&f&l&m──────────────────────&7&m───"
+          over-in-a-draw:
+            - "&a귀하가 시청한 경기는 무승부로 끝났으며 결과는 다음과 같습니다."
+            - "&7&m───&f&l&m──────────────────────&7&m───"
+            - "&f장소&7: &r{arena}"
+            - "&f참가자&7: &3{gamers}"
+            - "&f 기간&7: &f{time}초"
+            - "&7&m───&f&l&m──────────────────────&7&m───"
+          over-by-stop: "&c{arena}에 대한 콘테스트가 관리자에 의해 강제 종료되었습니다."
+          spectator-move-out-zone: "&c 시청 영역을 떠나지 마세요. 시청을 종료하려면 &f/dueltime spectate
+            &c 명령을 다시 입력하여 시청을 종료해 주세요."
+        ban-entity-spawn:
+          name: "개체 생성 금지(자연 및 인공 포함)"
+          description: "모든 개체의 생성(자연생성, 인공생성 포함)을 금지하고, 화이트리스트 설정 가능"
+  earn-point: "&a축하합니다! 게임에서 승리하여 &e{point}포인트&a포인트를 받았습니다. 현재 총 &e{point_now}포인트&a입니다."
+
+Record:
+  type:
+    classic:
+      title: "&f클래식 모드 대회 기록"
+      content:
+        arena-name: "&f장소&7: &f{arena_name}"
+        result: "&f 결과 &7: &r{result}"
+        opponent: "&f 상대 &7: &f{opponent}"
+        time: "&f은 &7 소요: &f{time}초"
+        exp-change: "&f경험 변경&7: &r{exp_change}"
+        total-damage: "&f총 피해&7: &f{total_damage} 포인트"
+        max-damage: "&f최대 피해&7: &f{max_damage} 포인트"
+        average-damage: "&f평균 피해&7: &f{average_damage} 포인트"
+        date: "&f콘테스트 날짜&7: &e{date}"
+
+Error:
+  no-permission: "&c이 작업을 수행할 권한이 없습니다."
+  not-player-executor: "&c이 명령은 플레이어만 실행할 수 있습니다."
+  sub-command-not-exists: "&c 하위 명령 &e'{enter}' &c이 존재하지 않습니다. 입력 내용을 확인하세요."
+  incorrect-number-format: "&e'{enter}' &c은(는) 유효한 숫자 형식이 아닙니다."
+  incorrect-integer-format: "&e'{enter}' &c은(는) 유효한 정수 형식이 아닙니다."
+  incorrect-id-format: "&e'{enter}' &c은(는) ID 명명 규칙을 준수하지 않습니다. 영문자, 숫자, 밑줄만 허용됩니다."
+  value-is-not-positive: "&c 유효한 양수를 입력하세요. &e'{enter}' &c이(가) 조건을 충족하지 않습니다."
+  value-is-negative: "&c 음수가 아닌 숫자를 입력하세요. &e'{enter}' &c은(는) 조건을 충족하지 않습니다."
+  incorrect-boolean-format: "&c &7 [&a은 &7임] &c 및 &7 [&f은 &7이 아님]을 각각 나타내는 문자 'T'
+    또는 'F'를 입력하세요."
+  player-no-found: "&c 이름이 &f'{player}' &c인 플레이어를 찾을 수 없습니다."
+  incorrect-string-integer-pair-format: "&c &e 텍스트:숫자 &c 형식을 사용하세요(예: &e'apple:3')."
+  incorrect-string-integer-pair-format-integer: "&c 구분 기호 &e':'은 &c 다음의 정수여야 합니다."
+  incorrect-executor-command-pair-format: "&c &e 실행 ID를 사용하십시오: 명령 내용 &c 형식(예: &e'console:give
+    {player} apple')"
+
+Progress:
+  repeatedly-join: "&c현재 &f{progress} &c 프로세스가 진행 중입니다."
+  join-while-handling-other: "&c 현재 프로세스 &f{progress}&c을(를) 완료하거나 종료하세요."
+  join-successfully: "&a프로세스 &f{progress} &a을 입력했습니다. 안내에 따라 단계별로 설정을 완료하세요. &7(이
+    기간 동안 이전 단계로 돌아가려면 &f-r &7을 입력하고, 프로세스를 일시 중지하려면 &f-p &7를 입력하고, 프로세스를 계속하려면 &f-c
+    &7를 입력하고, 프로세스를 종료하려면 &f-e &7을 입력할 수 있습니다.)"
+  boss-bar-tip: "&a{name} ({now}/{total}): {tip}"
+  boss-bar-free-tip:
+    - ""
+    - "&d{progress}&f:"
+    - "&b진행 상황&f: &3{now}/{total} &f[{progress_bar_progress_20_|_a_7}&f]"
+    - "&b 프롬프트&f: &r{tip}"
+    - ""
+  boss-bar-message-finish-string: "&a 완료되었습니다! 모든 단계가 성공적으로 구성되었습니다."
+  auto-upload:
+    location-different-world: "&c선택한 위치는 이전 위치와 동일한 세계에 있어야 합니다."
+    location-the-same-block: "&c선택한 위치는 이전 위치와 동일한 블록에 있을 수 없습니다."
+    location-overlay-with-other-arena: "&c현재 선택한 포인트는 이전에 선택한 포인트 &f{arena} &c에 의해
+      형성된 영역 및 경기장과 겹칩니다. 다시 중복되지 않도록 위치를 다시 선택하세요."
+  finish:
+    message: "&f프로세스를 완료했습니다&7: §f{progress}"
+    title: "&e✦"
+    subtitle: "&f 프로세스 완료&7: §f{progress}"
+  operation:
+    reverse:
+      title: "&6↺"
+      subtitle: "&7 이전 단계로 돌아가기"
+      the-first-step: "&c은(는) 이제 첫 번째 단계에 있으므로 되돌릴 수 없습니다."
+    pause:
+      title: "&e┃┃"
+      subtitle: "&7 프로세스가 일시중지되었습니다."
+      has-been-paused: "&c 프로세스가 현재 일시중지되었습니다."
+    continue:
+      title: "&a▶"
+      subtitle: "&7 계속 진행"
+      has-been-paused: "&c 프로세스가 현재 진행 중입니다."
+    exit:
+      successfully: "&7프로세스를 종료했습니다: §f{progress}"
+    list:
+      enter:
+        title: "&7[&eT&7]"
+        subtitle: "&7이(가) 새 행을 추가했습니다. 현재 목록은 &f{brief_content}입니다."
+      incorrect-data-type: "&c현재 입력한 데이터 타입은 리스트가 아니므로 해당 연산을 사용할 수 없습니다."
+      empty-data: "&c 내용을 먼저 입력해주세요."
+  type:
+    upload-data-for-arena-function: "추가 기능에 필요한 데이터 업로드"
+    create-classic-arena:
+      name: "고전적인 유형의 경쟁 만들기"
+      step:
+        1:
+          tip: "사각형을 마우스 왼쪽 버튼으로 클릭하여 점 A를 선택합니다."
+          title: "&a✔"
+          subtitle: "&f이 A 지점(좌표: &e)을 성공적으로 선택했습니다.{}"
+        2:
+          tip: "사각형을 마우스 왼쪽 버튼으로 클릭하여 B 지점을 선택합니다."
+          title: "&a✔"
+          subtitle: "&f이 B 지점(좌표: &e)을 성공적으로 선택했습니다.{}"
+        3:
+          tip: "현재 화면 위치를 플레이어 1의 스폰 지점으로 설정하려면 왼쪽 클릭하세요."
+          title: "&a✔"
+          subtitle: "&f이(가) 출생 지점 1번을 성공적으로 설정했습니다. 좌표는 &e{}입니다."
+        4:
+          tip: "현재 화면 위치를 플레이어 2의 스폰 지점으로 설정하려면 왼쪽 클릭하세요."
+          title: "&a✔"
+          subtitle: "&f은(는) 2번 출생 지점(좌표: &e)을 성공적으로 설정했습니다.{}"
+        5:
+          tip: "컨테스트 ID &7 입력(&f 영어로만, 숫자, 하단 줄 &7)"
+          title: "&a✔"
+          subtitle: "&f ID 설정 성공: &f{}"
+        6:
+          tip: "대회 이름 &7(&f은 중국어 지원, 색상 코드 &7)를 입력하세요."
+          title: "&a✔"
+          subtitle: "&f이 이름을 성공적으로 설정했습니다: &f{}"
+    set-function-time-limit:
+      name: "&a새로운 추가 기능&7: &a시간 제한"
+    set-function:
+      time-limit:
+        step:
+          1:
+            tip: "전투 제한 시간을 입력하세요. (단위: 초)"
+            title: "&a✔"
+            subtitle: "&f이(가) 전투 시간 제한을 성공적으로 설정했습니다: &f{}초"
+      countdown:
+        step:
+          1:
+            tip: "오프닝까지의 카운트다운 초를 입력하세요. (단위: 초)"
+            title: "&a✔"
+            subtitle: "&f이 개시 카운트다운 초를 성공적으로 설정했습니다: &f{}초"
+          2:
+            tip: "카운트다운 중에 플레이어의 이동이 허용되는지 여부를 나타내려면 T 또는 F를 입력하세요."
+            title: "&a✔"
+            subtitle: "&f이 오프닝 카운트다운 동안 플레이어가 이동할 수 있는지 여부를 성공적으로 설정했습니다: &f{}"
+      inventory-check-keyword:
+        step:
+          1:
+            tip: "탐지 범위를 입력하세요: 이름=이름만, 지식=설명만, 모두=모두"
+            title: "&a✔"
+            subtitle: "&f이 감지 범위를 성공적으로 설정했습니다: &f{}"
+            incorrect-range: "&e'{enter}' &c은(는) 유효한 감지 범위가 아닙니다. 이름(이름만), 전승(설명만)
+              또는 모두(모두 선택)를 입력하세요."
+          2:
+            tip: "키워드 목록을 업로드하고 내용을 입력한 후 보내면 새 줄을 추가할 수 있습니다. -l을 입력하여 목록을 종료하고 제출합니다."
+            title: "&a✔"
+            subtitle: "&f이 키워드 목록을 성공적으로 업로드했습니다: &f{}"
+      inventory-check-type:
+        step:
+          1:
+            tip: "Material: sub-ID 형식으로 항목 유형 목록을 업로드합니다. 새 줄을 추가하려면 내용을 입력하세요. -l을
+              입력하여 목록을 종료하고 제출합니다."
+            title: "&a✔"
+            subtitle: "&f 성공적으로 업로드된 항목 유형 목록: &b{}"
+      pre-game-command:
+        step:
+          1:
+            tip: "실행 ID: 콘텐츠 형식으로 명령 목록을 업로드합니다. 내용을 입력하고 보내면 새 줄이 추가됩니다. -l을 입력하여
+              목록을 종료하고 제출합니다."
+            title: "&a✔"
+            subtitle: "&f이 명령 그룹 &f{}을(를) 성공적으로 업로드했습니다."
+            incorrect-executor: "&e'{enter}' &c은(는) 유효한 실행 ID가 아닙니다. &7 팁: &cplayer=플레이어
+              실행, op=관리자 실행, console=백그라운드 실행, console_single_time=백그라운드 실행은 한 번만
+              수행됩니다(플레이어에 바인딩되지 않음)."
+      spectator:
+        step:
+          1:
+            tip: "사각형을 마우스 왼쪽 버튼으로 클릭하여 보기 영역의 A 지점을 선택합니다."
+            title: "&a✔"
+            subtitle: "&f이 A 지점(좌표: &f)을 성공적으로 선택했습니다.{}"
+          2:
+            tip: "사각형을 마우스 왼쪽 버튼으로 클릭하여 보기 영역의 B 지점을 선택합니다."
+            title: "&a✔"
+            subtitle: "&f이 B 지점(좌표: &f)을 성공적으로 선택했습니다.{}"
+          3:
+            tip: "현재 화면 위치를 보는 순간이동 지점으로 설정하려면 클릭하세요."
+            title: "&a✔"
+            subtitle: "&f이(가) 보는 순간 이동 지점(좌표: &f)을 성공적으로 설정했습니다.{}"
+          4:
+            tip: "양측의 실제 혈액량을 표시할지 여부를 표시하려면 T 또는 F를 입력하십시오."
+            title: "&a✔"
+            subtitle: "&f은 두 당사자의 실제 혈액량을 표시할지 여부를 성공적으로 설정했습니다: &f{}"
+      ban-entity-spawn:
+        step:
+          1:
+            tip: "엔터티 화이트리스트 목록을 업로드합니다. 항목 열거명을 입력하고 전송하여 항목을 추가합니다. 전체 목록을 종료하고
+              제출하려면 -l을 입력합니다. -l을 직접 입력하여 화이트리스트 설정을 건너뛸 수도 있습니다."
+            title: "&a✔"
+            subtitle: "&f이 엔터티 허용 목록을 성공적으로 업로드했습니다: &b{}"
+Command:
+  parameter:
+    player: "플레이어 이름"
+    value: "수치"
+    arena-id: "토너먼트 ID"
+    source-arena-id: "소스 일치 ID"
+    target-arena-id: "타겟 일치 ID"
+    arena-type: "게임 유형"
+    arena-function: "추가 기능 ID"
+    language-file-name: "파일 이름"
+    point: "완전한"
+    page: "페이지 번호"
+    row: "열 수"
+    line: "라인 수"
+    description: "설명하다"
+    value-or-content: "가치나 내용"
+    command-executor: "실행 ID"
+    index: "일련번호"
+    ranking-type: "순위 유형 ID"
+    ranking-page: "순위 페이지 번호"
+    reason: "이유"
+  correct: "&6 팁: &f{command}&6 [clickable]명령::&7[&f자동으로 &7을 입력하려면 클릭]::&f이 명령을 빠르게
+    입력하려면 클릭하세요[clickable]"
+  suggest: "&6 입력하시겠습니까: &f{command}&6 [clickable]command::&7[&f자동으로 &7을 입력하려면 클릭]::&f이
+    명령을 빠르게 입력하려면 클릭하세요[clickable]"
+  title:
+    adminhelp: "&d 게임 관리자 도움말"
+    help: "&f 플레이어 도움말"
+    point: "&d 포인트 시스템 도움말"
+    shop: "&d 포인트 몰 도움말"
+    level: "&a레벨 시스템 도움말"
+    blacklist: "&7 블랙리스트 도움말"
+    lobby: "&a 로비 시스템 도움말"
+    arena: "&c아레나 도움말"
+    rank: "&b 순위 도움말"
+  main:
+    help: "&f 플레이어 도움말 메시지 보기"
+    admin-help: "&f관리자 도움말 메시지 보기"
+  sub:
+    arena:
+      series-description: "&f 경기장 관련 명령 도움말 보기"
+      list-description: "&f 모든 경기장 보기"
+      info-description: "&f 서버에 로드된 모든 경기장 유형 보기"
+      create-description: "&f지정된 유형의 경기장 생성"
+      view-description: "&f 지정된 경기장의 속성 정보를 봅니다."
+      delete-description: "&f지정된 경기장 삭제"
+      function-add-description: "&f 지정된 경기장에 추가 기능을 추가합니다."
+      function-remove-description: "&f지정된 경기장에서 추가 기능을 제거합니다."
+      function-reset-description: "&f지정 경기장의 추가 기능 데이터를 재설정합니다."
+      function-clear-description: "&f지정된 경기장의 모든 추가 기능을 삭제합니다."
+      function-list-description: "&f 특정 경기장에 대한 모든 추가 기능 보기"
+      function-type-description: "&f 지정된 경기장 유형에 사용할 수 있는 추가 기능 보기"
+      function-copy-description: "&f한 경기장에서 다른 경기장으로 추가 기능 복사"
+      list-empty: "&c서버에 현재 구성된 경기장이 없습니다."
+      list-heading: "&f아레나 목록은 다음과 같습니다."
+      list-body: "__토큰_8____토큰_7__. &f{arena_name} &7[&f 유형: {arena_type} ID: {arena_id}&7]"
+      list-ending: "&f 총 {number} 경기장"
+      type-heading: "&f 경기장 유형은 다음과 같습니다."
+      type-body: "__토큰_7____토큰_6__. &f{arena_type_name} &7(&fID：{arena_type_id}&7)"
+      type-ending: "&f총 {number} 유형"
+      create-fail-invalid-type: "&c은(는) &e'{enter}'&c 유형이 존재하지 않습니다. [clickable]view::&f&n모든
+        유형을 보려면 클릭하세요[clickable]"
+      invalid-id: "&cID가 &e'{enter}'&c인 경기장이 존재하지 않습니다. [clickable]view::&f&n모든 경기장
+        ID를 보려면 클릭하세요.[clickable]"
+      type:
+        invalid-id: "&c유형 ID가 &e'{enter}'&c인 경기장이 존재하지 않습니다. [clickable]view::&f&n이
+          유형의 모든 경기장을 보려면 클릭하세요. ID[clickable]"
+      function:
+        invalid-id: "&c{arena_type_entered} 유형 arena는 ID가 &e'{function_entered}' &c인
+          추가 기능을 정의하지 않습니다. [clickable]view::&f&n모든 기능을 보려면 클릭하세요. ID[clickable]"
+        type-empty: "&c{arena_type} 유형 arena는 추가 기능을 정의하지 않습니다."
+        type-heading: "&b{arena_type} 유형 영역에서 사용할 수 있는 추가 기능은 다음과 같습니다."
+        type-body:
+          - "&f&l{index}. &b{arena_function_name} &3(ID:{arena_function_id})"
+          - "&7 설명: {arena_function_description}"
+        type-ending: "&f 합계 &e{number} &f 추가 기능"
+        copy-invalid-source-arena-id: "&c잘못된 소스 경기장 ID입니다. ID가 &e'{enter}'&c인 경기장을
+          찾을 수 없습니다. [clickable]view::&f&n모든 경기장 ID를 보려면 클릭하세요.[clickable]"
+        copy-invalid-target-arena-id: "&c대상 경기장 ID가 잘못되었습니다. ID가 &e'{enter}'&c인 경기장을
+          찾을 수 없습니다. [clickable]view::&f&n모든 경기장 ID를 보려면 클릭하세요.[clickable]"
+        copy-different-type: "&c 추가 기능은 다양한 경기장 유형에 복제될 수 없습니다. 소스: &e{source_arena_name}&c({source_arena_type}),
+          대상: &e{target_arena_name}&c({target_arena_type})."
+        copy-empty-function: "&c 소스 아레나 &e{source_arena_name} &c 추가 기능이 설정되지 않았습니다:
+          &e{function} [clickable]view::&f&n모든 기능을 보려면 클릭하세요 ID[clickable]"
+        copy-successfully: "&a이(가) &3{source_arena} &a 경기장의 &e{function} &a 추가 기능을
+          &b{target_arena}&a 경기장에 복사했습니다."
+        copy-successfully-overwrite: "&a이(가) Arena &3{source_arena} &a의 추가 기능 &e{function}
+          &a을 Arena &b{target_arena}&a에 복사하고 원래 설정을 덮어썼습니다."
+        add-repeatedly: "&c Arena &6{arena} &c에는 이미 추가 기능 ID &e'{function_entered}'&c이
+          포함되어 있으므로 다시 추가할 필요가 없습니다."
+        add-enter-progress: "&d은(는) Arena &a{arena} &d에 &b{function}&d 기능을 추가하고 있습니다.
+          안내에 따라 설정을 완료해 주세요."
+        add-successfully: "&a이(가) Arena &e{arena} &a에 추가 기능 &b{function}을(를) 성공적으로
+          추가했습니다."
+        remove-fail-not-exists: "&c 경기장 &e{arena} &c 추가 기능 세트 없음 ID: &e'{function_id}'"
+        remove-successfully: "&a 아레나를 성공적으로 제거했습니다. &e{arena} &a의 추가 기능 &b{function}"
+        reset-fail-not-exists: "&c 경기장 &e{arena} &c 추가 기능 세트 없음 ID: &e'{function_id}'"
+        reset-fail-no-data-needed: "&c 경기장 &e{arena} &c의 추가 기능 &e'{function_id}' &c
+          추가 정보가 필요하지 않습니다."
+        reset-enter-progress: "&d이 경기장 &a{arena} &d &b{function} &d 데이터의 추가 기능을 재설정
+          중입니다. 안내에 따라 설정을 완료하세요."
+        clear-successfully: "&a이 경기장 &e{arena} &a에 대한 모든 추가 기능을 성공적으로 지웠습니다."
+        list-empty: "&c 아레나 &e{arena} &c 아직 추가 기능이 설정되지 않았습니다."
+        list-heading: "&bArena &r{arena} &b의 추가 기능은 다음과 같습니다."
+        list-body:
+          - "__토큰_5____토큰_4__. &b{arena_function_name} &3(ID:{arena_function_id})"
+          - "&f 설명&7: {arena_function_description}"
+          - "&7 정보&7: {arena_function_data}"
+        list-ending: "&f 총 &e{number} &f 추가 기능."
+      view:
+        - "&e=============================="
+        - "&a 이름&7: &f{arena_name}"
+        - "&aID&7: &f{arena_id}"
+        - "&a 유형 &7: &f{arena_type}"
+        - "&a추가 기능&7: &b{function_number} 항목 [clickable]view_function::&7(보려면 클릭)::&f추가된
+          추가 기능 및 정보를 보려면 클릭하세요[clickable]"
+        - "&e=============================="
+      delete-successfully: "&a이(가) ID가 &b{arena_id} &a인 경기장을 성공적으로 삭제했습니다."
+    shop:
+      series-description: "&b 포인트몰 관련 안내 및 도움말 보기"
+      description: "&a포인트 교환몰 오픈"
+      help-description: "&f뷰 포인트 몰 관리자 도움말"
+      add-description: "&f포인트 몰에 보유 품목 추가"
+      delete-description: "&a지정된 보상 삭제"
+      reset-description: "&a지정된 보상의 가격/설명/레벨 제한을 재설정합니다."
+      command:
+        clear-description: "&f지정된 보상에 대한 모든 사용 지침을 삭제합니다."
+        list-description: "&f 지정된 보상에 대한 모든 사용 지침 보기"
+      add-successfully: "&a 보상이 성공적으로 추가되었습니다. &7(&f 위치: 페이지 {page}, 행 {row}, 열 {column}
+        열 &7)"
+      add-empty-itemstack: "&c 선반에 올리고 싶은 물건을 먼저 손에 쥐어주세요."
+      delete-successfully: "&a 보상이 삭제되었습니다. &7(&f 위치: 페이지 {page}, 행 {row}, 열 {column}
+        열 &7)"
+      invalid-loc: "&c &f 페이지 {page}, 행 {row}, 열 {column} &c에서 보상을 찾을 수 없습니다. 항목을
+        다시 확인해 주세요."
+      reset-point-successfully: "&a이(가) &f{point} 포인트 &a, &7(&f 위치: 페이지 {page}, 행
+        {row}, 열 {column} 열 &7)로 수정되었습니다."
+      reset-description-successfully: "&a이(가) 보상 설명을 &f'&7{description}&f' &7(&f 위치:
+        {page} 페이지, {row} 행, {column} 열 &7)으로 수정했습니다."
+      reset-level-limit-successfully: "&a이(가) 상환 수준 한도를 &f{level} 수준 &a, &7(&f 위치:
+        페이지 {page}, 행 {row}, 열 {column} 열 &7)으로 수정했습니다."
+      command-add-successfully: "&a이(가) 상환 지침 &f{command_content} &a(실행 ID: &f{command_executor}&a)
+        &7(&f 위치: 페이지 {page}, {row} 행, 행을 추가했습니다. {column} 열&7)"
+      command-add-tip-executor:
+        - "&7[&e 사용 팁&7]"
+        - "&7'{enter}' &f은(는) 유효한 실행 ID가 아닙니다."
+        - "&f 사용 가능한 ID &7: &f'player' / 'p' &7 = 플레이어 실행, &f'op' / 'o'&7 = 관리자 실행,
+          &f'console' / 'c'&7 = 백그라운드 실행"
+        - "&fExample&7:&e{command_entered_corrected} [clickable]type::&7(&f자동으로 &7을(를)
+          입력하려면 클릭하세요.)::&f이 명령을 빠르게 입력하려면 클릭하세요[clickable]"
+      command-remove-successfully: "&a 상환 지침을 성공적으로 삭제했습니다. &f'&7/{command}&f' &7
+        (&f보너스 위치: {page} 페이지, {row} 행, {column} 열, 명령 번호: __토큰_1____토큰_0__)"
+      command-index-is-not-found: "&e'{index}' &c은(는) 유효한 명령 번호가 아닙니다. 입력을 다시 확인하세요."
+      command-clear-successfully: "&a이(가) &b{number} &a 상환 지침, &7(&f 위치: 페이지 {page},
+        행 {row}, 열 {column} 열 &7)을 삭제했습니다."
+      command-empty: "&c 이 보상에 대한 사용 지침이 설정되지 않았습니다."
+      command-list-heading: "&b 상환 지침 목록은 다음과 같습니다: &7 (&f 위치: 페이지 {page}, 행 {row},
+        열 {column} 열 &7)"
+      command-list-body: "__토큰_16____토큰_15__. &a/{command_content} &7 (&f 실행 ID: &f{command_executor}&7)
+        [clickable]remove::&7[&c클릭하여 Remove&7]::&f이 지침을 제거하려면 클릭하세요[clickable]"
+      command-list-ending: "&f총계 &e{number} &f 상환 지침"
+    point:
+      series-description: "&f 포인트 관련 지침에 대한 도움말 보기"
+      view-self-description: "&f 포인트를 확인하세요"
+      add-description: "&f은 지정된 플레이어에게 포인트를 추가합니다."
+      set-description: "&f지정된 플레이어의 포인트 설정"
+      view-player-description: "&f 지정된 플레이어의 포인트 보기"
+      view-self: "&a현재 &f{point} &e 포인트&a 포인트가 있습니다."
+      add-successfully: "&a이(가) 플레이어 &f{player} &a &f{point} &e 포인트&a 포인트에 성공적으로 추가되었습니다."
+      set-successfully: "&a이(가) 플레이어 &f{player} &a의 포인트를 &f{point} &e 포인트로 설정했습니다."
+      view-player: "&a 플레이어 &f{player} &a은 현재 &f{point} &e 포인트&a 포인트를 보유하고 있습니다."
+    level:
+      series-description: "&fPvP 레벨 관련 명령 도움말 보기"
+      view-self-description: "&f 레벨 및 경험치 정보를 확인하세요"
+      view-player-description: "&f 지정된 플레이어의 레벨과 경험치를 봅니다."
+      exp-description: "&f 지정된 플레이어에 대한 경험치 추가/설정"
+      view-self:
+        - "&7&m───&f&l&m────────────────────────────────"
+        - "&f현재 수준&7: &f{level} 수준"
+        - "&f현재 순위&7: &r{tier_title}"
+        - "&f총 경험치&7: &a{total_exp}"
+        - "&f업그레이드 요구 사항&7: &c{need_exp}"
+        - "&f업그레이드 진행률&7: &r{progress_bar_level_20_■_2_7} &f({progress_value}%)"
+        - "&7&m───&f&l&m────────────────────────────────"
+      view-player:
+        - "&7&m───&f&l&m────────────────────────────────"
+        - "&f플레이어 이름&7: &f{player}"
+        - "&f현재 수준&7: &f{level} 수준"
+        - "&f현재 순위&7: &r{tier_title}"
+        - "&f총 경험치&7: &a{exp}"
+        - "&7&m───&f&l&m────────────────────────────────"
+      add-successfully: "&a이(가) 플레이어 &f{player} &a에게 &f{exp} &a 경험치를 성공적으로 추가했습니다."
+      set-successfully: "&a은(는) 플레이어 &f{player} &a의 경험치를 &f{exp} &a 포인트로 성공적으로 설정했습니다."
+    rank:
+      series-description: "&f 순위 관련 명령어 도움말 보기"
+      me-description: "&f 각 순위 목록에서 자신의 순위를 확인하세요"
+      view-description: "&f 지정된 순위 목록 보기"
+      type-description: "&f 모든 순위 유형 및 해당 ID 보기"
+      refresh-description: "&f 지정된 순위 목록을 수동으로 새로 고칩니다."
+      hologram-description: "&f은 지정된 순위 목록의 홀로그램을 관리합니다."
+      me-heading:
+        - "&f각 순위의 순위는 다음과 같습니다."
+        - "&7&m───&f&l&m────────────────────────────────"
+        - ""
+      me-body: "&r{ranking_name} &a({rank}&2/{total}&a) [clickable]view_ranking::&7[&f클릭
+        view&7]::&f보려면 클릭하세요&r{ranking_name}&f세부정보[clickable]"
+      me-body-no-data: "&r{ranking_name} &7(&f기록 없음&7) [clickable]view_ranking::&7[&f보려면
+        클릭&7]::&f클릭 보기&r{ranking_name}&f세부정보[clickable]"
+      me-ending:
+        - ""
+        - "&7&m───&f&l&m────────────────────────────────"
+      view-heading:
+        - "{ranking_name}[clickable]순위_설명::&7(&f소개 보기&7)::{ranking_description}[clickable]"
+        - "&7&m──&f&l&m──────────────────────────"
+        - ""
+      view-body: "&f[&7{rank}&f&l] &b{player} &f- &3{data}{extra}"
+      view-ending:
+        - "[clickable]previous_page::&7[&a이전 페이지&7]::이전 페이지를 보려면 클릭하세요.[clickable]
+          &9{current_page}/{total_pages} [clickable]next_page::&7[&a다음 페이지&7]::다음
+          페이지를 보려면 클릭하세요[clickable]"
+        - "&7&m──&f&l&m──────────────────────────"
+        - ""
+      view-ending-show-me: "&f귀하의 순위는 &6{rank}&7/&6{total}&f, 데이터: &6{data}{extra}&f입니다."
+      view-ending-show-me-no-data: "&e아직 이 순위 목록에 기록을 남기지 않았습니다."
+      view-invalid-ranking-type-id: "&c 유형 ID가 &e'{enter}' &c인 리더보드가 없습니다. [clickable]view::&f&n모든
+        유형을 보려면 클릭하세요. ID[clickable]"
+      view-empty: "&c 순위 &e{ranking} &c 아직 정보가 없습니다."
+      view-invalid-ranking-page: "&c 유효한 페이지 번호를 입력하세요. 이 순위 목록에는 &6{total_pages}
+        &c 페이지가 있습니다."
+      type-heading: "&f순위 유형은 다음과 같습니다."
+      type-body:
+        - "__토큰_5____토큰_4__. &b{type_name} &3(ID:{type_id})"
+        - "&f 설명&7: &r{description}"
+      type-ending: "&f총계 &a{number} &f 순위 목록"
+      refresh-internal-successfully: "&a이(가) 내장된 순위 목록을 수동으로 새로 고쳤습니다: &r{ranking_name}&7(ID:
+        {ranking_id})"
+      hologram-disabled: "&c 현재 지원되는 홀로그램 플러그인이 감지되지 않았으며 이 기능을 사용할 수 없습니다."
+      hologram-add-fail-already-exists: "&c 순위 &e{ranking} &c 홀로그램 세트, 위치: &e{location}"
+      hologram-add-successfully: "&a이(가) 리더보드 &b{ranking} &a(위치: &e{location})에 홀로그램을
+        추가했습니다."
+      hologram-delete-fail-not-exists: "&c을(를) 삭제할 수 없습니다. 리더보드 &e{ranking} &c에 홀로그램이
+        설정되지 않았습니다."
+      hologram-delete-successfully: "&a이(가) 리더보드에서 &b{ranking}의 홀로그램을 성공적으로 삭제했습니다.
+        원래 위치: &e{location}"
+      hologram-move-fail-not-exists: "&c을(를) 이동할 수 없습니다. 리더보드 &e{ranking} &c이(가) 홀로그램을
+        설정하지 않았습니다."
+      hologram-move-successfully: "&a이 리더보드 &b{ranking}의 홀로그램을 새 위치 &e{location}로
+        이동했습니다."
+    lobby:
+      series-description: "&f 대회장 관련 안내 보기 및 도움말"
+      description: "&f대회장으로 순간이동됨"
+      help-description: "&f대회 로비 관리자 도움말 보기"
+      set-description: "&f현재 위치를 대회장으로 설정"
+      delete-description: "&f대회장 내 순간이동 지점 삭제"
+      none: "&c서버가 아직 대회장 텔레포트 지점을 설정하지 않았습니다."
+      set-successfully: "&a이(가) 현재 위치를 대회장의 이동 지점으로 성공적으로 설정했습니다."
+      update-successfully: "&a대회장 내 환승 지점이 현재 위치로 업데이트되었습니다."
+      delete-fail-none: "&c서버에는 현재 대회장 텔레포트 지점이 설정되어 있지 않습니다."
+      delete-successfully: "&a이(가) 대회장에서 순간이동 지점을 성공적으로 제거했습니다."
+    blacklist:
+      series-description: "&f블랙리스트 관련 명령 도움말 보기"
+      add-description: "&f 지정된 플레이어를 블랙리스트에 추가"
+      remove-description: "&f블랙리스트에서 지정된 플레이어를 제거합니다."
+      view-description: "&f블랙리스트 목록 보기"
+      add-successfully: "&a이(가) &f{player} &a을(를) 블랙리스트에 성공적으로 추가했습니다."
+      remove-successfully: "&a이(가) 블랙리스트에서 &f{player} &a을(를) 성공적으로 제거했습니다."
+      the-player-has-been-in: "&f{player} &c이 블랙리스트에 있습니다."
+      the-player-not-found: "&f{player} &c은(는) 현재 블랙리스트에 없습니다."
+      view-empty: "&c현재 블랙리스트에 플레이어가 없습니다."
+      view-heading: "&f블랙리스트에 등록된 플레이어는 다음과 같습니다."
+      view-body: "__토큰_13____토큰_12__. &a{player}[clickable]remove::&7(&f제거하려면 클릭&7)::&f블랙리스트에서
+        플레이어를 제거하려면 클릭하세요: &f{player}[clickable]"
+      view-ending: "&f 총 &6{number} &f 플레이어"
+    stop:
+      description: "&f지정된 경기장에서 경기를 강제 종료합니다."
+      fail-arena-not-exists: "&cArena &r'{arena}' &c이(가) 존재하지 않아 중지 작업을 수행할 수 없습니다."
+      fail-no-game: "&c 경기장 &r{arena} &c은(는) 현재 경쟁 중이 아닙니다."
+      tentatively: "&7이(가) &f{arena_type} &7 유형 경기장 &f{arena} &7에서 경기를 강제로 종료합니다..."
+    reload:
+      description: "&b 구성 파일 및 모든 언어 파일 다시 로드"
+      start: "&7이 구성 파일을 다시 로드하고 적용 중입니다..."
+      successfully: "&a 플러그인이 다시 로드되었으며 &f{time}밀리초 &a이 걸렸습니다."
+    start:
+      description: "&f경쟁 선택 인터페이스 열기"
+      fail-self-in-black-list: "&c현재 경쟁 블랙리스트에 등록되어 있어 경쟁 인터페이스를 열 수 없습니다."
+    send:
+      description: "&f지정된 플레이어에게 전투 초대를 보냅니다."
+      fail-self-in-black-list: "&c현재 블랙리스트에 등록되어 전투 초대를 보낼 수 없습니다."
+      fail-send-to-self: "&c자신에게 전투 초대를 보낼 수 없습니다."
+      fail-no-arenas: "&c서버가 아직 경기장을 설정하지 않아 전투 초대를 보낼 수 없습니다."
+      fail-offline: "&c전투 초대를 보낼 수 없습니다. 플레이어 &f'{player}' &c은(는) 현재 온라인 상태가 아니거나
+        존재하지 않습니다."
+      fail-recipient-in-black-list: "플레이어 &c &f{player} &c은 현재 블랙리스트에 있으므로 전투 초대를
+        보낼 수 없습니다."
+      fail-invalid-arena-id: "&cID가 &e'{enter}' &c인 경기장이 존재하지 않습니다. 입력 내용을 확인하세요."
+      fail-arena-disabled: "&c 경기장 &e{arena} &c이(가) 현재 비활성화되었습니다. 다른 경기장을 선택하세요."
+      fail-frequently: "&c초 전에 &f{player} &c &f{second}에 전투 초대를 보냈습니다. 상대방의 응답을 기다려
+        주세요."
+      successfully: "&a이(가) 플레이어 &f{player} &a에게 전투 초대를 성공적으로 보냈습니다. 상대방의 응답을 기다려
+        주세요."
+      receive:
+        - "&7&m───&f&l&m────────────────────────────────"
+        - ""
+        - "&f귀하는 &f{player} &f [clickable]accept::&7[&a✔&7]::&a초대를 수락하려면 클릭하세요[clickable]
+          [clickable]decline::&7[&c✘&7]::&c초대를 거부하려면 클릭[clickable]"
+        - ""
+        - "&7&m───&f&l&m────────────────────────────────"
+      receive-notify-designated-arena: "&f상대방 지정 경기장: &r{arena_name} &7(&f{arena_type}&7)"
+    accept:
+      description: "&a다른 플레이어의 전투 초대 수락"
+      fail-none: "&c현재 보류 중인 전투 초대가 없습니다."
+      fail-time-out: "&c의 초대가 만료되었습니다. &f{player} &c 플레이어의 초대가 너무 오랜 대기 시간으로 인해 자동으로
+        만료되었습니다."
+      fail-offline: "&c초대가 만료되었습니다. 플레이어 &f'{player}' &c이(가) 현재 온라인 상태가 아니거나 존재하지
+        않습니다."
+      fail-has-not-sent: "&c초대장이 유효하지 않습니다. 플레이어 &f'{player}' &c이(가) 전투 초대를 보내지 않았습니다."
+      fail-has-no-arenas: "&c서버가 경기장을 설정하지 않아 전투를 시작할 수 없습니다."
+      fail-has-no-available-arenas: "&c서버는 아직 2인 전투를 위한 경기장을 설정하지 않았습니다."
+      fail-has-no-available-arenas-temporarily: "&c 현재 2인용 경기장이 없습니다."
+      success-receiver: "&a&f{player} &a의 전투 초대를 수락했습니다."
+      success-sender: "&f{player} &a이(가) 전투 초대를 수락했습니다."
+      success-notify-randomly-chosen-arena: "&a 경기장이 지정되지 않았으므로 시스템이 자동으로 무작위로 선택했습니다:
+        &r{arena_name} &7(&r{arena_type}&7)"
+      choose-list-heading: "&f현재 보류 중인 전투 초대가 여러 개 있습니다. 수락하려는 초대를 선택하십시오:"
+      choose-list-body: "__토큰_14____토큰_13__. &f{player} &7(&f지정 경기장: {arena}&7) [clickable]accept::&a&l[수락]::&a초대를
+        수락하려면 클릭하세요[clickable]"
+      choose-list-ending: "&f 총계 &3{number} &f 대기 중인 초대"
+      decline-none: "&c현재 거절할 초대가 없습니다."
+    decline:
+      description: "&f다른 플레이어의 전투 초대를 거부합니다."
+      fail-time-out: "&c 초대가 만료되었습니다. 플레이어 &f{player} &c의 초대가 너무 오래 기다려서 자동으로 만료되었습니다."
+      fail-offline: "&c잘못된 초대: &f'{player}' &c 플레이어가 현재 온라인 상태가 아니거나 존재하지 않습니다."
+      fail-has-not-sent: "&c잘못된 초대: 플레이어 &f'{player}' &c이(가) 전투 초대를 보내지 않았습니다."
+      success-receiver: "&a귀하는 &f{player} &a의 전투 초대를 거부했습니다."
+      success-sender: "&f{player} &c이(가) 전투 초대를 거부했습니다."
+      choose-list-heading: "&b현재 보류 중인 전투 초대가 여러 개 있습니다. 거부하려는 플레이어를 선택하십시오:"
+      choose-list-body: "__토큰_11____토큰_10__. &f{player} [clickable]decline::&7[&c거절하려면
+        클릭&7]::&c이 전투 초대를 거부하려면 클릭[clickable]"
+      choose-list-ending: "&f 총계 &3{number} &f 대기 중인 초대"
+    wait:
+      description: "&f지정된 경기장 또는 대기 대기열에 참여"
+    spectate:
+      description: "&f지정된 경기장에서 경기 관람"
+      fail-arena-not-exists: "&c 아레나 &r'{arena}' &c이(가) 존재하지 않아 시청할 수 없습니다."
+      fail-arena-disabled: "&c 아레나 &f{arena} &c은(는) 현재 비활성화되어 시청할 수 없습니다."
+      fail-arena-no-games: "&c아레나 &f{arena} &c현재 진행 중인 경기가 없어 시청할 수 없습니다."
+    quit:
+      description: "&f현재 경기 종료"
+      not-in-arena: "&c이 명령을 사용하려면 매치에 참여해야 합니다."
+      successfully: "&f&r{arena} &b에서 전투를 종료했습니다."
+    record:
+      description: "&f전투 기록 인터페이스 열기"
+    lang:
+      description: "&6로케일 전환"
+      list-heading: "&6에 사용 가능한 언어 파일은 다음과 같습니다."
+      list-body: "__토큰_13____토큰_12__. &a{file}[clickable]switch::&7(&f전환하려면 클릭&7)::&f언어를
+        전환하려면 클릭하세요. &a{file}[clickable]"
+      list-ending: "&f총 &3{number} &f 언어 파일"
+      no-file-installed: "&c서버에 다른 언어 파일이 설치되지 않았습니다."
+      the-file-not-exists: "&c이름이 &e'{file}' &c인 언어 파일이 존재하지 않습니다."
+      switch-successfully: "&a 언어 전환이 성공했습니다. 현재 언어 환경은 &7&r{language}입니다."
+    join:
+      arena-not-exists: "&c 경기장 &r'{arena}' &c이(가) 존재하지 않아 추가할 수 없습니다."
+      fail-arena-disabled: "&cArena &r{arena} &c은(는) 현재 비활성화되어 지금은 참가할 수 없습니다."
+      arena-in-progress-closed: "&cArena &r{arena} &c은(는) 현재 중간에 참가할 수 없습니다."
+      arena-in-progress-opened-full: "&c 경기장 &r{arena} &c이 현재 가득 찼습니다. 나중에 다시 시도해
+        주세요."
+      game-tentatively: "&a이(가) &r{arena}&a 경기장에 참가하려고 합니다..."
+  shop:
+    command:
+      add-description: "&b 지정된 보상에 대한 새로운 상환 지침을 추가합니다."
+      remove-description: "&b지정된 보상에 대한 상환 명령 제거"
+Item:
+  gui:
+    shop:
+      button-previous-page: "&7[&a이전 페이지&7]"
+      button-next-page: "&7[&a다음 페이지&7]"
+      reward-information:
+        - ""
+        - "&7[&f교환 요구 사항&7]: &e{point} 포인트"
+        - "&7[&f &7 누적 상환액]: &6{volume} 주"
+        - "&7[&f보상 설명&7]: &7{description}"
+        - ""
+      reward-level-limit-tip-yes: "&a이 항목을 사용하는 데 필요한 레벨에 도달했습니다: &fLv.{level}"
+      reward-redeem-tip-yes: "&a교환하려면 클릭하세요 &7:&e{point_now}&7/&e{point_need}"
+      reward-redeem-tip-no-enough-point: "&c 포인트 부족 &7: &c{point_now}&7/&c{point_need}"
+      reward-redeem-tip-no-enough-level: "&c레벨 부족 &7：&cLv.{level_now}&7/&cLv.{level_need}"
+    record:
+      show-tip: "&7[&f&7 왼쪽 클릭]: &f이(가) 이 기록을 채팅 표시줄로 보냅니다."
+      print-tip: "&7[&f오른쪽 클릭&7]: &f이 기록을 손에 있는 종이에 인쇄하세요. &7(&a은 &e{point} 포인트를 소모해야
+        합니다&7)"
+    start:
+      arena-information:
+        - ""
+        - "&f전장 상태&7: &r{state}"
+        - "&f전장에 있는 사람 수&7: &a{now_number}&7/&a{max_number}"
+        - ""
+        - "__토큰_0__"
+      arena-state:
+        waiting: "&a플레이어의 참여를 기다리는 중..."
+        in-progress-closed: "&c 진행 중 &7 (&c은(는) 중간에 추가할 수 없습니다 &7)"
+        in-progress-opened: "&a 진행 중 &7 (&a 중간에 추가 가능 &7)"
+        disabled: "&c이(가) 일시적으로 비활성화되었습니다."
+      arena-button-message:
+        waiting-start: "&7[&a매칭을 시작하려면 클릭&7]"
+        waiting-stop: "&7[&a매칭을 취소하려면 클릭&7]"
+        in-progress-closed: "&7[&c은(는) 현재 &7에 가입할 수 없습니다.]"
+        in-progress-opened: "&7[&a&7에 가입하려면 클릭하세요]"
+        in-progress-opened-full: "&7[&c전장이 가득 찼습니다&7]"
+        disabled: "&7[&c은(는) 사용할 수 없습니다. &7]"
+GUI:
+  already-the-first-page: "&c이미 첫 번째 페이지입니다."
+  already-the-last-page: "&c마지막 페이지입니다"
+  type:
+    shop:
+      title: "&9스포츠 포인트 몰"
+      empty: "&c 현재 포인트몰에는 상품이 없습니다."
+      redeem-unsuccessfully-insufficient-points: "&c 포인트가 부족합니다. 이 항목을 교환하려면 &e{point_need}
+        포인트가 필요합니다. __토큰_3__. 현재 귀하에게는 &e{point_now} 포인트 &c만 있습니다."
+      redeem-unsuccessfully-insufficient-level: "&c 레벨이 부족합니다. 이 아이템을 교환하려면 &aLv.{level_need}&c이
+        필요합니다. 현재 귀하에게는 &aLv.{level_now}&c만 있습니다. 계속해서 열심히 노력해주세요."
+      redeem-successfully: "&a 상환이 완료되었습니다! 해당 상품이 배낭으로 발송되었습니다."
+      redeem-successfully-but-drop: "&a이(가) 성공적으로 사용되었습니다(&c). 그러나 배낭 &a의 공간이 부족하여
+        총 &f{number} 종류의 &a 항목이 귀하의 발 밑에 떨어졌습니다."
+    record:
+      title: "&f{player}&a의 전투 기록"
+      empty: "&c에는 현재 전투 기록이 없습니다."
+      show-frequently: "&c 전투 기록을 표시하기 전에 &f{time}초 동안 기다리십시오."
+      show-content: "&f{player} &7: [clickable]show::&7[&9내 전투 기록&7]::{content}[clickable]&7
+        (&f보려면 텍스트 위로 마우스를 이동하세요. __토큰_0__)"
+      print-insufficient-point: "&c 전투 기록을 인쇄하려면 &e{point_need} 포인트 &c이 필요합니다. 현재
+        귀하에게는 &e{point_now} 포인트 &c만 있습니다."
+      print-fail-no-paper-in-hand: "&c 먼저 종이를 손에 쥐세요."
+      print-fail-paper-has-meta: "&c인쇄 용지는 일반 용지여야 하며 추가 정보를 포함할 수 없습니다."
+      print-successfully: "&a 성공적으로 인쇄되었습니다. 손에 든 용지를 확인하세요."
+    start:
+      title: "&9아레나 목록"
+      empty: "&c서버가 아직 경기장을 만들지 않았습니다."
+      use-while-in-game: "&c현재 &r{arena} &c에서 싸우고 있으며 이 작업을 수행할 수 없습니다."
+      state:
+        waiting-operation-cooldown: "&c매칭 기능을 너무 자주 작동하지 마세요."
+        in-progress-closed: "&c Arena &r{arena} &c은(는) 중간에 참가할 수 없습니다."
+        in-progress-opened-full: "&c 경기장 &r{arena} &c이 현재 가득 차서 지금은 참가할 수 없습니다."
+        in-progress-opened: "&a이(가) &r{arena}&a 경기장에 참여하고 있습니다..."
+        disabled: "&c 아레나 &r{arena} &c은(는) 현재 비활성화되어 있습니다."
+    item-display:
+      title: "&9항목 세부정보"
+Ranking:
+  hologram:
+    heading:
+      - "__토큰_0__"
+      - "__토큰_0__"
+      - ""
+    body: "&7[&e 번호 {rank} &7] &f{player} &7- &f{data}"
+    ending: ""
+  type:
+    classic-wins:
+      name: "&e클래식 모드 승리 순위"
+      description: "&7[&6승수가 높을수록 순위가 높아집니다&7]"
+    classic-win-rate:
+      name: "&e 클래식 모드 승률 순위"
+      description: "&7[&6승률이 높을수록 순위도 높아집니다&7]"
+    exp:
+      name: "&b클래식 모드 경험 순위"
+      description: "&7[&6경험치 축적이 높을수록 순위가 높아집니다&7]"
+    total-game-number:
+      name: "&d 모든 모드의 전투 횟수 순위"
+      description: "&7은 모든 클래식 모드 및 DT 제휴 모드에 참여한 총 횟수를 계산합니다."
+    total-game-time:
+      name: "&d 모든 모드 전투 시간 순위"
+      description: "&7 모든 클래식 모드 및 DT 연계 모드의 누적 전투 시간(초)을 계산합니다."
+    classic-game-number:
+      name: "&e클래식 모드 전투 빈도 순위 목록"
+      description: "&7은 클래식 모드에 참여한 총 횟수를 계산합니다."
+    classic-game-time:
+      name: "&6 클래식 모드 전투 시간 순위"
+      description: "&7 통계 클래식 모드 누적 전투 시간(초)"
