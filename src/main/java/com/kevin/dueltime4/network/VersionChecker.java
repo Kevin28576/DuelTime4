@@ -14,7 +14,7 @@ import java.util.List;
 
 public class VersionChecker {
     private static final String VERSION_URL =
-            "https://raw.githubusercontent.com/kevin/DuelTime4/main/src/main/java/com/kevin/dueltime4/network/version";
+            "https://raw.githubusercontent.com/Kevin28576/DuelTime4/main/src/main/java/com/kevin/dueltime4/network/version";
 
     public void checkForUpdates(Player player) {
         if (VERSION_URL.isBlank()) {

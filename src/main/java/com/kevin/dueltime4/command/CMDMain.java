@@ -12,7 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CMDMain {
-    private static final String PROJECT_LINK = "https://github.com/kevin/DuelTime4";
+    private static final String PROJECT_LINK = "https://github.com/Kevin28576/DuelTime4";
 
     public static boolean onCommand(CommandSender sender, String label) {
         sender.sendMessage("");

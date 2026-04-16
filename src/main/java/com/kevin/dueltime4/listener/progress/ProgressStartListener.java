@@ -1,4 +1,4 @@
-package com.kevin.dueltime4.listener.progress;
+﻿package com.kevin.dueltime4.listener.progress;
 
 import com.kevin.dueltime4.DuelTimePlugin;
 import com.kevin.dueltime4.event.progress.ProgressStartEvent;
@@ -31,9 +31,8 @@ public class ProgressStartListener implements Listener {
                     progress.getSteps()[0].getTip());
         }
         if (progress.getId().equals(CREATE_CLASSIC_ARENA.getId()) || progress.getId().equals(ADD_FUNCTION_CLASSIC_SPECTATE.getId())) {
-            progress.setTimer(Bukkit.getScheduler().runTaskTimerAsynchronously(DuelTimePlugin.getInstance(), () -> {
-                // 第二步執行完畢開始（即A、B點都選好後，開始繪線）
-                if (progress.getFinishedStep() >= 2) {
+            progress.setTimer(Bukkit.getScheduler().runTaskTimer(DuelTimePlugin.getInstance(), () -> {
+                // 蝚砌?甇亙銵??ａ?憪??莧?暺?詨末敺???蝜芰?嚗?                if (progress.getFinishedStep() >= 2) {
                     Location locationDiagonalA = (Location) progress.getSteps()[0].getData();
                     Location locationDiagonalB = (Location) progress.getSteps()[1].getData();
                     int[] colors = progress.isPaused() ? new int[]{255, 255, 0} : new int[]{72, 209, 204};
@@ -43,3 +42,4 @@ public class ProgressStartListener implements Listener {
         }
     }
 }
+

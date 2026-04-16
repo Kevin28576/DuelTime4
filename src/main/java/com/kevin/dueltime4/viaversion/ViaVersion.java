@@ -1,4 +1,4 @@
-package com.kevin.dueltime4.viaversion;
+﻿package com.kevin.dueltime4.viaversion;
 
 import com.kevin.dueltime4.DuelTimePlugin;
 import net.md_5.bungee.api.ChatMessageType;
@@ -31,6 +31,9 @@ public class ViaVersion {
 
     private static Class<?> getCbClass(String name)
             throws ClassNotFoundException {
+        if (DuelTimePlugin.serverVersion == null || DuelTimePlugin.serverVersion.isEmpty()) {
+            return Class.forName("org.bukkit.craftbukkit." + name);
+        }
         return Class.forName("org.bukkit.craftbukkit."
                 + DuelTimePlugin.serverVersion + "." + name);
     }
@@ -40,6 +43,7 @@ public class ViaVersion {
     private static Class<?> packet;
     private static Class<?> packetPlayOutTitle;
     private static Class<?> enumTitleAction;
+    private static boolean particleWarningLogged = false;
 
     public static void getClassesForTitleAndAction() {
         try {
@@ -58,8 +62,7 @@ public class ViaVersion {
     }
 
     /*
-    傳送可自定義淡入、停留、淡出時間的Title文字，如果為1.8以下的低版本，可以選擇是否以螢幕文字的形式傳送主title或副title或都傳送（並行）
-     */
+    ?喲?芸?蝢拇楚?乓??楚?箸???Title??嚗??1.8隞乩????嚗隞仿??虫誑?Ｗ????耦撘?蜓title?title??喲?銝西?嚗?     */
     public static void sendTitle(Player player, String title, String subTitle,
                                  int fadeIn, int stay, int fadeOut, TitleType titleTypeAsMessage) {
         int version = DuelTimePlugin.serverVersionInt;
@@ -139,9 +142,8 @@ public class ViaVersion {
 
 
     /*
-    傳送ActionBar文字，如果為1.8以下的低版本，可以選擇是否以螢幕文字的形式傳送主title
-    高版本的API提供了直接傳送ActionBar的方法，但我是基於1.12.2的API開發的，所以這裡用的是相對落後的傳送方法
-     */
+    ?喲ctionBar??嚗??1.8隞乩????嚗隞仿??虫誑?Ｗ????耦撘?蜓title
+    擃??祉?API??鈭?亙?ctionBar?瘜?雿??臬??.12.2?PI????隞仿ㄐ?函??舐撠敺??喲瘜?     */
     public static void sendActionBar(Player player, String actionbar, boolean considerLowVersion) {
         int version = DuelTimePlugin.serverVersionInt;
         if (version <= 7) {
@@ -171,97 +173,117 @@ public class ViaVersion {
         }
     }
 
-    // 用於生成染色粒子。我承認這是一個屎山方法，但nms的版本差異實在太大了！以後慢慢改
+    // ?冽???蝎????輯??銝??撅望瘜?雿ms???砍榆?啣祕?典云憭找?嚗誑敺?Ｘ
     public static void spawnRedstoneParticle(Player viewer, Location location, float colorR, float colorG, float colorB) {
         try {
-            Object packet;
             if (DuelTimePlugin.serverVersionInt >= 17) {
-                // 還沒研究清楚1.17及以上的發包形式，就暫時不採取不發包
-                Class<?> dustOptionsClass = Class.forName("org.bukkit.Particle$DustOptions");
-                Constructor<?> dustOptionsConstructor = dustOptionsClass.getConstructor(Color.class, float.class);
-                Object dustOptions = dustOptionsConstructor.newInstance(Color.fromRGB((int) colorR, (int) colorG, (int) colorB), 1);
-                Method spawnParticleMethod = viewer.getWorld().getClass().getMethod("spawnParticle", Particle.class, Location.class, int.class, double.class, double.class, double.class, Object.class);
-                spawnParticleMethod.invoke(viewer.getWorld(), Particle.DUST, location, 0, 0, 0, 0, dustOptions);
-            } else {
-                Class<?> packetClass = getNmsClass("Packet");
+                Color particleColor = Color.fromRGB(clampColor(colorR), clampColor(colorG), clampColor(colorB));
+                viewer.getWorld().spawnParticle(
+                        Particle.DUST,
+                        location,
+                        1,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        new Particle.DustOptions(particleColor, 1.0f)
+                );
+                return;
+            }
+
+            Object packet;
+            Class<?> packetClass = getNmsClass("Packet");
+            try {
+                Class<?> packetPlayOutWorldParticlesClass = getNmsClass("PacketPlayOutWorldParticles");
                 try {
-                    // 在搞清楚臨界版本之前，先用try-catch分類討論
-                    Class<?> packetPlayOutWorldParticlesClass = getNmsClass("PacketPlayOutWorldParticles");
-                    try {
-                        // 至少知道是1.16.5
-                        Class<?> particleParamRedstoneClass = getNmsClass("ParticleParamRedstone");
-                        Class<?> particleParamClass = getNmsClass("ParticleParam");
-                        Constructor<?> particleParamRedstoneConstructor = particleParamRedstoneClass.getConstructor(float.class, float.class, float.class, float.class);
-                        Object particleParamRedstone = particleParamRedstoneConstructor.newInstance(
-                                colorR / 255.0f, colorG / 255.0f, colorB / 255.0f, 1.0f);
-                        Object particleParam = particleParamClass.cast(particleParamRedstone);
-                        packet = packetPlayOutWorldParticlesClass.getConstructor(
-                                particleParamClass, boolean.class, double.class, double.class, double.class, float.class, float.class, float.class, float.class, int.class
-                        ).newInstance(
-                                particleParam, false, location.getX(), location.getY(), location.getZ(), 0, 0, 0, 1, 0);
-                    } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
-                        packet = packetPlayOutWorldParticlesClass.getConstructor(
-                                String.class,
-                                float.class,
-                                float.class,
-                                float.class,
-                                float.class,
-                                float.class,
-                                float.class,
-                                float.class,
-                                int.class
-                        ).newInstance(
-                                "reddust",
-                                (float) location.getX(),
-                                (float) location.getY(),
-                                (float) location.getZ(),
-                                colorR / 255,
-                                colorG / 255,
-                                colorB / 255,
-                                1.0f, // 粒子大小
-                                0 // 粒子數量
-                        );
-                    }
-                } catch (ClassNotFoundException | NoSuchMethodException e1) {
-                    Class<?> packetPlayOutWorldParticlesClass = getNmsClass("PacketPlayOutWorldParticles");
-                    Class<?> enumParticleClass = getNmsClass("EnumParticle");
-                    Object reddustEnum = enumParticleClass.getField("REDSTONE").get(null);
+                    Class<?> particleParamRedstoneClass = getNmsClass("ParticleParamRedstone");
+                    Class<?> particleParamClass = getNmsClass("ParticleParam");
+                    Constructor<?> particleParamRedstoneConstructor = particleParamRedstoneClass.getConstructor(float.class, float.class, float.class, float.class);
+                    Object particleParamRedstone = particleParamRedstoneConstructor.newInstance(
+                            colorR / 255.0f, colorG / 255.0f, colorB / 255.0f, 1.0f);
+                    Object particleParam = particleParamClass.cast(particleParamRedstone);
                     packet = packetPlayOutWorldParticlesClass.getConstructor(
-                            enumParticleClass,
-                            boolean.class,
-                            float.class,
-                            float.class,
-                            float.class,
-                            float.class,
-                            float.class,
-                            float.class,
-                            float.class,
-                            int.class,
-                            int[].class
+                            particleParamClass, boolean.class, double.class, double.class, double.class, float.class, float.class, float.class, float.class, int.class
                     ).newInstance(
-                            reddustEnum, // 粒子型別
-                            true, // 總是顯示
+                            particleParam, false, location.getX(), location.getY(), location.getZ(), 0, 0, 0, 1, 0);
+                } catch (NoSuchMethodException ignored) {
+                    packet = packetPlayOutWorldParticlesClass.getConstructor(
+                            String.class,
+                            float.class,
+                            float.class,
+                            float.class,
+                            float.class,
+                            float.class,
+                            float.class,
+                            float.class,
+                            int.class
+                    ).newInstance(
+                            "reddust",
                             (float) location.getX(),
                             (float) location.getY(),
                             (float) location.getZ(),
                             colorR / 255,
                             colorG / 255,
                             colorB / 255,
-                            1.0f, // 粒子大小
-                            0, // 粒子數量
-                            new int[0] // 額外引數
+                            1.0f,
+                            0
                     );
                 }
-                Class<?> craftPlayerClass = getCbClass("entity.CraftPlayer");
-                Object craftPlayer = craftPlayerClass.cast(viewer);
-                Object entityPlayer = craftPlayerClass.getMethod("getHandle").invoke(craftPlayer);
-                Object playerConnection = entityPlayer.getClass().getField("playerConnection").get(entityPlayer);
-                playerConnection.getClass().getMethod("sendPacket", packetClass).invoke(playerConnection, packet);
+            } catch (ClassNotFoundException | NoSuchMethodException ignored) {
+                Class<?> packetPlayOutWorldParticlesClass = getNmsClass("PacketPlayOutWorldParticles");
+                Class<?> enumParticleClass = getNmsClass("EnumParticle");
+                Object reddustEnum = enumParticleClass.getField("REDSTONE").get(null);
+                packet = packetPlayOutWorldParticlesClass.getConstructor(
+                        enumParticleClass,
+                        boolean.class,
+                        float.class,
+                        float.class,
+                        float.class,
+                        float.class,
+                        float.class,
+                        float.class,
+                        float.class,
+                        int.class,
+                        int[].class
+                ).newInstance(
+                        reddustEnum,
+                        true,
+                        (float) location.getX(),
+                        (float) location.getY(),
+                        (float) location.getZ(),
+                        colorR / 255,
+                        colorG / 255,
+                        colorB / 255,
+                        1.0f,
+                        0,
+                        new int[0]
+                );
             }
+            Class<?> craftPlayerClass = getCbClass("entity.CraftPlayer");
+            Object craftPlayer = craftPlayerClass.cast(viewer);
+            Object entityPlayer = craftPlayerClass.getMethod("getHandle").invoke(craftPlayer);
+            Object playerConnection = entityPlayer.getClass().getField("playerConnection").get(entityPlayer);
+            playerConnection.getClass().getMethod("sendPacket", packetClass).invoke(playerConnection, packet);
         } catch (Exception e) {
-            e.printStackTrace();
+            logParticleWarning(e);
         }
+    }
+
+    private static int clampColor(float value) {
+        return Math.max(0, Math.min(255, Math.round(value)));
+    }
+
+    private static void logParticleWarning(Exception exception) {
+        if (particleWarningLogged) {
+            return;
+        }
+        particleWarningLogged = true;
+        String message = exception.getMessage() == null ? "" : " - " + exception.getMessage();
+        if (DuelTimePlugin.getInstance() != null) {
+            DuelTimePlugin.getInstance().getLogger().warning("Failed to spawn arena preview particles" + message);
+            return;
+        }
+        Bukkit.getLogger().warning("Failed to spawn arena preview particles" + message);
     }
 
     public static Object getCraftSplashPotion() {
@@ -348,9 +370,8 @@ public class ViaVersion {
 
 
     /**
-     * 以1.7及以後的API，方法Bukkit.getOnlinePlayers()的返回型別與之前的版本不同
-     *
-     * @return 玩家集合
+     * 隞?.7?誑敺?API嚗瘜ukkit.getOnlinePlayers()?????亥?銋????砌???     *
+     * @return ?拙振??
      */
     public static List<Player> getOnlinePlayers() {
         List<Player> players = null;

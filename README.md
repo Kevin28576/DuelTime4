@@ -66,7 +66,7 @@ mvn clean package
 
 ## 問題回報
 
-- Issues: <https://github.com/kevin/DuelTime4/issues>
+- Issues: <https://github.com/Kevin28576/DuelTime4/issues>
 
 ## 授權
 

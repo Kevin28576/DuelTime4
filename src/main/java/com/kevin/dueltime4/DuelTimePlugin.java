@@ -1,4 +1,4 @@
-package com.kevin.dueltime4;
+﻿package com.kevin.dueltime4;
 
 import com.kevin.dueltime4.arena.ArenaManager;
 import com.kevin.dueltime4.arena.base.BaseArena;
@@ -61,23 +61,15 @@ public final class DuelTimePlugin extends JavaPlugin {
         progressManager = new ProgressManager();
         customInventoryManager = new CustomInventoryManager();
         requestReceiverManager = new RequestReceiverManager();
-        // 確認伺服器版本，方便一些版本差異的討論
         String packageName = Bukkit.getServer().getClass().getPackage().getName();
-        serverVersion = packageName.substring(packageName.lastIndexOf('.') + 1);
-        if (packageName.split("\\.").length >= 4) {
-            // packageName 形如 org.bukkit.craftbukkit.v1_20_R1
-            serverVersionInt = Integer.parseInt(serverVersion.contains("_") ? serverVersion.split("_")[1] : serverVersion.split("-")[0]);
-            if (serverVersionInt == 8 || serverVersionInt == 9) {
-                ViaVersion.getClassesForTitleAndAction();
-            }
-        } else {
-            // packageName 形如 org.bukkit.craftbukkit
-            try {
-                serverVersionInt = Integer.parseInt(Bukkit.getVersion().split("\\.")[1]);
-            } catch (NumberFormatException e) {
-                // Bukkit.getVersion() 形如 1.21-66-99ae7bb
-                serverVersionInt = Integer.parseInt(Bukkit.getVersion().split("-")[0].split("\\.")[1]);
-            }
+        String[] packageParts = packageName.split("\\.");
+        serverVersion = "";
+        if (packageParts.length >= 4 && packageParts[3].startsWith("v")) {
+            serverVersion = packageParts[3];
+        }
+        serverVersionInt = resolveServerVersionInt();
+        if (serverVersionInt == 8 || serverVersionInt == 9) {
+            ViaVersion.getClassesForTitleAndAction();
         }
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new DuelTimeExpansion(this).register();
@@ -171,5 +163,23 @@ public final class DuelTimePlugin extends JavaPlugin {
 
     public VersionChecker getVersionChecker() {
         return versionChecker;
+    }
+
+    private int resolveServerVersionInt() {
+        String bukkitVersion = Bukkit.getBukkitVersion();
+        if (bukkitVersion == null || bukkitVersion.isEmpty()) {
+            bukkitVersion = Bukkit.getVersion();
+        }
+        String normalizedVersion = bukkitVersion.split("-")[0];
+        String[] versionParts = normalizedVersion.split("\\.");
+        try {
+            if (versionParts.length >= 2 && "1".equals(versionParts[0])) {
+                return Integer.parseInt(versionParts[1]);
+            }
+            return Integer.parseInt(versionParts[0]);
+        } catch (NumberFormatException e) {
+            getLogger().warning("Cannot parse server version from: " + bukkitVersion + ", fallback to 21.");
+            return 21;
+        }
     }
 }
