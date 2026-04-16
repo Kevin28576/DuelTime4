@@ -45,22 +45,46 @@ public final class DuelTimePlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        long enableStart = System.currentTimeMillis();
+        logStartup("Starting DuelTime4 v" + getDescription().getVersion() + "...");
         instance = this;
+
+        logStartup("Registering listeners...");
         ListenerManager.register();
+
+        logStartup("Loading configuration...");
         cfgManager = new CfgManager();
+
+        logStartup("Loading level data...");
         levelManager = new LevelManager();
+
+        logStartup("Loading message files...");
         msgManager = new MsgManager();
+
+        logStartup("Initializing database manager...");
         myBatisManager = new MyBatisManager();
+
+        logStartup("Loading ranking systems...");
         rankingManager = new RankingManager();
         hologramManager = new HologramManager();
+
+        logStartup("Loading cache...");
         cacheManager = new CacheManager();
         cacheManager.load();
+
+        logStartup("Loading arena types and arenas...");
         arenaTypeManager = new ArenaTypeManager();
         arenaManager = new ArenaManager();
+
+        logStartup("Registering commands...");
         commandHandler = new CommandHandler();
+
+        logStartup("Initializing progress and GUI systems...");
         progressManager = new ProgressManager();
         customInventoryManager = new CustomInventoryManager();
         requestReceiverManager = new RequestReceiverManager();
+
+        logStartup("Detecting server version...");
         String packageName = Bukkit.getServer().getClass().getPackage().getName();
         String[] packageParts = packageName.split("\\.");
         serverVersion = "";
@@ -71,11 +95,20 @@ public final class DuelTimePlugin extends JavaPlugin {
         if (serverVersionInt == 8 || serverVersionInt == 9) {
             ViaVersion.getClassesForTitleAndAction();
         }
+        String detectedVersionName = serverVersion.isEmpty() ? "unknown" : serverVersion;
+        logStartup("Server version detected: " + detectedVersionName + " (" + serverVersionInt + ")");
+
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new DuelTimeExpansion(this).register();
+            logStartup("PlaceholderAPI hook registered.");
+        } else {
+            logStartup("PlaceholderAPI not found, skipping PlaceholderAPI hook.");
         }
+
+        logStartup("Starting metrics and version checker...");
         metrics = new Metrics(this, 30767);
         versionChecker = new VersionChecker();
+        logStartup("DuelTime4 enabled in " + (System.currentTimeMillis() - enableStart) + "ms.");
     }
 
     @Override
@@ -181,5 +214,9 @@ public final class DuelTimePlugin extends JavaPlugin {
             getLogger().warning("Cannot parse server version from: " + bukkitVersion + ", fallback to 21.");
             return 21;
         }
+    }
+
+    private void logStartup(String message) {
+        getLogger().info(message);
     }
 }
