@@ -1,4 +1,4 @@
-﻿package com.kevin.dueltime4;
+package com.kevin.dueltime4;
 
 import com.kevin.dueltime4.arena.ArenaManager;
 import com.kevin.dueltime4.arena.base.BaseArena;

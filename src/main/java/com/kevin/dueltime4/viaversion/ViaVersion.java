@@ -1,4 +1,4 @@
-﻿package com.kevin.dueltime4.viaversion;
+package com.kevin.dueltime4.viaversion;
 
 import com.kevin.dueltime4.DuelTimePlugin;
 import net.md_5.bungee.api.ChatMessageType;
@@ -61,8 +61,6 @@ public class ViaVersion {
         TITLE, SUBTITLE, PARALLEL, LINE
     }
 
-    /*
-    ?喲?芸?蝢拇楚?乓??楚?箸???Title??嚗??1.8隞乩????嚗隞仿??虫誑?Ｗ????耦撘?蜓title?title??喲?銝西?嚗?     */
     public static void sendTitle(Player player, String title, String subTitle,
                                  int fadeIn, int stay, int fadeOut, TitleType titleTypeAsMessage) {
         int version = DuelTimePlugin.serverVersionInt;
@@ -140,10 +138,6 @@ public class ViaVersion {
         }
     }
 
-
-    /*
-    ?喲ctionBar??嚗??1.8隞乩????嚗隞仿??虫誑?Ｗ????耦撘?蜓title
-    擃??祉?API??鈭?亙?ctionBar?瘜?雿??臬??.12.2?PI????隞仿ㄐ?函??舐撠敺??喲瘜?     */
     public static void sendActionBar(Player player, String actionbar, boolean considerLowVersion) {
         int version = DuelTimePlugin.serverVersionInt;
         if (version <= 7) {
@@ -173,7 +167,6 @@ public class ViaVersion {
         }
     }
 
-    // ?冽???蝎????輯??銝??撅望瘜?雿ms???砍榆?啣祕?典云憭找?嚗誑敺?Ｘ
     public static void spawnRedstoneParticle(Player viewer, Location location, float colorR, float colorG, float colorB) {
         try {
             if (DuelTimePlugin.serverVersionInt >= 17) {
@@ -368,11 +361,6 @@ public class ViaVersion {
         return null;
     }
 
-
-    /**
-     * 隞?.7?誑敺?API嚗瘜ukkit.getOnlinePlayers()?????亥?銋????砌???     *
-     * @return ?拙振??
-     */
     public static List<Player> getOnlinePlayers() {
         List<Player> players = null;
         try {
