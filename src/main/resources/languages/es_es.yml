@@ -1,4 +1,5 @@
 LanguageName: "&cEspañol (España)"
+Author: "Kevin"
 String:
   none: "ninguno"
   true: "Sí"
@@ -971,3 +972,12 @@ Ranking:
     classic-game-time:
       name: "&6 Clasificación de duración de batalla en modo clásico"
       description: "&7 Estadísticas Tiempo de batalla acumulado en modo Clásico (segundos)"
+VersionChecker:
+  separator: "&8&m───────────────────────────────────"
+  new-version-title: "&6&lHay una nueva version disponible!"
+  current-latest: "&7Version actual: &f{current} &8-> &7Version mas reciente: &a{latest}"
+  highlights: "&7Novedades de la actualizacion:"
+  note: "&8  - &f{line}"
+  more: "&8  - &7...y {count} cambio(s) mas"
+  no-summary: "&8  - &7No se proporciono un resumen de esta actualizacion."
+  recommend: "&7Se recomienda actualizar pronto para obtener mejor compatibilidad y correcciones."

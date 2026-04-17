@@ -1,4 +1,5 @@
 LanguageName: "&c繁體中文（系統預設）"
+Author: "Kevin(大鼠)"
 String:
   none: "無"
   true: "是"
@@ -707,3 +708,12 @@ Ranking:
     classic-game-time:
       name: "&6經典模式對戰時長排行榜"
       description: "&7統計經典模式累積對戰時長（秒）"
+VersionChecker:
+  separator: "&8&m───────────────────────────────────"
+  new-version-title: "&6&l有新版本可更新！"
+  current-latest: "&7目前版本: &f{current} &8-> &7最新版本: &a{latest}"
+  highlights: "&7更新重點:"
+  note: "&8  - &f{line}"
+  more: "&8  - &7...還有 {count} 條更新"
+  no-summary: "&8  - &7本次未提供更新摘要"
+  recommend: "&7建議儘快更新以獲得最佳相容性與修正。"

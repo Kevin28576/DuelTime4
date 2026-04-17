@@ -20,9 +20,17 @@ import com.kevin.dueltime4.viaversion.ViaVersion;
 import com.kevin.dueltime4.yaml.configuration.CfgManager;
 import com.kevin.dueltime4.yaml.message.MsgManager;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Map;
+import java.util.regex.Pattern;
+
 public final class DuelTimePlugin extends JavaPlugin {
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_CYAN = "\u001B[36m";
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
 
     private static DuelTimePlugin instance;
     public static String serverVersion;
@@ -46,45 +54,33 @@ public final class DuelTimePlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         long enableStart = System.currentTimeMillis();
-        logStartup("Starting DuelTime4 v" + getDescription().getVersion() + "...");
         instance = this;
 
-        logStartup("Registering listeners...");
         ListenerManager.register();
 
-        logStartup("Loading configuration...");
         cfgManager = new CfgManager();
-
-        logStartup("Loading level data...");
         levelManager = new LevelManager();
-
-        logStartup("Loading message files...");
         msgManager = new MsgManager();
+        logInfo("Config file successfully loaded.");
+        logSuccess(buildLanguageSummary());
 
-        logStartup("Initializing database manager...");
         myBatisManager = new MyBatisManager();
-
-        logStartup("Loading ranking systems...");
         rankingManager = new RankingManager();
         hologramManager = new HologramManager();
+        logSuccess("Database and ranking services successfully initialized.");
 
-        logStartup("Loading cache...");
         cacheManager = new CacheManager();
         cacheManager.load();
-
-        logStartup("Loading arena types and arenas...");
         arenaTypeManager = new ArenaTypeManager();
         arenaManager = new ArenaManager();
+        logSuccess("Arena data successfully loaded. Arenas: " + arenaManager.size() + ", Types: " + arenaTypeManager.getList().size() + ".");
 
-        logStartup("Registering commands...");
         commandHandler = new CommandHandler();
-
-        logStartup("Initializing progress and GUI systems...");
         progressManager = new ProgressManager();
         customInventoryManager = new CustomInventoryManager();
         requestReceiverManager = new RequestReceiverManager();
+        logSuccess("Command and GUI systems successfully initialized.");
 
-        logStartup("Detecting server version...");
         String packageName = Bukkit.getServer().getClass().getPackage().getName();
         String[] packageParts = packageName.split("\\.");
         serverVersion = "";
@@ -95,43 +91,56 @@ public final class DuelTimePlugin extends JavaPlugin {
         if (serverVersionInt == 8 || serverVersionInt == 9) {
             ViaVersion.getClassesForTitleAndAction();
         }
-        String detectedVersionName = serverVersion.isEmpty() ? "unknown" : serverVersion;
-        logStartup("Server version detected: " + detectedVersionName + " (" + serverVersionInt + ")");
+        String detectedVersionName = serverVersion.isEmpty() ? "modern-package-layout" : serverVersion;
+        logInfo("Server compatibility check completed. Version: " + resolveMinecraftVersionString() + " (nms=" + detectedVersionName + ", parsed=" + serverVersionInt + ").");
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new DuelTimeExpansion(this).register();
-            logStartup("PlaceholderAPI hook registered.");
+            logSuccess("PlaceholderAPI hook was successfully registered!");
         } else {
-            logStartup("PlaceholderAPI not found, skipping PlaceholderAPI hook.");
+            logWarn("PlaceholderAPI not found, placeholder hook skipped.");
         }
 
-        logStartup("Starting metrics and version checker...");
         metrics = new Metrics(this, 30767);
         versionChecker = new VersionChecker();
-        logStartup("DuelTime4 enabled in " + (System.currentTimeMillis() - enableStart) + "ms.");
+        logSuccess("DuelTime4 has been enabled! (" + (System.currentTimeMillis() - enableStart) + "ms)");
     }
 
     @Override
     public void onDisable() {
+        long disableStart = System.currentTimeMillis();
+        logInfo("Disabling DuelTime4...");
+
         if (arenaManager != null) {
+            int stoppedArenaCount = 0;
             for (BaseArena arena : arenaManager.getList()) {
                 if (arena.getState().equals(BaseArena.State.IN_PROGRESS_OPENED) || arena.getState().equals(BaseArena.State.IN_PROGRESS_CLOSED)) {
                     arenaManager.stop(arena.getId(), null);
+                    stoppedArenaCount++;
                 }
+            }
+            if (stoppedArenaCount > 0) {
+                logInfo("Stopped " + stoppedArenaCount + " active arena(s).");
             }
         }
         if (hologramManager != null) {
             hologramManager.disable();
+            logInfo("Hologram manager disabled.");
         }
         if (cacheManager != null && cacheManager.getPlayerDataCache() != null && cacheManager.getPlayerDataCache().getRefreshRankingTimer() != null) {
             cacheManager.getPlayerDataCache().getRefreshRankingTimer().cancel();
+            logInfo("Ranking refresh task cancelled.");
         }
         if (myBatisManager != null) {
             myBatisManager.closeConnection();
+            logInfo("Database connections closed.");
         }
         if (progressManager != null) {
             progressManager.exitAll();
+            logInfo("All active progress sessions cleared.");
         }
+
+        logSuccess("DuelTime4 has been disabled! (" + (System.currentTimeMillis() - disableStart) + "ms)");
     }
 
     public static DuelTimePlugin getInstance() {
@@ -216,7 +225,54 @@ public final class DuelTimePlugin extends JavaPlugin {
         }
     }
 
-    private void logStartup(String message) {
-        getLogger().info(message);
+    private String resolveMinecraftVersionString() {
+        String bukkitVersion = Bukkit.getBukkitVersion();
+        if (bukkitVersion == null || bukkitVersion.isEmpty()) {
+            bukkitVersion = Bukkit.getVersion();
+        }
+        return bukkitVersion.split("-")[0];
+    }
+
+    private void logInfo(String message) {
+        getLogger().info(ANSI_CYAN + message + ANSI_RESET);
+    }
+
+    private void logSuccess(String message) {
+        getLogger().info(ANSI_GREEN + message + ANSI_RESET);
+    }
+
+    private void logWarn(String message) {
+        getLogger().warning(ANSI_YELLOW + message + ANSI_RESET);
+    }
+
+    private String buildLanguageSummary() {
+        Map<String, YamlConfiguration> languageMap = msgManager.getLanguageYamlFileMap();
+        String configuredLanguage = cfgManager.getConfig().getString("Message.default-language", "zh_tw");
+        String activeLanguage = configuredLanguage;
+        if (!languageMap.containsKey(activeLanguage)) {
+            activeLanguage = "zh_tw";
+        }
+        if (!languageMap.containsKey(activeLanguage) && !languageMap.isEmpty()) {
+            activeLanguage = languageMap.keySet().stream().sorted().findFirst().orElse("unknown");
+        }
+        YamlConfiguration activeLanguageConfig = languageMap.get(activeLanguage);
+        String languageName = activeLanguageConfig != null
+                ? stripConsoleColors(activeLanguageConfig.getString("LanguageName", activeLanguage))
+                : "unknown";
+        String author = activeLanguageConfig != null
+                ? stripConsoleColors(activeLanguageConfig.getString("Author", "unknown"))
+                : "unknown";
+        return "Language file successfully loaded. Language: " + languageName
+                + " Author: " + author
+                + " Installed: " + languageMap.size();
+    }
+
+    private String stripConsoleColors(String text) {
+        if (text == null || text.isEmpty()) {
+            return "unknown";
+        }
+        String sectionSymbol = "\u00A7";
+        String normalized = text.replace("&", sectionSymbol).replace("\u79AE", sectionSymbol);
+        return Pattern.compile("(?i)\u00A7[0-9A-FK-ORX]").matcher(normalized).replaceAll("").trim();
     }
 }

@@ -1,4 +1,5 @@
 LanguageName: "&cDeutsch (Deutschland)"
+Author: "Kevin"
 String:
   none: "keiner"
   true: "Ja"
@@ -980,3 +981,12 @@ Ranking:
     classic-game-time:
       name: "&6 Rangliste der Kampfdauer im klassischen Modus"
       description: "&7 Statistiken: Kumulierte Kampfzeit im klassischen Modus (Sekunden)"
+VersionChecker:
+  separator: "&8&m───────────────────────────────────"
+  new-version-title: "&6&lEine neue Version ist verfuegbar!"
+  current-latest: "&7Aktuelle Version: &f{current} &8-> &7Neueste Version: &a{latest}"
+  highlights: "&7Aenderungen:"
+  note: "&8  - &f{line}"
+  more: "&8  - &7...und {count} weitere Aktualisierung(en)"
+  no-summary: "&8  - &7Fuer diese Version wurde keine Zusammenfassung bereitgestellt."
+  recommend: "&7Bitte zeitnah aktualisieren, um beste Kompatibilitaet und Fixes zu erhalten."

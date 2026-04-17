@@ -1,4 +1,5 @@
 LanguageName: "&c日本語（日本）"
+Author: "Kevin"
 String:
   none: "なし"
   true: "はい"
@@ -760,3 +761,12 @@ Ranking:
     classic-game-time:
       name: "&6 クラシックモードの戦闘時間ランキング"
       description: "&7 統計 クラシックモードの累計戦闘時間（秒）"
+VersionChecker:
+  separator: "&8&m───────────────────────────────────"
+  new-version-title: "&6&l新しいバージョンがあります！"
+  current-latest: "&7現在のバージョン: &f{current} &8-> &7最新バージョン: &a{latest}"
+  highlights: "&7更新内容:"
+  note: "&8  - &f{line}"
+  more: "&8  - &7...他に {count} 件の更新があります"
+  no-summary: "&8  - &7今回の更新概要は提供されていません"
+  recommend: "&7互換性と修正のため、できるだけ早く更新してください。"

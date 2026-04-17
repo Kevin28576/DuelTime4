@@ -1,4 +1,5 @@
 LanguageName: "&c한국어(대한민국)"
+Author: "Kevin"
 String:
   none: "없음"
   true: "예"
@@ -802,3 +803,12 @@ Ranking:
     classic-game-time:
       name: "&6 클래식 모드 전투 시간 순위"
       description: "&7 통계 클래식 모드 누적 전투 시간(초)"
+VersionChecker:
+  separator: "&8&m───────────────────────────────────"
+  new-version-title: "&6&l새 버전을 사용할 수 있습니다!"
+  current-latest: "&7현재 버전: &f{current} &8-> &7최신 버전: &a{latest}"
+  highlights: "&7업데이트 하이라이트:"
+  note: "&8  - &f{line}"
+  more: "&8  - &7...추가 업데이트 {count}개"
+  no-summary: "&8  - &7이번 릴리스의 요약이 제공되지 않았습니다."
+  recommend: "&7최신 호환성과 수정 사항을 위해 빠른 업데이트를 권장합니다."
