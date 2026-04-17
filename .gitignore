@@ -139,7 +139,11 @@ logs/
 crash-reports/
 plugins/
 libraries/
-cache/
+/cache/
+!src/main/java/com/kevin/dueltime4/cache/
+!src/main/java/com/kevin/dueltime4/cache/**
+!src/main/java/com/kevin/dueltime4/listener/cache/
+!src/main/java/com/kevin/dueltime4/listener/cache/**
 versions/
 world/
 world_nether/
