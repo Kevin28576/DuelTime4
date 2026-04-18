@@ -33,6 +33,7 @@ public class ListenerManager {
                 new CloseInventoryListener(),
                 new BaseArenaListener(),
                 new SimpleGUIListener(),
+                new QueueMatchConfirmGUIListener(),
                 new CacheInitializedListener(),
                 new CheckVersionListener(),
         };

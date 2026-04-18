@@ -15,6 +15,7 @@ import com.kevin.dueltime4.progress.ProgressManager;
 import com.kevin.dueltime4.ranking.RankingManager;
 import com.kevin.dueltime4.ranking.hologram.HologramManager;
 import com.kevin.dueltime4.request.RequestReceiverManager;
+import com.kevin.dueltime4.stats.MatchStreakManager;
 import com.kevin.dueltime4.stats.Metrics;
 import com.kevin.dueltime4.viaversion.ViaVersion;
 import com.kevin.dueltime4.yaml.configuration.CfgManager;
@@ -45,6 +46,7 @@ public final class DuelTimePlugin extends JavaPlugin {
     private ProgressManager progressManager;
     private CustomInventoryManager customInventoryManager;
     private RequestReceiverManager requestReceiverManager;
+    private MatchStreakManager matchStreakManager;
     private LevelManager levelManager;
     private RankingManager rankingManager;
     private HologramManager hologramManager;
@@ -79,6 +81,7 @@ public final class DuelTimePlugin extends JavaPlugin {
         progressManager = new ProgressManager();
         customInventoryManager = new CustomInventoryManager();
         requestReceiverManager = new RequestReceiverManager();
+        matchStreakManager = new MatchStreakManager();
         logSuccess("Command and GUI systems successfully initialized.");
 
         String packageName = Bukkit.getServer().getClass().getPackage().getName();
@@ -112,6 +115,7 @@ public final class DuelTimePlugin extends JavaPlugin {
         logInfo("Disabling DuelTime4...");
 
         if (arenaManager != null) {
+            arenaManager.cancelAllPendingMatches();
             int stoppedArenaCount = 0;
             for (BaseArena arena : arenaManager.getList()) {
                 if (arena.getState().equals(BaseArena.State.IN_PROGRESS_OPENED) || arena.getState().equals(BaseArena.State.IN_PROGRESS_CLOSED)) {
@@ -138,6 +142,10 @@ public final class DuelTimePlugin extends JavaPlugin {
         if (progressManager != null) {
             progressManager.exitAll();
             logInfo("All active progress sessions cleared.");
+        }
+        if (matchStreakManager != null) {
+            matchStreakManager.clear();
+            logInfo("Match streak cache cleared.");
         }
 
         logSuccess("DuelTime4 has been disabled! (" + (System.currentTimeMillis() - disableStart) + "ms)");
@@ -185,6 +193,10 @@ public final class DuelTimePlugin extends JavaPlugin {
 
     public RequestReceiverManager getRequestReceiverManager() {
         return requestReceiverManager;
+    }
+
+    public MatchStreakManager getMatchStreakManager() {
+        return matchStreakManager;
     }
 
     public LevelManager getLevelManager() {

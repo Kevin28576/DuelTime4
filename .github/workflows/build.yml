@@ -3,8 +3,7 @@ name: Build DuelTime4
 on:
   push:
     branches:
-      - main
-      - master
+      - '**'
   pull_request:
   workflow_dispatch:
   release:

@@ -15,6 +15,7 @@ import com.kevin.dueltime4.yaml.message.MsgBuilder;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -54,30 +55,31 @@ public class GUIItem {
                 enchantmentMap = rewardItemStackMeta.getEnchants();
             }
         }
-        lore.addAll(
-                MsgBuilder.gets(Msg.ITEM_GUI_SHOP_REWARD_INFORMATION, player,
-                        "" + rewardData.getPoint(),
-                        "" + rewardData.getTotalRedemptionVolume(),
-                        (rewardData.getDescription() != null) ? rewardData.getDescription() : "-"));
-        // 獲取等級
+
+        lore.addAll(MsgBuilder.gets(
+                Msg.ITEM_GUI_SHOP_REWARD_INFORMATION,
+                player,
+                String.valueOf(rewardData.getPoint()),
+                String.valueOf(rewardData.getTotalRedemptionVolume()),
+                rewardData.getDescription() != null ? rewardData.getDescription() : "-"));
+
         int levelNow = DuelTimePlugin.getInstance().getLevelManager().getLevel(player.getName());
         int levelNeeded = rewardData.getLevelLimit();
         double pointNow = DuelTimePlugin.getInstance().getCacheManager().getPlayerDataCache().get(player.getName()).getPoint();
         double pointNeeded = rewardData.getPoint();
         String tip;
-        if (levelNow < levelNeeded) {// 優先提示等級不足，其次才是可能出現的積分不足
-            tip = MsgBuilder.get(Msg.ITEM_GUI_SHOP_REWARD_REDEEM_TIP_NO_ENOUGH_LEVEL, player, "" + levelNow, "" + levelNeeded);
+        if (levelNow < levelNeeded) {
+            tip = MsgBuilder.get(Msg.ITEM_GUI_SHOP_REWARD_REDEEM_TIP_NO_ENOUGH_LEVEL, player, String.valueOf(levelNow), String.valueOf(levelNeeded));
+        } else if (pointNow < pointNeeded) {
+            tip = MsgBuilder.get(Msg.ITEM_GUI_SHOP_REWARD_REDEEM_TIP_NO_ENOUGH_POINT, player, String.valueOf(pointNow), String.valueOf(pointNeeded));
         } else {
-            if (pointNow < pointNeeded) {
-                tip = MsgBuilder.get(Msg.ITEM_GUI_SHOP_REWARD_REDEEM_TIP_NO_ENOUGH_POINT, player, "" + pointNow, "" + pointNeeded);
-            } else {
-                tip = MsgBuilder.get(Msg.ITEM_GUI_SHOP_REWARD_REDEEM_TIP_YES, player, "" + pointNow, "" + pointNeeded);
-            }
+            tip = MsgBuilder.get(Msg.ITEM_GUI_SHOP_REWARD_REDEEM_TIP_YES, player, String.valueOf(pointNow), String.valueOf(pointNeeded));
         }
         lore.add(tip);
         if (levelNeeded != 0 && levelNow > levelNeeded) {
-            lore.add(MsgBuilder.get(Msg.ITEM_GUI_SHOP_REWARD_LEVEL_LIMIT_TIP_YES, player, "" + levelNeeded));
+            lore.add(MsgBuilder.get(Msg.ITEM_GUI_SHOP_REWARD_LEVEL_LIMIT_TIP_YES, player, String.valueOf(levelNeeded)));
         }
+
         return new UtilItemBuilder(rewardItemStack.getType())
                 .setAmount(amount)
                 .setDisplayName(displayName)
@@ -93,7 +95,6 @@ public class GUIItem {
         itemMeta.setDisplayName(recordData.getItemStackTitle());
         List<String> lore = recordData.getItemStackContent();
         CfgManager cfgManager = DuelTimePlugin.getInstance().getCfgManager();
-        // 追加展示記錄、列印記錄的提示語
         boolean isArenaRecordShowEnabled = cfgManager.isRecordShowEnabled();
         boolean isArenaRecordPrintEnabled = cfgManager.isRecordPrintEnabled();
         if (isArenaRecordShowEnabled || isArenaRecordPrintEnabled) {
@@ -102,8 +103,7 @@ public class GUIItem {
                 lore.add(MsgBuilder.get(Msg.ITEM_GUI_RECORD_SHOW_TIP, player));
             }
             if (isArenaRecordPrintEnabled) {
-                lore.add(MsgBuilder.get(Msg.ITEM_GUI_RECORD_PRINT_TIP, player,
-                        "" + cfgManager.getRecordPrintCost()));
+                lore.add(MsgBuilder.get(Msg.ITEM_GUI_RECORD_PRINT_TIP, player, String.valueOf(cfgManager.getRecordPrintCost())));
             }
         }
         itemMeta.setLore(lore);
@@ -119,42 +119,58 @@ public class GUIItem {
         ItemStack itemStack = new ItemStack(iconData != null ? (Material) iconData : Material.PAPER, 1);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(arenaData.getName());
+
         Msg stateMsg;
         Msg buttonMsg;
-        String leftPlayerNumber = "" + arena.getGamerDataList().size();
-        String rightPlayerNumber = arena.getArenaData().getMaxPlayerNumber() > 0 ? "" + arena.getArenaData().getMaxPlayerNumber() : "∞";
+        String stateText;
+        String leftPlayerNumber = String.valueOf(arena.getGamerDataList().size());
+        String rightPlayerNumber = arenaData.getMaxPlayerNumber() > 0 ? String.valueOf(arenaData.getMaxPlayerNumber()) : "-";
+
         switch (arena.getState()) {
             case WAITING:
                 stateMsg = Msg.ITEM_GUI_START_ARENA_STATE_WAITING;
+                int waitingCount = arenaManager.getWaitingPlayers(id).size();
                 if (arenaManager.getWaitingPlayers(id).contains(player.getName())) {
-                    // 如果此時競技場處於等待狀態且該玩家在這個競技場的等待列表中，則順便為物品新增一個附魔光效
                     buttonMsg = Msg.ITEM_GUI_START_ARENA_BUTTON_MESSAGE_WAITING_STOP;
                     itemMeta.addEnchant(Enchantment.LURE, 1, true);
                     if (ViaVersionItem.isHasItemFlagMethod()) {
-                        itemMeta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
-                        itemMeta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ATTRIBUTES);
+                        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                     }
                 } else {
                     buttonMsg = Msg.ITEM_GUI_START_ARENA_BUTTON_MESSAGE_WAITING_START;
                 }
-                leftPlayerNumber = "" + arenaManager.getWaitingPlayers(id).size();
-                rightPlayerNumber = "" + arena.getArenaData().getMinPlayerNumber();
+                leftPlayerNumber = String.valueOf(waitingCount);
+                rightPlayerNumber = String.valueOf(arenaData.getMinPlayerNumber());
+                stateText = MsgBuilder.get(stateMsg, player, String.valueOf(waitingCount));
                 break;
             case IN_PROGRESS_CLOSED:
                 stateMsg = Msg.ITEM_GUI_START_ARENA_STATE_IN_PROGRESS_CLOSED;
                 buttonMsg = Msg.ITEM_GUI_START_ARENA_BUTTON_MESSAGE_IN_PROGRESS_CLOSED;
+                stateText = MsgBuilder.get(stateMsg, player);
                 break;
             case IN_PROGRESS_OPENED:
                 stateMsg = Msg.ITEM_GUI_START_ARENA_STATE_IN_PROGRESS_OPENED;
-                int maxPlayerNumber = arena.getArenaData().getMaxPlayerNumber();
-                buttonMsg = maxPlayerNumber > 0 && arena.getGamerDataList().size() < maxPlayerNumber ? Msg.ITEM_GUI_START_ARENA_BUTTON_MESSAGE_IN_PROGRESS_OPENED : Msg.ITEM_GUI_START_ARENA_BUTTON_MESSAGE_IN_PROGRESS_OPENED_FULL;
+                int maxPlayerNumber = arenaData.getMaxPlayerNumber();
+                buttonMsg = maxPlayerNumber > 0 && arena.getGamerDataList().size() < maxPlayerNumber
+                        ? Msg.ITEM_GUI_START_ARENA_BUTTON_MESSAGE_IN_PROGRESS_OPENED
+                        : Msg.ITEM_GUI_START_ARENA_BUTTON_MESSAGE_IN_PROGRESS_OPENED_FULL;
+                stateText = MsgBuilder.get(stateMsg, player);
                 break;
-            default: // DISABLED狀態
+            default:
                 stateMsg = Msg.ITEM_GUI_START_ARENA_STATE_DISABLED;
                 buttonMsg = Msg.ITEM_GUI_START_ARENA_BUTTON_MESSAGE_DISABLED;
+                stateText = MsgBuilder.get(stateMsg, player);
+                break;
         }
-        itemMeta.setLore(MsgBuilder.gets(Msg.ITEM_GUI_START_ARENA_INFORMATION, player,
-                MsgBuilder.get(stateMsg, player), leftPlayerNumber, rightPlayerNumber, MsgBuilder.get(buttonMsg, player)));
+
+        itemMeta.setLore(MsgBuilder.gets(
+                Msg.ITEM_GUI_START_ARENA_INFORMATION,
+                player,
+                stateText,
+                leftPlayerNumber,
+                rightPlayerNumber,
+                MsgBuilder.get(buttonMsg, player)));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }

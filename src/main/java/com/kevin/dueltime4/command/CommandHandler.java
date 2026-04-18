@@ -13,6 +13,7 @@ public class CommandHandler {
 
     public CommandHandler() {
         commands.add(new CMDAccept());
+        commands.add(new CMDBalance());
         commands.add(new CMDAdminHelp());
         commands.add(new CMDArena());
         commands.add(new CMDBlacklist());
@@ -26,6 +27,7 @@ public class CommandHandler {
         commands.add(new CMDLobby());
         commands.add(new CMDRank());
         commands.add(new CMDRecord());
+        commands.add(new CMDStats());
         commands.add(new CMDStart());
         commands.add(new CMDSpectate());
         commands.add(new CMDQuit());

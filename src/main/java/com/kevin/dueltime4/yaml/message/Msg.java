@@ -32,6 +32,8 @@ public enum Msg {
             "arena"),
     ARENA_WAIT_STOP("Arena.wait.stop", "&7取消等待競技場：&b{arena}",
             "arena"),
+    ARENA_WAIT_ACTION_BAR_SEARCHING("Arena.wait.action-bar-searching", "&7正在為你尋找對手... &f{s}&7 秒 &8| &7等待中：&b{count}&7 人",
+            "s", "count"),
     ARENA_PROTECTION_WALK_IN_WHILE_AVAILABLE("Arena.protection.walk-in-while-available", "&c&l[!]&c無賽事時，你不能進入競技場 &e{name}&c 的場地"
             , "name"),
     ARENA_PROTECTION_WALK_IN_WHILE_IN_PROGRESS("Arena.protection.walk-in-while-in-progress", "&c&l[!]&c競技場 &e{name}&c 正在比賽，請不要進入"
@@ -454,7 +456,8 @@ public enum Msg {
             "{button_message}"
     },
             "state", "now_number", "max_number", "button_message"),
-    ITEM_GUI_START_ARENA_STATE_WAITING("Item.gui.start.arena-state.waiting", "&a等待中"),
+    ITEM_GUI_START_ARENA_STATE_WAITING("Item.gui.start.arena-state.waiting", "&a等待中 &7(&f{count}&7人)",
+            "count"),
     ITEM_GUI_START_ARENA_STATE_IN_PROGRESS_CLOSED("Item.gui.start.arena-state.in-progress-closed", "&c進行中&7(不可中途加入)"),
     ITEM_GUI_START_ARENA_STATE_IN_PROGRESS_OPENED("Item.gui.start.arena-state.in-progress-opened", "&b進行中&3(允許中途加入)"),
     ITEM_GUI_START_ARENA_STATE_DISABLED("Item.gui.start.arena-state.disabled", "&c停用中"),

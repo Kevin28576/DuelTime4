@@ -29,6 +29,10 @@ public class CMDAccept extends SubCommand {
             return true;
         }
         Player receiver = (Player) commandSender;
+        ArenaManager arenaManager = DuelTimePlugin.getInstance().getArenaManager();
+        if (arenaManager.acceptPendingMatch(receiver)) {
+            return true;
+        }
         RequestReceiver requestReceiver = DuelTimePlugin.getInstance().getRequestReceiverManager().get(receiver.getName());
         List<String> validSenderNames = requestReceiver.getValidSenderNames();
         if (validSenderNames.isEmpty()) {
@@ -42,7 +46,6 @@ public class CMDAccept extends SubCommand {
             } else {
                 // 如果有效的請求者有多個，那麼提示一個列表，讓玩家選擇接受
                 MsgBuilder.send(Msg.COMMAND_SUB_ACCEPT_CHOOSE_LIST_HEADING, receiver);
-                ArenaManager arenaManager = DuelTimePlugin.getInstance().getArenaManager();
                 int index = 0;
                 for (String validSenderName : validSenderNames) {
                     index++;

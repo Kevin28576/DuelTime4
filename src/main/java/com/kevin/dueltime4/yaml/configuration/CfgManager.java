@@ -17,6 +17,7 @@ public class CfgManager {
         reload();
     }
 
+    private File file;
     private FileConfiguration config;
 
     public FileConfiguration getConfig() {
@@ -25,7 +26,7 @@ public class CfgManager {
 
     public void reload() {
         config = new YamlConfiguration();
-        File file = new File(DuelTimePlugin.getInstance().getDataFolder(), "config.yml");
+        file = new File(DuelTimePlugin.getInstance().getDataFolder(), "config.yml");
         if (!file.exists()) {
             DuelTimePlugin.getInstance().saveResource("config.yml", false);
         }
@@ -69,6 +70,30 @@ public class CfgManager {
         arenaClassicDelayedBackEnabled = config.getBoolean("Arena.classic.delayed-back.enabled");
         arenaClassicDelayedBackTime = config.getInt("Arena.classic.delayed-back.time");
         if (arenaClassicDelayedBackTime < 2) arenaClassicDelayedBackTime = 2;
+        arenaClassicStreakEnabled = config.getBoolean("Arena.classic.streak.enabled", true);
+        arenaClassicStreakShowMessage = config.getBoolean("Arena.classic.streak.show-message", true);
+        arenaClassicStreakResetOnDraw = config.getBoolean("Arena.classic.streak.reset-on-draw", true);
+        arenaClassicMatchConfirmTimeout = config.getInt("Arena.classic.matchmaking.confirm-timeout", 15);
+        if (arenaClassicMatchConfirmTimeout < 5) arenaClassicMatchConfirmTimeout = 5;
+        arenaClassicLeavePenaltyEnabled = config.getBoolean("Arena.classic.matchmaking.leave-penalty.enabled",
+                config.getDouble("Arena.classic.matchmaking.leave-penalty.point",
+                        config.getDouble("Arena.classic.matchmaking.leave-penalty-point", 0)) > 0
+                        || config.getInt("Arena.classic.matchmaking.leave-penalty.cooldown",
+                        config.getInt("Arena.classic.matchmaking.leave-penalty-cooldown", 0)) > 0);
+        arenaClassicLeavePenaltyApplyOnQuitCommand = config.getBoolean(
+                "Arena.classic.matchmaking.leave-penalty.apply-on-quit-command", true);
+        arenaClassicLeavePenaltyApplyOnDisconnect = config.getBoolean(
+                "Arena.classic.matchmaking.leave-penalty.apply-on-disconnect", true);
+        arenaClassicLeavePenaltyApplyPointDeduction = config.getBoolean(
+                "Arena.classic.matchmaking.leave-penalty.apply-point-deduction", true);
+        arenaClassicLeavePenaltyApplyQueueCooldown = config.getBoolean(
+                "Arena.classic.matchmaking.leave-penalty.apply-queue-cooldown", true);
+        arenaClassicLeavePenaltyPoint = config.getDouble("Arena.classic.matchmaking.leave-penalty.point",
+                config.getDouble("Arena.classic.matchmaking.leave-penalty-point", 0));
+        if (arenaClassicLeavePenaltyPoint < 0) arenaClassicLeavePenaltyPoint = 0;
+        arenaClassicLeavePenaltyCooldown = config.getInt("Arena.classic.matchmaking.leave-penalty.cooldown",
+                config.getInt("Arena.classic.matchmaking.leave-penalty-cooldown", 0));
+        if (arenaClassicLeavePenaltyCooldown < 0) arenaClassicLeavePenaltyCooldown = 0;
         recordShowEnabled = config.getBoolean("Record.show.enabled");
         recordShowCooldown = config.getInt("Record.show.cooldown");
         if (recordShowCooldown < 0) recordShowCooldown = 0;
@@ -90,6 +115,17 @@ public class CfgManager {
     private String arenaClassicAutoRespawnCode;
     private boolean arenaClassicDelayedBackEnabled;
     private int arenaClassicDelayedBackTime;
+    private boolean arenaClassicStreakEnabled;
+    private boolean arenaClassicStreakShowMessage;
+    private boolean arenaClassicStreakResetOnDraw;
+    private int arenaClassicMatchConfirmTimeout;
+    private boolean arenaClassicLeavePenaltyEnabled;
+    private boolean arenaClassicLeavePenaltyApplyOnQuitCommand;
+    private boolean arenaClassicLeavePenaltyApplyOnDisconnect;
+    private boolean arenaClassicLeavePenaltyApplyPointDeduction;
+    private boolean arenaClassicLeavePenaltyApplyQueueCooldown;
+    private double arenaClassicLeavePenaltyPoint;
+    private int arenaClassicLeavePenaltyCooldown;
     private boolean recordShowEnabled;
     private int recordShowCooldown;
     private boolean recordPrintEnabled;
@@ -134,6 +170,50 @@ public class CfgManager {
         return arenaClassicDelayedBackTime;
     }
 
+    public boolean isArenaClassicStreakEnabled() {
+        return arenaClassicStreakEnabled;
+    }
+
+    public boolean isArenaClassicStreakShowMessage() {
+        return arenaClassicStreakShowMessage;
+    }
+
+    public boolean isArenaClassicStreakResetOnDraw() {
+        return arenaClassicStreakResetOnDraw;
+    }
+
+    public int getArenaClassicMatchConfirmTimeout() {
+        return arenaClassicMatchConfirmTimeout;
+    }
+
+    public boolean isArenaClassicLeavePenaltyEnabled() {
+        return arenaClassicLeavePenaltyEnabled;
+    }
+
+    public boolean isArenaClassicLeavePenaltyApplyOnQuitCommand() {
+        return arenaClassicLeavePenaltyApplyOnQuitCommand;
+    }
+
+    public boolean isArenaClassicLeavePenaltyApplyOnDisconnect() {
+        return arenaClassicLeavePenaltyApplyOnDisconnect;
+    }
+
+    public boolean isArenaClassicLeavePenaltyApplyPointDeduction() {
+        return arenaClassicLeavePenaltyApplyPointDeduction;
+    }
+
+    public boolean isArenaClassicLeavePenaltyApplyQueueCooldown() {
+        return arenaClassicLeavePenaltyApplyQueueCooldown;
+    }
+
+    public double getArenaClassicLeavePenaltyPoint() {
+        return arenaClassicLeavePenaltyPoint;
+    }
+
+    public int getArenaClassicLeavePenaltyCooldown() {
+        return arenaClassicLeavePenaltyCooldown;
+    }
+
     public boolean isRecordShowEnabled() {
         return recordShowEnabled;
     }
@@ -160,5 +240,16 @@ public class CfgManager {
 
     public String getTierTitleShowedInChatBoxFormat() {
         return tierTitleShowedInChatBoxFormat;
+    }
+
+    public void save() {
+        if (file == null) {
+            return;
+        }
+        try {
+            config.save(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.kevin.dueltime4.command.sub;
 
 import com.kevin.dueltime4.DuelTimePlugin;
+import com.kevin.dueltime4.arena.ArenaManager;
 import com.kevin.dueltime4.command.SubCommand;
 import com.kevin.dueltime4.request.RequestReceiver;
 import com.kevin.dueltime4.yaml.message.Msg;
@@ -25,6 +26,10 @@ public class CMDDecline extends SubCommand {
             return true;
         }
         Player receiver = (Player) commandSender;
+        ArenaManager arenaManager = DuelTimePlugin.getInstance().getArenaManager();
+        if (arenaManager.declinePendingMatch(receiver)) {
+            return true;
+        }
         RequestReceiver requestReceiver = DuelTimePlugin.getInstance().getRequestReceiverManager().get(receiver.getName());
         List<String> validSenderNames = requestReceiver.getValidSenderNames();
         if (validSenderNames.isEmpty()) {

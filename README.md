@@ -2,6 +2,13 @@
 
 DuelTime4 是一個為新版 Paper 伺服器維護的競技場對戰插件，延續 DuelTime 3 的核心玩法，提供 1v1 對戰、觀戰、段位與排行榜等完整系統。
 
+[![Build](https://github.com/Kevin28576/DuelTime4/actions/workflows/build.yml/badge.svg)](https://github.com/Kevin28576/DuelTime4/actions/workflows/build.yml)
+[![License](https://img.shields.io/github/license/Kevin28576/DuelTime4?label=License)](https://github.com/Kevin28576/DuelTime4/blob/main/LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/Kevin28576/DuelTime4?label=Last%20Commit)](https://github.com/Kevin28576/DuelTime4/commits/main)
+[![Issues](https://img.shields.io/github/issues/Kevin28576/DuelTime4?label=Issues)](https://github.com/Kevin28576/DuelTime4/issues)
+[![Java](https://img.shields.io/badge/Java-21-007396?logo=openjdk&logoColor=white)](https://adoptium.net/)
+[![Paper](https://img.shields.io/badge/Paper-1.21%2B-white)](https://papermc.io/)
+
 ## 功能特色
 
 - 經典 1v1 競技場流程（加入、開戰、結算、離場）
@@ -71,4 +78,3 @@ mvn clean package
 ## 授權
 
 本專案採用 Apache License 2.0 授權，詳見 [LICENSE](LICENSE)。
-

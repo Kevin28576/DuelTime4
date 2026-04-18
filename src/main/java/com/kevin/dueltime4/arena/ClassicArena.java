@@ -16,11 +16,13 @@ import com.kevin.dueltime4.data.pojo.PlayerData;
 import com.kevin.dueltime4.level.Tier;
 import com.kevin.dueltime4.listener.arena.BaseArenaListener;
 import com.kevin.dueltime4.listener.arena.ClassicArenaListener;
+import com.kevin.dueltime4.stats.MatchStreakManager;
 import com.kevin.dueltime4.util.UtilFormat;
 import com.kevin.dueltime4.util.UtilMath;
 import com.kevin.dueltime4.util.UtilSync;
 import com.kevin.dueltime4.viaversion.ViaVersion;
 import com.kevin.dueltime4.yaml.configuration.CfgManager;
+import com.kevin.dueltime4.yaml.message.DynamicLang;
 import com.kevin.dueltime4.yaml.message.Msg;
 import com.kevin.dueltime4.yaml.message.MsgBuilder;
 import org.bukkit.Bukkit;
@@ -208,11 +210,16 @@ public class ClassicArena extends BaseArena {
         if (result != Result.STOPPED) {
             PlayerDataCache playerDataCache = DuelTimePlugin.getInstance().getCacheManager().getPlayerDataCache();
             RecordCache recordCache = DuelTimePlugin.getInstance().getCacheManager().getArenaRecordCache();
+            MatchStreakManager matchStreakManager = DuelTimePlugin.getInstance().getMatchStreakManager();
+            boolean streakEnabled = cfgManager.isArenaClassicStreakEnabled();
+            boolean streakShowMessage = cfgManager.isArenaClassicStreakShowMessage();
+            boolean streakResetOnDraw = cfgManager.isArenaClassicStreakResetOnDraw();
             for (BaseGamerData gamerData : new ArrayList<>(getGamerDataList())) {
                 ClassicGamerData classicGamerData = (ClassicGamerData) gamerData;
                 ClassicArenaRecordData.Result result = classicGamerData.getResult();
                 Player player = classicGamerData.getPlayer();
                 String playerName = classicGamerData.getPlayerName();
+                String streakDisplay = "-";
                 Msg resultMsg;
                 double expChange;
                 PlayerData playerData = playerDataCache.get(playerName);
@@ -222,6 +229,12 @@ public class ClassicArena extends BaseArena {
                     resultMsg = Msg.ARENA_TYPE_CLASSIC_END_RESULT_DRAW;
                     playerData.accumulateArenaClassicDraws();
                     expChange = 0;
+                    if (streakEnabled && streakResetOnDraw && matchStreakManager != null) {
+                        matchStreakManager.recordDraw(playerName);
+                    }
+                    if (streakEnabled && matchStreakManager != null) {
+                        streakDisplay = matchStreakManager.getDisplay(playerName);
+                    }
                     player.teleport(back);
                 } else {
                     if (result == ClassicArenaRecordData.Result.WIN) {
@@ -229,6 +242,10 @@ public class ClassicArena extends BaseArena {
                         playerData.accumulateArenaClassicWins();
                         playerData.setPoint(playerData.getPoint() + cfgManager.getArenaClassicRewardWinPoint());
                         expChange = cfgManager.getArenaClassicRewardWinExp();
+                        if (streakEnabled && matchStreakManager != null) {
+                            matchStreakManager.recordWin(playerName);
+                            streakDisplay = matchStreakManager.getDisplay(playerName);
+                        }
                         // 贏家處放煙花
                         Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation(),
                                 EntityType.FIREWORK_ROCKET);
@@ -270,6 +287,10 @@ public class ClassicArena extends BaseArena {
                     } else {
                         resultMsg = Msg.ARENA_TYPE_CLASSIC_END_RESULT_LOSE;
                         playerData.accumulateArenaClassicLoses();
+                        if (streakEnabled && matchStreakManager != null) {
+                            matchStreakManager.recordLose(playerName);
+                            streakDisplay = matchStreakManager.getDisplay(playerName);
+                        }
                         // 等級保護：無段位情形下不扣經驗，取得段位後不會扣到無段位
                         double expDeducted = cfgManager.getArenaClassicRewardWinExp() * cfgManager.getArenaClassicRewardLoseExpRate();
                         List<Tier> tiers = DuelTimePlugin.getInstance().getLevelManager().getTiers();
@@ -316,6 +337,12 @@ public class ClassicArena extends BaseArena {
                 // 用一句話告知結果（若還線上）
                 if (player != null) {
                     MsgBuilder.send(resultMsg, player, false);
+                    if (streakEnabled && streakShowMessage && matchStreakManager != null) {
+                        DynamicLang.send(player, true,
+                                "Dynamic.streak.current",
+                                "&7Current streak: &f{streak}",
+                                "streak", streakDisplay);
+                    }
                 }
                 // 用多行提示語告知比賽歷程的具體資訊，體現DT3重視過程的設計理念
                 String opponentPlayerName = getOpponent(playerName);

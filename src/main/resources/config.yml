@@ -83,6 +83,34 @@ Arena:
       # Delay seconds before teleporting back (minimum 2).
       time: 5
 
+    streak:
+      # Enable win/lose streak tracking updates after each match.
+      enabled: true
+      # Show current streak message after each match.
+      show-message: true
+      # Reset streak on draw result.
+      reset-on-draw: true
+
+    matchmaking:
+      # Seconds players have to confirm when a queue match is found (minimum 5).
+      confirm-timeout: 15
+
+      leave-penalty:
+        # Master switch for quit/disconnect penalty logic.
+        enabled: true
+        # Apply penalty when player uses /quit to leave an active match.
+        apply-on-quit-command: true
+        # Apply penalty when player disconnects during an active match.
+        apply-on-disconnect: true
+        # Deduct points when leave penalty is triggered.
+        apply-point-deduction: true
+        # Points deducted when leave penalty is triggered (minimum 0).
+        point: 2
+        # Apply queue cooldown when leave penalty is triggered.
+        apply-queue-cooldown: true
+        # Queue cooldown seconds when leave penalty is triggered (minimum 0).
+        cooldown: 20
+
 # +----------------------------------------------------------------------------------------------+ #
 # | Record Settings                                                                              | #
 # +----------------------------------------------------------------------------------------------+ #

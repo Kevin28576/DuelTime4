@@ -8,11 +8,15 @@ import com.kevin.dueltime4.arena.base.BaseGamerData;
 import com.kevin.dueltime4.arena.gamer.ClassicGamerData;
 import com.kevin.dueltime4.arena.spectator.ClassicSpectatorData;
 import com.kevin.dueltime4.arena.type.ArenaType;
+import com.kevin.dueltime4.cache.PlayerDataCache;
 import com.kevin.dueltime4.command.sub.CommandPermission;
 import com.kevin.dueltime4.data.pojo.ClassicArenaRecordData;
+import com.kevin.dueltime4.data.pojo.PlayerData;
 import com.kevin.dueltime4.event.arena.*;
 import com.kevin.dueltime4.gui.simple.ItemDetailInventoryHolder;
 import com.kevin.dueltime4.util.UtilGeometry;
+import com.kevin.dueltime4.yaml.configuration.CfgManager;
+import com.kevin.dueltime4.yaml.message.DynamicLang;
 import com.kevin.dueltime4.yaml.message.Msg;
 import com.kevin.dueltime4.yaml.message.MsgBuilder;
 import org.bukkit.Bukkit;
@@ -97,7 +101,7 @@ public class ClassicArenaListener implements Listener {
         BaseArena arena = DuelTimePlugin.getInstance().getArenaManager().getOf(event.getEntity());
         if (arena == null) return;
         if (!(arena instanceof ClassicArena)) return;
-        ruleAsLoss((ClassicArena) arena, event.getEntity(), null);
+        ruleAsLoss((ClassicArena) arena, event.getEntity(), null, QuitPenaltyTrigger.NONE);
     }
 
     /*
@@ -111,7 +115,9 @@ public class ClassicArenaListener implements Listener {
         if (!(arena instanceof ClassicArena)) return;
         Player player = event.getPlayer();
         Player opponent = ((ClassicArena) arena).getOpponent(player);
-        ruleAsLoss((ClassicArena) arena, player, () -> MsgBuilder.send(Msg.ARENA_TYPE_CLASSIC_LEAVE_SERVER_INFORM_OPPONENT, opponent));
+        ruleAsLoss((ClassicArena) arena, player,
+                () -> MsgBuilder.send(Msg.ARENA_TYPE_CLASSIC_LEAVE_SERVER_INFORM_OPPONENT, opponent),
+                QuitPenaltyTrigger.DISCONNECT);
     }
 
     /*
@@ -127,23 +133,105 @@ public class ClassicArenaListener implements Listener {
         ruleAsLoss((ClassicArena) arena, player, () -> {
             MsgBuilder.send(Msg.COMMAND_SUB_QUIT_SUCCESSFULLY, player, arena.getArenaData().getName());
             MsgBuilder.send(Msg.ARENA_TYPE_CLASSIC_QUIT_INFORM_OPPONENT, opponent);
-        });
+        }, QuitPenaltyTrigger.QUIT_COMMAND);
 
     }
 
     // 僅僅用於減少重復程式碼，用於處理那些必定判為輸的情況，如死亡、下線等
-    private void ruleAsLoss(ClassicArena arena, Player player, Action action) {
+    private void ruleAsLoss(ClassicArena arena, Player player, Action action, QuitPenaltyTrigger penaltyTrigger) {
+        if (arena == null || player == null) {
+            return;
+        }
+        Player opponent = arena.getOpponent(player);
+        if (opponent == null) {
+            DuelTimePlugin.getInstance().getArenaManager().stop(arena.getId(), "opponent-missing");
+            return;
+        }
         if (action != null) {
             action.run();
         }
-        arena.confirmResult(ClassicArena.Result.CLEAR, arena.getOpponent(player));
-        ((ClassicGamerData) arena.getGamerData(player.getName())).confirmResult(ClassicArenaRecordData.Result.LOSE);
-        ((ClassicGamerData) arena.getGamerData(arena.getOpponent(player).getName())).confirmResult(ClassicArenaRecordData.Result.WIN);
+        if (shouldApplyQuitPenalty(penaltyTrigger)) {
+            applyQuitPenalty(player);
+        }
+        arena.confirmResult(ClassicArena.Result.CLEAR, opponent);
+        ClassicGamerData loserData = (ClassicGamerData) arena.getGamerData(player.getName());
+        if (loserData != null) {
+            loserData.confirmResult(ClassicArenaRecordData.Result.LOSE);
+        }
+        ClassicGamerData winnerData = (ClassicGamerData) arena.getGamerData(opponent.getName());
+        if (winnerData != null) {
+            winnerData.confirmResult(ClassicArenaRecordData.Result.WIN);
+        }
         DuelTimePlugin.getInstance().getArenaManager().end(arena.getId());
+    }
+
+    private void applyQuitPenalty(Player player) {
+        DuelTimePlugin plugin = DuelTimePlugin.getInstance();
+        CfgManager cfgManager = plugin.getCfgManager();
+        if (!cfgManager.isArenaClassicLeavePenaltyEnabled()) {
+            return;
+        }
+
+        double pointPenalty = cfgManager.getArenaClassicLeavePenaltyPoint();
+        int queueCooldown = cfgManager.getArenaClassicLeavePenaltyCooldown();
+        boolean canApplyPoint = cfgManager.isArenaClassicLeavePenaltyApplyPointDeduction() && pointPenalty > 0;
+        boolean canApplyCooldown = cfgManager.isArenaClassicLeavePenaltyApplyQueueCooldown() && queueCooldown > 0;
+        if (!canApplyPoint && !canApplyCooldown) {
+            return;
+        }
+
+        String playerName = player.getName();
+        if (canApplyPoint) {
+            PlayerDataCache playerDataCache = plugin.getCacheManager().getPlayerDataCache();
+            PlayerData playerData = playerDataCache.getAnyway(playerName);
+            if (playerData != null) {
+                double before = playerData.getPoint();
+                double after = Math.max(0, before - pointPenalty);
+                if (after != before) {
+                    playerData.setPoint(after);
+                    playerDataCache.set(playerName, playerData);
+                }
+                if (player.isOnline()) {
+                    DynamicLang.send(player, true,
+                            "Dynamic.leave-penalty.point-deducted",
+                            "&cYou left an active match: -{point} point(s). Current: &f{current}",
+                            "point", String.valueOf(pointPenalty),
+                            "current", String.valueOf(after));
+                }
+            }
+        }
+
+        if (canApplyCooldown) {
+            plugin.getArenaManager().applyQueuePenalty(playerName, queueCooldown);
+            if (player.isOnline()) {
+                DynamicLang.send(player, true,
+                        "Dynamic.leave-penalty.queue-cooldown",
+                        "&eQueue cooldown applied: {seconds} second(s).",
+                        "seconds", String.valueOf(queueCooldown));
+            }
+        }
+    }
+
+    private boolean shouldApplyQuitPenalty(QuitPenaltyTrigger trigger) {
+        CfgManager cfgManager = DuelTimePlugin.getInstance().getCfgManager();
+        if (!cfgManager.isArenaClassicLeavePenaltyEnabled()) {
+            return false;
+        }
+        return switch (trigger) {
+            case QUIT_COMMAND -> cfgManager.isArenaClassicLeavePenaltyApplyOnQuitCommand();
+            case DISCONNECT -> cfgManager.isArenaClassicLeavePenaltyApplyOnDisconnect();
+            default -> false;
+        };
     }
 
     private interface Action {
         void run();
+    }
+
+    private enum QuitPenaltyTrigger {
+        NONE,
+        QUIT_COMMAND,
+        DISCONNECT
     }
 
     /*

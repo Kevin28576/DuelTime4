@@ -7,8 +7,19 @@ import com.kevin.dueltime4.arena.base.BaseGamerData;
 import com.kevin.dueltime4.arena.type.ArenaType;
 import com.kevin.dueltime4.data.mapper.ClassicArenaDataMapper;
 import com.kevin.dueltime4.data.pojo.ClassicArenaData;
-import com.kevin.dueltime4.event.arena.*;
+import com.kevin.dueltime4.event.arena.ArenaEndEvent;
+import com.kevin.dueltime4.event.arena.ArenaStartEvent;
+import com.kevin.dueltime4.event.arena.ArenaStopEvent;
+import com.kevin.dueltime4.event.arena.ArenaTryToEndEvent;
+import com.kevin.dueltime4.event.arena.ArenaTryToJoinEvent;
+import com.kevin.dueltime4.event.arena.ArenaTryToQuitSpectateEvent;
+import com.kevin.dueltime4.event.arena.ArenaTryToSpectateEvent;
+import com.kevin.dueltime4.event.arena.ArenaTryToStartEvent;
+import com.kevin.dueltime4.event.arena.ArenaTryToStopEvent;
+import com.kevin.dueltime4.event.arena.ArenaTryToWaitEvent;
+import com.kevin.dueltime4.event.arena.ArenaWaitEvent;
 import com.kevin.dueltime4.gui.CustomInventoryManager;
+import com.kevin.dueltime4.yaml.message.DynamicLang;
 import com.kevin.dueltime4.yaml.message.Msg;
 import com.kevin.dueltime4.yaml.message.MsgBuilder;
 import org.apache.ibatis.session.SqlSession;
@@ -16,32 +27,29 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
-/**
- * 活躍態競技場管理器，負責Arena競技場例項的快取工作
- * 但出於一些考慮，這個類沒有併入cache快取包中
- * 首先，BaseArena是一個活躍態的競技場物件，並非直接存入資料庫的物件（指BaseArenaData)
- * 其次，競技場資料沒有跨服共享的意義，與其他模組的資料共同點少
- */
 public class ArenaManager {
     private final Map<String, BaseArena> arenaMap = new HashMap<>();
     private final Map<String, String> gamerArenaMap = new HashMap<>();
     private final Map<String, String> spectatorArenaMap = new HashMap<>();
     private final Map<String, String> waitingPlayerToArenaMap = new HashMap<>();
     private final Map<String, List<String>> waitingArenaToPlayersMap = new HashMap<>();
+    private final Map<String, Long> waitingPenaltyUntilMap = new HashMap<>();
+    private final QueueMatchConfirmManager queueMatchConfirmManager;
 
     public ArenaManager() {
         reload();
+        queueMatchConfirmManager = new QueueMatchConfirmManager(this);
     }
 
-    /**
-     * 根據各個型別的場地資料(ArenaData)載入所有競技場
-     */
     public void reload() {
         SqlSessionFactory sqlSessionFactory = DuelTimePlugin.getInstance().getMyBatisManager().getFactory(this.getClass());
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
-            // 載入經典型別競技場
             ClassicArenaDataMapper classicArenaDataMapper = sqlSession.getMapper(ClassicArenaDataMapper.class);
             classicArenaDataMapper.createTableIfNotExists();
             for (ClassicArenaData arenaData : classicArenaDataMapper.getAll()) {
@@ -54,14 +62,12 @@ public class ArenaManager {
                 }
                 arenaMap.put(arenaData.getId(), classicArena);
             }
-            // 載入其他型別競技場...
         }
     }
 
     public BaseArena get(String id) {
         return arenaMap.get(id);
     }
-
 
     public BaseArena getOf(Player player) {
         return arenaMap.get(gamerArenaMap.get(player.getName()));
@@ -71,7 +77,6 @@ public class ArenaManager {
         return arenaMap.get(spectatorArenaMap.get(player.getName()));
     }
 
-    // 已棄用，現改用快取來處理玩家-競技場的對應關系
     @Deprecated
     public BaseArena getOfWithoutCache(Player player) {
         String playerName = player.getName();
@@ -89,31 +94,52 @@ public class ArenaManager {
         return null;
     }
 
-    // 經由本管理器來呼叫比賽開始的方法，這麼做會事先發布比賽嘗試開始的事件，同時順帶清理等待者列表、載入玩家-競技場對映（這些工作可能會被不走這個方法的開發者疏漏），最後發布比賽開始事件（若未被取消）
     public void start(String id, Object data, Player... players) {
+        List<Player> startingPlayers = new ArrayList<>();
+        for (Player player : players) {
+            if (player != null) {
+                startingPlayers.add(player);
+            }
+        }
+        if (startingPlayers.isEmpty()) {
+            return;
+        }
+
         BaseArena arena = get(id);
-        ArenaTryToStartEvent event = new ArenaTryToStartEvent(arena, players);
+        ArenaTryToStartEvent event = new ArenaTryToStartEvent(arena, startingPlayers.toArray(Player[]::new));
         Bukkit.getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) {
-            for (Player player : players) {
+            for (Player player : startingPlayers) {
                 if (waitingPlayerToArenaMap.containsKey(player.getName())) {
-                    removeWaitingPlayer(player);
+                    removeWaitingPlayer(player.getName());
                 }
             }
             return;
         }
-        waitingArenaToPlayersMap.remove(id);
-        for (Player player : players) {
+
+        queueMatchConfirmManager.cancelForArenaSilently(id);
+
+        List<String> waitingPlayers = waitingArenaToPlayersMap.getOrDefault(id, new ArrayList<>());
+        for (Player player : startingPlayers) {
             addGamerToMap(player, id);
             player.closeInventory();
             waitingPlayerToArenaMap.remove(player.getName());
+            waitingPlayers.remove(player.getName());
+            if (player.isOnline()) {
+                MsgBuilder.sendActionBar(" ", player, true);
+            }
         }
-        arena.start(data, players);
+        if (waitingPlayers.isEmpty()) {
+            waitingArenaToPlayersMap.remove(id);
+        } else {
+            waitingArenaToPlayersMap.put(id, waitingPlayers);
+        }
+
+        arena.start(data, startingPlayers.toArray(Player[]::new));
         Bukkit.getServer().getPluginManager().callEvent(new ArenaStartEvent(arena));
         updateStartInventory();
     }
 
-    // 經由本管理器來呼叫比賽結束的方法，這麼做會事先發布比賽結束的事件，同時順帶清除相關的玩家-競技場對映（這些工作可能會被不走這個方法的開發者疏漏）
     public void end(String id) {
         BaseArena arena = get(id);
         ArenaTryToEndEvent event = new ArenaTryToEndEvent(arena);
@@ -131,6 +157,7 @@ public class ArenaManager {
     public void stop(String id, String reason) {
         BaseArena arena = get(id);
         Bukkit.getServer().getPluginManager().callEvent(new ArenaTryToStopEvent(arena, reason));
+        queueMatchConfirmManager.cancelForArenaSilently(id);
         for (BaseGamerData gamerData : arena.getGamerDataList()) {
             removeGamerFromMap(gamerData.getPlayerName());
         }
@@ -138,7 +165,6 @@ public class ArenaManager {
         Bukkit.getServer().getPluginManager().callEvent(new ArenaStopEvent(arena, reason));
     }
 
-    // 經由本管理器來整合並呼叫玩家中途加入的方法，這麼做會事先發布玩家加入的的事件，同時順帶載入玩家-競技場對映（這些工作可能會被不走這個方法的開發者疏漏）
     public void join(Player player, String id, ArenaTryToJoinEvent.Way way) {
         BaseArena arena = get(id);
         ArenaTryToJoinEvent event = new ArenaTryToJoinEvent(player, arena, way);
@@ -149,17 +175,14 @@ public class ArenaManager {
         updateStartInventory();
     }
 
-    // 過後新增一個自定義報錯型別...............................................
     public void addGamerToMap(Player player, String id) {
         gamerArenaMap.put(player.getName(), id);
     }
 
-    // 過後新增一個自定義報錯型別...............................................
     public void removeGamerFromMap(String playerName) {
         gamerArenaMap.remove(playerName);
     }
 
-    // 經由本管理器來整合並呼叫玩家觀戰的方法，這麼做會事先發布玩家觀戰的的事件，同時順帶載入玩家-競技場對映（這些工作可能會被不走這個方法的開發者疏漏）
     public void spectate(Player player, String id) {
         BaseArena arena = get(id);
         ArenaTryToSpectateEvent event = new ArenaTryToSpectateEvent(player, arena);
@@ -169,7 +192,6 @@ public class ArenaManager {
         }
     }
 
-    // 過後新增一個自定義報錯型別...............................................
     public void removeSpectator(Player player) {
         BaseArena arena = getSpectate(player);
         ArenaTryToQuitSpectateEvent event = new ArenaTryToQuitSpectateEvent(player, arena);
@@ -182,6 +204,15 @@ public class ArenaManager {
 
     public void addWaitingPlayer(Player player, String id) {
         String playerName = player.getName();
+        long penaltyRemainingSeconds = getQueuePenaltyRemainingSeconds(playerName);
+        if (penaltyRemainingSeconds > 0) {
+            DynamicLang.send(player, true,
+                    "Dynamic.queue.penalty-blocked",
+                    "&cYou cannot join queue yet. Please wait &e{seconds} &cseconds.",
+                    "seconds", String.valueOf(penaltyRemainingSeconds));
+            return;
+        }
+
         boolean isSwitch = !waitingPlayerToArenaMap.getOrDefault(playerName, id).equals(id);
         BaseArena arena = get(id);
         ArenaTryToWaitEvent event = new ArenaTryToWaitEvent(player, arena);
@@ -189,29 +220,66 @@ public class ArenaManager {
         if (event.isCancelled()) {
             return;
         }
+
         if (isSwitch) {
             String oldId = waitingPlayerToArenaMap.get(playerName);
-            List<String> watingPlayerList = waitingArenaToPlayersMap.getOrDefault(oldId, new ArrayList<>());
-            watingPlayerList.remove(player.getName());
-            waitingArenaToPlayersMap.put(oldId, watingPlayerList);
+            List<String> oldWaitingPlayerList = waitingArenaToPlayersMap.getOrDefault(oldId, new ArrayList<>());
+            oldWaitingPlayerList.remove(playerName);
+            if (oldWaitingPlayerList.isEmpty()) {
+                waitingArenaToPlayersMap.remove(oldId);
+            } else {
+                waitingArenaToPlayersMap.put(oldId, oldWaitingPlayerList);
+            }
         }
+
         waitingPlayerToArenaMap.put(playerName, id);
-        List<String> watingPlayerList = waitingArenaToPlayersMap.getOrDefault(id, new ArrayList<>());
-        watingPlayerList.add(playerName);
-        waitingArenaToPlayersMap.put(id, watingPlayerList);
-        if (watingPlayerList.size() >= arena.getArenaData().getMinPlayerNumber()) {
-            player.closeInventory();
-            start(arena.getId(), null, watingPlayerList.stream().map(Bukkit::getPlayerExact).filter(Objects::nonNull).toArray(Player[]::new));
-            return;
+        List<String> waitingPlayerList = waitingArenaToPlayersMap.getOrDefault(id, new ArrayList<>());
+        if (!waitingPlayerList.contains(playerName)) {
+            waitingPlayerList.add(playerName);
         }
+        waitingArenaToPlayersMap.put(id, waitingPlayerList);
+
         Bukkit.getServer().getPluginManager().callEvent(new ArenaWaitEvent(player, arena));
         MsgBuilder.send(isSwitch ? Msg.ARENA_WAIT_SWITCH : Msg.ARENA_WAIT_START, player, arena.getName());
+        tryCreatePendingMatch(id);
         updateStartInventory();
     }
 
     public void removeWaitingPlayer(Player player) {
-        waitingArenaToPlayersMap.get(waitingPlayerToArenaMap.get(player.getName())).remove(player.getName());
-        waitingPlayerToArenaMap.remove(player.getName());
+        if (player == null) {
+            return;
+        }
+        removeWaitingPlayer(player.getName());
+    }
+
+    public void removeWaitingPlayer(String playerName) {
+        if (playerName == null || playerName.isEmpty()) {
+            return;
+        }
+
+        String waitingArenaId = waitingPlayerToArenaMap.remove(playerName);
+        if (waitingArenaId != null) {
+            List<String> waitingPlayerList = waitingArenaToPlayersMap.get(waitingArenaId);
+            if (waitingPlayerList != null) {
+                waitingPlayerList.remove(playerName);
+                if (waitingPlayerList.isEmpty()) {
+                    waitingArenaToPlayersMap.remove(waitingArenaId);
+                } else {
+                    waitingArenaToPlayersMap.put(waitingArenaId, waitingPlayerList);
+                }
+            }
+        }
+
+        queueMatchConfirmManager.onWaitingPlayerRemoved(playerName);
+
+        Player player = Bukkit.getPlayerExact(playerName);
+        if (player != null && player.isOnline()) {
+            MsgBuilder.sendActionBar(" ", player, true);
+        }
+
+        if (waitingArenaId != null) {
+            tryCreatePendingMatch(waitingArenaId);
+        }
         updateStartInventory();
     }
 
@@ -219,8 +287,64 @@ public class ArenaManager {
         return arenaMap.get(waitingPlayerToArenaMap.get(player.getName()));
     }
 
+    public boolean isWaitingPlayerForArena(String playerName, String arenaId) {
+        return Objects.equals(waitingPlayerToArenaMap.get(playerName), arenaId);
+    }
+
     public List<String> getWaitingPlayers(String id) {
-        return waitingArenaToPlayersMap.getOrDefault(id, new ArrayList<>());
+        return new ArrayList<>(waitingArenaToPlayersMap.getOrDefault(id, new ArrayList<>()));
+    }
+
+    public int getTotalWaitingCount() {
+        return waitingPlayerToArenaMap.size();
+    }
+
+    public QueueMatchConfirmManager getQueueMatchConfirmManager() {
+        return queueMatchConfirmManager;
+    }
+
+    public long getQueuePenaltyRemainingSeconds(String playerName) {
+        Long penaltyEnd = waitingPenaltyUntilMap.get(playerName);
+        if (penaltyEnd == null) {
+            return 0;
+        }
+        long remaining = (penaltyEnd - System.currentTimeMillis() + 999L) / 1000L;
+        if (remaining <= 0) {
+            waitingPenaltyUntilMap.remove(playerName);
+            return 0;
+        }
+        return remaining;
+    }
+
+    public boolean isQueuePenaltyActive(String playerName) {
+        return getQueuePenaltyRemainingSeconds(playerName) > 0;
+    }
+
+    public void applyQueuePenalty(String playerName, int seconds) {
+        if (seconds <= 0) {
+            return;
+        }
+        waitingPenaltyUntilMap.put(playerName, System.currentTimeMillis() + seconds * 1000L);
+    }
+
+    public void tryCreatePendingMatch(String arenaId) {
+        BaseArena arena = get(arenaId);
+        if (arena == null || arena.getState() != BaseArena.State.WAITING) {
+            return;
+        }
+        queueMatchConfirmManager.tryCreatePendingMatch(arena);
+    }
+
+    public boolean acceptPendingMatch(Player player) {
+        return queueMatchConfirmManager.accept(player);
+    }
+
+    public boolean declinePendingMatch(Player player) {
+        return queueMatchConfirmManager.decline(player);
+    }
+
+    public void cancelAllPendingMatches() {
+        queueMatchConfirmManager.cancelAll();
     }
 
     public Map<String, BaseArena> getMap() {

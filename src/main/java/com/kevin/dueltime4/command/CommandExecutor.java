@@ -6,6 +6,7 @@ import com.kevin.dueltime4.arena.base.BaseArena;
 import com.kevin.dueltime4.arena.type.ArenaType;
 import com.kevin.dueltime4.cache.BlacklistCache;
 import com.kevin.dueltime4.cache.ShopCache;
+import com.kevin.dueltime4.command.sub.CMDBalance;
 import com.kevin.dueltime4.command.sub.CommandPermission;
 import com.kevin.dueltime4.data.pojo.ShopRewardData;
 import com.kevin.dueltime4.request.RequestReceiver;
@@ -33,6 +34,7 @@ import java.util.stream.IntStream;
 public class CommandExecutor implements TabExecutor {
     private static final Set<String> ADMIN_ONLY_ROOT_COMMANDS = new HashSet<>(Arrays.asList(
             "adminhelp",
+            "balance",
             "blacklist",
             "reload",
             "stop"
@@ -41,6 +43,7 @@ public class CommandExecutor implements TabExecutor {
             "accept",
             "adminhelp",
             "arena",
+            "balance",
             "blacklist",
             "decline",
             "help",
@@ -57,6 +60,7 @@ public class CommandExecutor implements TabExecutor {
             "shop",
             "spectate",
             "start",
+            "stats",
             "stop"
     );
 
@@ -129,6 +133,10 @@ public class CommandExecutor implements TabExecutor {
                 return tabLobby(sender, args);
             case "rank":
                 return tabRank(sender, args);
+            case "stats":
+                return tabStats(sender, args);
+            case "balance":
+                return tabBalance(sender, args);
             case "join":
             case "spectate":
                 return tabArenaId(args, 1);
@@ -367,6 +375,65 @@ public class CommandExecutor implements TabExecutor {
             }
             if (args.length == 4) {
                 return complete(args[3], getRankingIds());
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    private List<String> tabStats(CommandSender sender, String[] args) {
+        if (args.length != 2) {
+            return Collections.emptyList();
+        }
+        return complete(args[1], getOnlinePlayerNames(sender, true));
+    }
+
+    private List<String> tabBalance(CommandSender sender, String[] args) {
+        if (!sender.hasPermission(CommandPermission.ADMIN)) {
+            return Collections.emptyList();
+        }
+        if (args.length == 2) {
+            return complete(args[1], Arrays.asList("view", "set", "config"));
+        }
+        if ((isAlias(args[1], "view", "v", "list", "ls")) && args.length == 3) {
+            return complete(args[2], getOnlinePlayerNames(sender, true));
+        }
+        if ((isAlias(args[1], "set", "s")) && args.length == 3) {
+            return complete(args[2], getOnlinePlayerNames(sender, true));
+        }
+        if ((isAlias(args[1], "set", "s")) && args.length == 4) {
+            return complete(args[3], Arrays.asList("0", "10", "100"));
+        }
+        if ((isAlias(args[1], "config", "cfg", "c")) && args.length == 3) {
+            return complete(args[2], Arrays.asList("view", "set"));
+        }
+        if ((isAlias(args[1], "config", "cfg", "c")) && isAlias(args[2], "set", "s") && args.length == 4) {
+            return complete(args[3], Arrays.asList(CMDBalance.getSettingKeys()));
+        }
+        if ((isAlias(args[1], "config", "cfg", "c")) && isAlias(args[2], "set", "s") && args.length == 5) {
+            switch (args[3].toLowerCase(Locale.ROOT)) {
+                case "win-exp":
+                    return complete(args[4], Arrays.asList("30", "50", "80"));
+                case "win-point":
+                    return complete(args[4], Arrays.asList("1", "2", "3"));
+                case "lose-exp-rate":
+                    return complete(args[4], Arrays.asList("0.2", "0.3", "0.5"));
+                case "confirm-timeout":
+                    return complete(args[4], Arrays.asList("10", "15", "20"));
+                case "streak-enabled":
+                case "streak-show-message":
+                case "streak-reset-on-draw":
+                case "leave-penalty-enabled":
+                case "leave-penalty-apply-on-quit-command":
+                case "leave-penalty-apply-on-disconnect":
+                case "leave-penalty-apply-point-deduction":
+                case "leave-penalty-apply-queue-cooldown":
+                    return complete(args[4], Arrays.asList("true", "false"));
+                case "leave-penalty-point":
+                    return complete(args[4], Arrays.asList("1", "2", "3"));
+                case "leave-penalty-cooldown":
+                    return complete(args[4], Arrays.asList("10", "20", "30"));
+                default:
+                    return Collections.emptyList();
             }
         }
         return Collections.emptyList();
