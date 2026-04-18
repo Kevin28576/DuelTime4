@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.4.3
+
+### Added
+- 無
+
+### Changed
+- 統一全專案色碼轉換流程，改為使用 Bukkit 標準 `ChatColor.translateAlternateColorCodes('&', text)`。
+- 移除等待 ActionBar 與語言訊息中對特殊 Symbol 的相容轉換，避免因符號異常造成顯示或解析錯誤。
+- 調整更新提示訊息的預設分隔線與前綴處理，改為穩定可讀的色碼格式。
+
+### Fixed
+- 全面移除 `\u79AE`（`禮`）相關替換邏輯，修正由非標準色碼符號引發的潛在 bug。
+- 修正 Discord Webhook 訊息去色碼流程，避免因非標準符號造成內容處理異常。
+- 修正主程式語言名稱顯示去色碼流程，避免啟動資訊因符號替換而出現不一致結果。
+
 ## 4.1.2
 
 ### Added

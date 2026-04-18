@@ -6,7 +6,7 @@
 
     <groupId>com.kevin</groupId>
     <artifactId>dueltime4</artifactId>
-    <version>4.1.2</version>
+    <version>1.4.3</version>
     <packaging>jar</packaging>
 
     <name>DuelTime4</name>
@@ -14,7 +14,7 @@
     <properties>
         <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <update.download.url.template>https://github.com/Kevin28576/DuelTime4/releases/download/4.X/Dueltime4-Bukkit-{version}.jar</update.download.url.template>
+        <update.download.url.template>https://github.com/Kevin28576/DuelTime4/releases/download/v{version}/Dueltime4-Bukkit-{version}.jar</update.download.url.template>
     </properties>
 
     <build>
