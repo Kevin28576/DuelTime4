@@ -69,7 +69,11 @@ mvn clean package
 
 編譯完成後，輸出檔案位於：
 
-- `target/dueltime4-4.0.0.jar`
+- `target/Dueltime4-Bukkit-4.1.2.jar`
+
+## 更新日誌
+
+- [CHANGELOG.md](CHANGELOG.md)
 
 ## 問題回報
 
