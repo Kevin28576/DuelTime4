@@ -1,6 +1,6 @@
 4.1.2
 download-url: https://github.com/Kevin28576/DuelTime4/releases/download/v4.1.2/Dueltime4-Bukkit-4.1.2.jar
-sha256: 257ad22360f68bcacb63b00fbf5a4df55dd8bc676f760c03f90d0ba9682997c1
+sha256: 905e63ed5960d4e365a85ca1994a22da14fa01ef1a95811ab2071c66c2f202d3
 notes:
 - [Added] 佇列匹配成功後，改為優先使用 GUI 介面進行接受 / 拒絕確認。
 - [Added] 新增匹配確認 GUI 點擊事件處理，支援接受、拒絕與無效請求提示。

@@ -45,27 +45,135 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.5.0</version>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <version>4.1.1</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.groovy</groupId>
+                        <artifactId>groovy</artifactId>
+                        <version>4.0.26</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.groovy</groupId>
+                        <artifactId>groovy-ant</artifactId>
+                        <version>4.0.26</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <id>generate-update-metadata</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>java</goal>
+                            <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <mainClass>com.kevin.dueltime4.network.UpdateMetadataGenerator</mainClass>
-                            <classpathScope>runtime</classpathScope>
-                            <arguments>
-                                <argument>${project.version}</argument>
-                                <argument>${project.build.directory}/Dueltime4-Bukkit-${project.version}.jar</argument>
-                                <argument>${update.download.url.template}</argument>
-                                <argument>${project.basedir}/src/main/java/com/kevin/dueltime4/network/version</argument>
-                                <argument>${project.basedir}/src/main/java/com/kevin/dueltime4/network/update.yml</argument>
-                                <argument>${project.basedir}/CHANGELOG.md</argument>
-                            </arguments>
+                            <scripts>
+                                <script><![CDATA[
+def version = (project.version ?: "").trim()
+if (version.isEmpty()) {
+    throw new IllegalStateException("Version must not be empty.")
+}
+
+def jarPath = java.nio.file.Paths.get(project.build.directory, "Dueltime4-Bukkit-${project.version}.jar")
+if (!java.nio.file.Files.exists(jarPath)) {
+    throw new IllegalStateException("Packaged jar not found: " + jarPath)
+}
+
+def downloadUrlTemplate = (project.properties['update.download.url.template'] ?: "").toString().trim()
+def downloadUrl = downloadUrlTemplate.replace("{version}", version)
+def versionFilePath = java.nio.file.Paths.get(project.basedir.toString(), "src/main/java/com/kevin/dueltime4/network/version")
+def updateYamlPath = java.nio.file.Paths.get(project.basedir.toString(), "src/main/java/com/kevin/dueltime4/network/update.yml")
+def changelogPath = java.nio.file.Paths.get(project.basedir.toString(), "CHANGELOG.md")
+
+def notes = []
+if (java.nio.file.Files.exists(changelogPath)) {
+    def lines = java.nio.file.Files.readAllLines(changelogPath, java.nio.charset.StandardCharsets.UTF_8)
+    def inTargetVersion = false
+    def currentSection = ""
+
+    for (def rawLine : lines) {
+        def line = rawLine == null ? "" : rawLine.trim()
+        if (line.startsWith("## ")) {
+            if (inTargetVersion) {
+                break
+            }
+            inTargetVersion = line.equalsIgnoreCase("## " + version)
+            currentSection = ""
+            continue
+        }
+        if (!inTargetVersion) {
+            continue
+        }
+        if (line.startsWith("### ")) {
+            currentSection = line.substring(4).trim()
+            continue
+        }
+        if (!line.startsWith("- ")) {
+            continue
+        }
+
+        def note = line.substring(2).trim()
+                .replace("`", "")
+                .replaceAll(/\[(.+?)]\((.+?)\)/, '$1')
+                .trim()
+        if (note.isEmpty()) {
+            continue
+        }
+        if (!currentSection.isEmpty()) {
+            note = "[" + currentSection + "] " + note
+        }
+        notes << note
+    }
+}
+
+if (notes.isEmpty()) {
+    notes << ("No notes provided for version " + version + ".")
+}
+
+def digest = java.security.MessageDigest.getInstance("SHA-256")
+java.nio.file.Files.newInputStream(jarPath).withCloseable { input ->
+    byte[] buffer = new byte[8192]
+    int read
+    while ((read = input.read(buffer)) != -1) {
+        digest.update(buffer, 0, read)
+    }
+}
+def sha256 = digest.digest().collect { String.format("%02x", it) }.join()
+
+if (versionFilePath.getParent() != null) {
+    java.nio.file.Files.createDirectories(versionFilePath.getParent())
+}
+def versionText = new StringBuilder()
+versionText.append(version).append('\n')
+versionText.append("download-url: ").append(downloadUrl).append('\n')
+versionText.append("sha256: ").append(sha256).append('\n')
+versionText.append("notes:\n")
+notes.each { note ->
+    versionText.append("- ").append(note).append('\n')
+}
+java.nio.file.Files.writeString(versionFilePath, versionText.toString(), java.nio.charset.StandardCharsets.UTF_8)
+
+if (updateYamlPath.getParent() != null) {
+    java.nio.file.Files.createDirectories(updateYamlPath.getParent())
+}
+def escapeYaml = { String value -> value.replace("\\", "\\\\").replace("\"", "\\\"") }
+def updateText = new StringBuilder()
+updateText.append("version: \"").append(escapeYaml(version)).append("\"\n")
+updateText.append("download-url: \"").append(escapeYaml(downloadUrl)).append("\"\n")
+updateText.append("sha256: \"").append(escapeYaml(sha256)).append("\"\n")
+updateText.append("notes:\n")
+notes.each { note ->
+    updateText.append("  - \"").append(escapeYaml(note)).append("\"\n")
+}
+java.nio.file.Files.writeString(updateYamlPath, updateText.toString(), java.nio.charset.StandardCharsets.UTF_8)
+
+println "[UpdateMetadataGenerator] Updated version metadata."
+println "[UpdateMetadataGenerator] version=" + version
+println "[UpdateMetadataGenerator] sha256=" + sha256
+println "[UpdateMetadataGenerator] notes=" + notes.size()
+                                ]]></script>
+                            </scripts>
                         </configuration>
                     </execution>
                 </executions>
