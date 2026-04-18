@@ -4,6 +4,7 @@ import com.kevin.dueltime4.DuelTimePlugin;
 import com.kevin.dueltime4.arena.ArenaManager;
 import com.kevin.dueltime4.arena.base.BaseArena;
 import com.kevin.dueltime4.event.arena.ArenaWaitEvent;
+import com.kevin.dueltime4.yaml.message.DynamicLang;
 import com.kevin.dueltime4.yaml.message.Msg;
 import com.kevin.dueltime4.yaml.message.MsgBuilder;
 import org.bukkit.Bukkit;
@@ -20,14 +21,12 @@ import java.util.UUID;
 
 public class WaitingListener implements Listener {
     private final Map<UUID, BukkitTask> waitingActionBarTaskMap = new HashMap<>();
-    private final Map<UUID, Long> waitingStartTimeMap = new HashMap<>();
 
     @EventHandler
     public void onArenaWait(ArenaWaitEvent event) {
         Player player = event.getPlayer();
         UUID playerId = player.getUniqueId();
         stopTracking(playerId);
-        waitingStartTimeMap.put(playerId, System.currentTimeMillis());
 
         BukkitTask task = new BukkitRunnable() {
             @Override
@@ -45,15 +44,21 @@ public class WaitingListener implements Listener {
                     return;
                 }
 
-                long startedAt = waitingStartTimeMap.getOrDefault(playerId, System.currentTimeMillis());
-                long seconds = Math.max(0L, (System.currentTimeMillis() - startedAt) / 1000L);
+                long seconds = arenaManager.getWaitingSeconds(onlinePlayer.getName());
                 int waitingCount = arenaManager.getWaitingPlayers(waitingArena.getId()).size();
-                MsgBuilder.sendActionBar(
+                long eta = arenaManager.getEstimatedQueueRemainingSeconds(onlinePlayer.getName(), waitingArena.getId());
+                String baseActionBar = MsgBuilder.get(
                         Msg.ARENA_WAIT_ACTION_BAR_SEARCHING,
                         onlinePlayer,
-                        true,
                         String.valueOf(seconds),
                         String.valueOf(waitingCount));
+                String etaSuffix = DynamicLang.get(
+                        onlinePlayer,
+                        "Dynamic.queue.eta-suffix",
+                        " &8| &7Estimated: &f{eta}&7s",
+                        "eta", String.valueOf(eta))
+                        .replace('\u00A7', '\u79AE');
+                MsgBuilder.sendActionBar(baseActionBar + etaSuffix, onlinePlayer, true);
             }
         }.runTaskTimer(DuelTimePlugin.getInstance(), 0L, 20L);
 
@@ -76,6 +81,5 @@ public class WaitingListener implements Listener {
         if (task != null) {
             task.cancel();
         }
-        waitingStartTimeMap.remove(playerId);
     }
 }

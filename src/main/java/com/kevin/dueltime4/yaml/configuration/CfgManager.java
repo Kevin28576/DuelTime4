@@ -70,11 +70,22 @@ public class CfgManager {
                 "https://raw.githubusercontent.com/Kevin28576/DuelTime4/refs/heads/main/src/main/java/com/kevin/dueltime4/network/version");
         updaterDownloadUrlTemplate = config.getString(
                 "Updater.download-url-template",
-                "https://github.com/Kevin28576/DuelTime4/releases/download/v{version}/Dueltime4-Bukkit-{version}.jar");
+                "https://github.com/Kevin28576/DuelTime4/releases/download/4.X/Dueltime4-Bukkit-{version}.jar");
         updaterConnectTimeoutMs = config.getInt("Updater.connect-timeout-ms", 5000);
         updaterReadTimeoutMs = config.getInt("Updater.read-timeout-ms", 5000);
         if (updaterConnectTimeoutMs < 1000) updaterConnectTimeoutMs = 1000;
         if (updaterReadTimeoutMs < 1000) updaterReadTimeoutMs = 1000;
+        discordWebhookEnabled = config.getBoolean("Network.discord-webhook.enabled", false);
+        discordWebhookUrl = config.getString("Network.discord-webhook.url", "");
+        discordWebhookUsername = config.getString("Network.discord-webhook.username", "DuelTime4");
+        discordWebhookAvatarUrl = config.getString("Network.discord-webhook.avatar-url", "");
+        discordWebhookConnectTimeoutMs = config.getInt("Network.discord-webhook.connect-timeout-ms", 5000);
+        discordWebhookReadTimeoutMs = config.getInt("Network.discord-webhook.read-timeout-ms", 5000);
+        if (discordWebhookConnectTimeoutMs < 1000) discordWebhookConnectTimeoutMs = 1000;
+        if (discordWebhookReadTimeoutMs < 1000) discordWebhookReadTimeoutMs = 1000;
+        discordWebhookBattleReportEnabled = config.getBoolean("Network.discord-webhook.battle-report.enabled", true);
+        discordWebhookBattleReportIncludeDraw = config.getBoolean("Network.discord-webhook.battle-report.include-draw", true);
+        discordWebhookLeavePenaltyEnabled = config.getBoolean("Network.discord-webhook.leave-penalty.enabled", true);
         arenaClassicRewardWinExp = config.getDouble("Arena.classic.reward.win-exp");
         arenaClassicRewardWinPoint = config.getDouble("Arena.classic.reward.win-point");
         arenaClassicRewardLoseExpRate = config.getDouble("Arena.classic.reward.lose-exp-rate");
@@ -134,6 +145,15 @@ public class CfgManager {
     private String updaterDownloadUrlTemplate;
     private int updaterConnectTimeoutMs;
     private int updaterReadTimeoutMs;
+    private boolean discordWebhookEnabled;
+    private String discordWebhookUrl;
+    private String discordWebhookUsername;
+    private String discordWebhookAvatarUrl;
+    private int discordWebhookConnectTimeoutMs;
+    private int discordWebhookReadTimeoutMs;
+    private boolean discordWebhookBattleReportEnabled;
+    private boolean discordWebhookBattleReportIncludeDraw;
+    private boolean discordWebhookLeavePenaltyEnabled;
     private double arenaClassicRewardWinExp;
     private double arenaClassicRewardWinPoint;
     private double arenaClassicRewardLoseExpRate;
@@ -202,6 +222,42 @@ public class CfgManager {
 
     public int getUpdaterReadTimeoutMs() {
         return updaterReadTimeoutMs;
+    }
+
+    public boolean isDiscordWebhookEnabled() {
+        return discordWebhookEnabled;
+    }
+
+    public String getDiscordWebhookUrl() {
+        return discordWebhookUrl;
+    }
+
+    public String getDiscordWebhookUsername() {
+        return discordWebhookUsername;
+    }
+
+    public String getDiscordWebhookAvatarUrl() {
+        return discordWebhookAvatarUrl;
+    }
+
+    public int getDiscordWebhookConnectTimeoutMs() {
+        return discordWebhookConnectTimeoutMs;
+    }
+
+    public int getDiscordWebhookReadTimeoutMs() {
+        return discordWebhookReadTimeoutMs;
+    }
+
+    public boolean isDiscordWebhookBattleReportEnabled() {
+        return discordWebhookBattleReportEnabled;
+    }
+
+    public boolean isDiscordWebhookBattleReportIncludeDraw() {
+        return discordWebhookBattleReportIncludeDraw;
+    }
+
+    public boolean isDiscordWebhookLeavePenaltyEnabled() {
+        return discordWebhookLeavePenaltyEnabled;
     }
 
     public double getArenaClassicRewardWinExp() {

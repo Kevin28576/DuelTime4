@@ -10,6 +10,7 @@ import com.kevin.dueltime4.gui.CustomInventoryManager;
 import com.kevin.dueltime4.hook.DuelTimeExpansion;
 import com.kevin.dueltime4.level.LevelManager;
 import com.kevin.dueltime4.listener.ListenerManager;
+import com.kevin.dueltime4.network.DiscordWebhookManager;
 import com.kevin.dueltime4.network.UpdateManager;
 import com.kevin.dueltime4.network.VersionChecker;
 import com.kevin.dueltime4.progress.ProgressManager;
@@ -54,6 +55,7 @@ public final class DuelTimePlugin extends JavaPlugin {
     private Metrics metrics;
     private VersionChecker versionChecker;
     private UpdateManager updateManager;
+    private DiscordWebhookManager discordWebhookManager;
 
     @Override
     public void onEnable() {
@@ -109,6 +111,7 @@ public final class DuelTimePlugin extends JavaPlugin {
         metrics = new Metrics(this, 30767);
         versionChecker = new VersionChecker();
         updateManager = new UpdateManager(this);
+        discordWebhookManager = new DiscordWebhookManager(this);
         updateManager.checkOnStartup();
         logSuccess("DuelTime4 has been enabled! (" + (System.currentTimeMillis() - enableStart) + "ms)");
     }
@@ -225,6 +228,10 @@ public final class DuelTimePlugin extends JavaPlugin {
 
     public UpdateManager getUpdateManager() {
         return updateManager;
+    }
+
+    public DiscordWebhookManager getDiscordWebhookManager() {
+        return discordWebhookManager;
     }
 
     private int resolveServerVersionInt() {

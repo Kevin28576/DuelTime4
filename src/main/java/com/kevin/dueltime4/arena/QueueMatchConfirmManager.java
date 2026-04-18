@@ -177,6 +177,10 @@ public class QueueMatchConfirmManager {
         return pendingMatch == null ? 0 : pendingMatch.requiredCount;
     }
 
+    public int getPendingArenaCount() {
+        return pendingByArena.size();
+    }
+
     private void startPendingMatch(PendingMatch pendingMatch) {
         cancelForArenaSilently(pendingMatch.arenaId);
 
@@ -201,6 +205,7 @@ public class QueueMatchConfirmManager {
             return;
         }
 
+        arenaManager.recordQueueMatchStartSample(pendingMatch.arenaId, pendingMatch.playerNames);
         for (Player startPlayer : startPlayers) {
             DynamicLang.send(startPlayer, true,
                     "Dynamic.queue.confirm.starting",

@@ -36,6 +36,7 @@ public class CommandExecutor implements TabExecutor {
             "adminhelp",
             "balance",
             "blacklist",
+            "queue",
             "reload",
             "stop",
             "update"
@@ -53,6 +54,7 @@ public class CommandExecutor implements TabExecutor {
             "level",
             "lobby",
             "point",
+            "queue",
             "quit",
             "rank",
             "record",
@@ -127,6 +129,8 @@ public class CommandExecutor implements TabExecutor {
                 return tabLevel(sender, args);
             case "point":
                 return tabPoint(sender, args);
+            case "queue":
+                return tabQueue(sender, args);
             case "send":
                 return tabSend(sender, args);
             case "shop":
@@ -449,6 +453,16 @@ public class CommandExecutor implements TabExecutor {
         }
         if (args.length == 2) {
             return complete(args[1], Arrays.asList("check", "download", "status"));
+        }
+        return Collections.emptyList();
+    }
+
+    private List<String> tabQueue(CommandSender sender, String[] args) {
+        if (!sender.hasPermission(CommandPermission.ADMIN)) {
+            return Collections.emptyList();
+        }
+        if (args.length == 2) {
+            return complete(args[1], Arrays.asList("debug"));
         }
         return Collections.emptyList();
     }

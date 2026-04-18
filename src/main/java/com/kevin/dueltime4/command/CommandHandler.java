@@ -22,6 +22,7 @@ public class CommandHandler {
         commands.add(new CMDLang());
         commands.add(new CMDLevel());
         commands.add(new CMDPoint());
+        commands.add(new CMDQueue());
         commands.add(new CMDSend());
         commands.add(new CMDShop());
         commands.add(new CMDLobby());

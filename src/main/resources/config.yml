@@ -63,6 +63,31 @@ Updater:
   read-timeout-ms: 5000
 
 # +----------------------------------------------------------------------------------------------+ #
+# | Network Integrations                                                                          | #
+# +----------------------------------------------------------------------------------------------+ #
+Network:
+  discord-webhook:
+    # Master switch for Discord webhook notifications.
+    enabled: false
+    # Discord webhook URL. Keep empty to disable actual delivery.
+    url: ""
+    # Optional webhook sender display name.
+    username: "DuelTime4"
+    # Optional webhook avatar URL.
+    avatar-url: ""
+    # HTTP timeouts (milliseconds).
+    connect-timeout-ms: 5000
+    read-timeout-ms: 5000
+    battle-report:
+      # Send a report when a classic match ends.
+      enabled: true
+      # Also send report for draw result.
+      include-draw: true
+    leave-penalty:
+      # Send a notification when leave penalty is applied.
+      enabled: true
+
+# +----------------------------------------------------------------------------------------------+ #
 # | Database Settings                                                                            | #
 # +----------------------------------------------------------------------------------------------+ #
 Database:

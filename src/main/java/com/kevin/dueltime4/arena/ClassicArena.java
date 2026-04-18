@@ -16,6 +16,7 @@ import com.kevin.dueltime4.data.pojo.PlayerData;
 import com.kevin.dueltime4.level.Tier;
 import com.kevin.dueltime4.listener.arena.BaseArenaListener;
 import com.kevin.dueltime4.listener.arena.ClassicArenaListener;
+import com.kevin.dueltime4.network.DiscordWebhookManager;
 import com.kevin.dueltime4.stats.MatchStreakManager;
 import com.kevin.dueltime4.util.UtilFormat;
 import com.kevin.dueltime4.util.UtilMath;
@@ -440,6 +441,33 @@ public class ClassicArena extends BaseArena {
             }
         }
         // 全服廣播
+        DiscordWebhookManager webhookManager = DuelTimePlugin.getInstance().getDiscordWebhookManager();
+        if (webhookManager != null && result != Result.STOPPED) {
+            String player1 = getGamerDataList().size() > 0 ? getGamerDataList().get(0).getPlayerName() : "-";
+            String player2 = getGamerDataList().size() > 1 ? getGamerDataList().get(1).getPlayerName() : "-";
+            String winnerName = result == Result.CLEAR && winner != null ? winner.getName() : "-";
+            String loserName = "-";
+            if (result == Result.CLEAR && winner != null) {
+                Player loserPlayer = getOpponent(winner);
+                if (loserPlayer != null) {
+                    loserName = loserPlayer.getName();
+                } else {
+                    String loserNameByLookup = getOpponent(winnerName);
+                    if (loserNameByLookup != null) {
+                        loserName = loserNameByLookup;
+                    }
+                }
+            }
+            webhookManager.sendBattleReport(
+                    getId(),
+                    getName(),
+                    result,
+                    winnerName,
+                    loserName,
+                    player1,
+                    player2,
+                    time);
+        }
         if (result == Result.CLEAR) {
             MsgBuilder.broadcast(Msg.ARENA_TYPE_CLASSIC_END_BROADCAST, false,
                     getName(), winner.getName(), getOpponent(winner).getName(), "" + time);

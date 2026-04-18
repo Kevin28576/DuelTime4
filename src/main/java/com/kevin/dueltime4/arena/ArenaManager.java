@@ -34,11 +34,16 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ArenaManager {
+    private static final double QUEUE_WAIT_SMOOTHING = 0.35D;
+    private static final long DEFAULT_QUEUE_WAIT_SECONDS_PER_MISSING_PLAYER = 20L;
+
     private final Map<String, BaseArena> arenaMap = new HashMap<>();
     private final Map<String, String> gamerArenaMap = new HashMap<>();
     private final Map<String, String> spectatorArenaMap = new HashMap<>();
     private final Map<String, String> waitingPlayerToArenaMap = new HashMap<>();
     private final Map<String, List<String>> waitingArenaToPlayersMap = new HashMap<>();
+    private final Map<String, Long> waitingPlayerJoinedAtMap = new HashMap<>();
+    private final Map<String, Double> queueWaitAverageByArenaMap = new HashMap<>();
     private final Map<String, Long> waitingPenaltyUntilMap = new HashMap<>();
     private final QueueMatchConfirmManager queueMatchConfirmManager;
 
@@ -124,6 +129,7 @@ public class ArenaManager {
             addGamerToMap(player, id);
             player.closeInventory();
             waitingPlayerToArenaMap.remove(player.getName());
+            waitingPlayerJoinedAtMap.remove(player.getName());
             waitingPlayers.remove(player.getName());
             if (player.isOnline()) {
                 MsgBuilder.sendActionBar(" ", player, true);
@@ -233,6 +239,9 @@ public class ArenaManager {
         }
 
         waitingPlayerToArenaMap.put(playerName, id);
+        if (isSwitch || !waitingPlayerJoinedAtMap.containsKey(playerName)) {
+            waitingPlayerJoinedAtMap.put(playerName, System.currentTimeMillis());
+        }
         List<String> waitingPlayerList = waitingArenaToPlayersMap.getOrDefault(id, new ArrayList<>());
         if (!waitingPlayerList.contains(playerName)) {
             waitingPlayerList.add(playerName);
@@ -258,6 +267,7 @@ public class ArenaManager {
         }
 
         String waitingArenaId = waitingPlayerToArenaMap.remove(playerName);
+        waitingPlayerJoinedAtMap.remove(playerName);
         if (waitingArenaId != null) {
             List<String> waitingPlayerList = waitingArenaToPlayersMap.get(waitingArenaId);
             if (waitingPlayerList != null) {
@@ -297,6 +307,80 @@ public class ArenaManager {
 
     public int getTotalWaitingCount() {
         return waitingPlayerToArenaMap.size();
+    }
+
+    public Map<String, String> getWaitingPlayerToArenaMap() {
+        return new HashMap<>(waitingPlayerToArenaMap);
+    }
+
+    public long getWaitingSeconds(String playerName) {
+        Long joinedAt = waitingPlayerJoinedAtMap.get(playerName);
+        if (joinedAt == null) {
+            return 0L;
+        }
+        return Math.max(0L, (System.currentTimeMillis() - joinedAt) / 1000L);
+    }
+
+    public long getEstimatedQueueWaitSeconds(String arenaId) {
+        BaseArena arena = get(arenaId);
+        if (arena == null) {
+            return 0L;
+        }
+
+        int waitingCount = getWaitingPlayers(arenaId).size();
+        int requiredCount = Math.max(2, arena.getArenaData().getMinPlayerNumber());
+        if (waitingCount >= requiredCount) {
+            return 5L;
+        }
+
+        double historicalAverage = queueWaitAverageByArenaMap.getOrDefault(arenaId, 0D);
+        long estimateByHistory = historicalAverage > 0D ? Math.max(5L, Math.round(historicalAverage)) : 0L;
+        if (estimateByHistory > 0L) {
+            int missing = Math.max(0, requiredCount - waitingCount);
+            return Math.max(5L, estimateByHistory + missing * 5L);
+        }
+
+        int missing = Math.max(1, requiredCount - waitingCount);
+        return Math.max(5L, missing * DEFAULT_QUEUE_WAIT_SECONDS_PER_MISSING_PLAYER);
+    }
+
+    public long getEstimatedQueueRemainingSeconds(String playerName, String arenaId) {
+        long estimatedTotal = getEstimatedQueueWaitSeconds(arenaId);
+        if (estimatedTotal <= 0) {
+            return 0L;
+        }
+        if (!isWaitingPlayerForArena(playerName, arenaId)) {
+            return estimatedTotal;
+        }
+        long waited = getWaitingSeconds(playerName);
+        return Math.max(1L, estimatedTotal - waited);
+    }
+
+    public void recordQueueMatchStartSample(String arenaId, List<String> playerNames) {
+        if (arenaId == null || playerNames == null || playerNames.isEmpty()) {
+            return;
+        }
+
+        long now = System.currentTimeMillis();
+        long totalWaitSeconds = 0L;
+        int samples = 0;
+        for (String playerName : playerNames) {
+            Long joinedAt = waitingPlayerJoinedAtMap.get(playerName);
+            if (joinedAt == null) {
+                continue;
+            }
+            long waitedSeconds = Math.max(0L, (now - joinedAt) / 1000L);
+            totalWaitSeconds += waitedSeconds;
+            samples++;
+        }
+        if (samples == 0) {
+            return;
+        }
+
+        double sampleAverage = totalWaitSeconds / (double) samples;
+        double previous = queueWaitAverageByArenaMap.getOrDefault(arenaId, sampleAverage);
+        double updated = previous + (sampleAverage - previous) * QUEUE_WAIT_SMOOTHING;
+        queueWaitAverageByArenaMap.put(arenaId, updated);
     }
 
     public QueueMatchConfirmManager getQueueMatchConfirmManager() {

@@ -712,6 +712,8 @@ Ranking:
 Dynamic:
   queue:
     penalty-blocked: "&c你目前無法加入匹配佇列，請再等待 &e{seconds} &c秒。"
+    eta-suffix: "&8 | &7預估剩餘：&f{eta}&7 秒"
+    gui-waiting-eta-suffix: "&8 | &7預估：&f{eta}&7 秒"
     confirm:
       already-accepted: "&7你已接受這場匹配確認。"
       cancel-declined: "&c由於 &e{player} &c拒絕，匹配確認已取消。"
@@ -740,6 +742,15 @@ Dynamic:
       no-pending: "&c這場匹配確認已失效，請重新排隊。"
       gui-error: "&c確認介面發生錯誤，已切換為指令模式。"
       command-fallback: "&7請輸入 &a{accept} &7接受，或輸入 &c{decline} &7拒絕。"
+  queue-debug:
+    usage: "&c用法：/{label} queue debug"
+    separator: "&8&m───────────────────────────────────"
+    title: "&aQueue 除錯面板"
+    summary: "&7等待中：&f{waiting} &7| 競技場：&f{arenas} &7| 待確認：&f{pending}"
+    arena-line: "&7- &f{arena} &8({id}) &7| 等待：&f{waiting} &7| 預估：&f{eta}&7秒 &7| 確認：&f{confirm}"
+    no-arena: "&7目前沒有任何排隊中的競技場。"
+    no-player: "&7目前沒有玩家在等待佇列中。"
+    player-line: "&8  * &f{player} &7@ &f{arena} &8({id}) &7| 已等：&f{waited}&7秒 &7| 預估：&f{eta}&7秒 &7| 冷卻：&f{cooldown}&7秒"
   streak:
     current: "&7目前連勝/連敗：&f{streak}"
   leave-penalty:
@@ -778,6 +789,65 @@ Dynamic:
     config-min-required: "&c數值必須 >= {value}"
     config-max-required: "&c數值必須 <= {value}"
     config-updated: "&a已更新 &f{key} &a：&f{old} &7-> &f{new}"
+  webhook:
+    content: ""
+    footer: "DuelTime4"
+    battle-report:
+      content: "有新的對戰結束"
+      result:
+        clear: "分出勝負"
+        draw: "平手"
+        stopped: "管理員中止"
+      embed:
+        title: "DuelTime4 對戰戰報"
+        description: "競技場 {arena}（{id}）對戰已結束，結果：{result}。"
+        fields:
+          arena:
+            name: "競技場"
+            value: "{arena} ({id})"
+          result:
+            name: "結果"
+            value: "{result}"
+          winner:
+            name: "勝者"
+            value: "{winner}"
+          loser:
+            name: "敗者"
+            value: "{loser}"
+          players:
+            name: "雙方玩家"
+            value: "{p1} vs {p2}"
+          duration:
+            name: "對戰時長"
+            value: "{seconds} {unit}"
+    leave-penalty:
+      content: ""
+      reason:
+        quit-command: "主動離場"
+        disconnect: "斷線離場"
+        unknown: "未知"
+      embed:
+        title: "DuelTime4 離場懲罰通知"
+        description: "玩家 {player} 因 {reason} 觸發離場懲罰。"
+        fields:
+          player:
+            name: "玩家"
+            value: "{player}"
+          opponent:
+            name: "對手"
+            value: "{opponent}"
+          reason:
+            name: "原因"
+            value: "{reason}"
+          point:
+            name: "扣除點數"
+            value: "-{point}"
+          current:
+            name: "目前點數"
+            value: "{current}"
+          cooldown:
+            name: "匹配冷卻"
+            value: "{cooldown} {unit}"
   updater:
     disabled: "&c自動更新功能目前已停用。"
     checking: "&7正在檢查新版本，請稍候..."
@@ -816,3 +886,4 @@ VersionChecker:
   more: "&8  - &7...還有 {count} 條更新"
   no-summary: "&8  - &7本次未提供更新摘要"
   recommend: "&7建議儘快更新以獲得最佳相容性與修正。"
+

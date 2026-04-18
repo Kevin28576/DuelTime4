@@ -10,6 +10,7 @@ import com.kevin.dueltime4.data.pojo.ShopRewardData;
 import com.kevin.dueltime4.util.UtilItemBuilder;
 import com.kevin.dueltime4.viaversion.ViaVersionItem;
 import com.kevin.dueltime4.yaml.configuration.CfgManager;
+import com.kevin.dueltime4.yaml.message.DynamicLang;
 import com.kevin.dueltime4.yaml.message.Msg;
 import com.kevin.dueltime4.yaml.message.MsgBuilder;
 import org.bukkit.Material;
@@ -142,7 +143,16 @@ public class GUIItem {
                 }
                 leftPlayerNumber = String.valueOf(waitingCount);
                 rightPlayerNumber = String.valueOf(arenaData.getMinPlayerNumber());
-                stateText = MsgBuilder.get(stateMsg, player, String.valueOf(waitingCount));
+                long etaSeconds = arenaManager.isWaitingPlayerForArena(player.getName(), id)
+                        ? arenaManager.getEstimatedQueueRemainingSeconds(player.getName(), id)
+                        : arenaManager.getEstimatedQueueWaitSeconds(id);
+                String etaSuffix = DynamicLang.get(
+                        player,
+                        "Dynamic.queue.gui-waiting-eta-suffix",
+                        " &8| &7ETA: &f{eta}&7s",
+                        "eta", String.valueOf(etaSeconds))
+                        .replace('\u00A7', '\u79AE');
+                stateText = MsgBuilder.get(stateMsg, player, String.valueOf(waitingCount)) + etaSuffix;
                 break;
             case IN_PROGRESS_CLOSED:
                 stateMsg = Msg.ITEM_GUI_START_ARENA_STATE_IN_PROGRESS_CLOSED;

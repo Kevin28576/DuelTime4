@@ -151,7 +151,7 @@ public class ClassicArenaListener implements Listener {
             action.run();
         }
         if (shouldApplyQuitPenalty(penaltyTrigger)) {
-            applyQuitPenalty(player);
+            applyQuitPenalty(player, penaltyTrigger, opponent.getName());
         }
         arena.confirmResult(ClassicArena.Result.CLEAR, opponent);
         ClassicGamerData loserData = (ClassicGamerData) arena.getGamerData(player.getName());
@@ -165,7 +165,7 @@ public class ClassicArenaListener implements Listener {
         DuelTimePlugin.getInstance().getArenaManager().end(arena.getId());
     }
 
-    private void applyQuitPenalty(Player player) {
+    private void applyQuitPenalty(Player player, QuitPenaltyTrigger trigger, String opponentName) {
         DuelTimePlugin plugin = DuelTimePlugin.getInstance();
         CfgManager cfgManager = plugin.getCfgManager();
         if (!cfgManager.isArenaClassicLeavePenaltyEnabled()) {
@@ -181,16 +181,22 @@ public class ClassicArenaListener implements Listener {
         }
 
         String playerName = player.getName();
+        double deductedPoint = 0D;
+        double currentPoint = 0D;
+        boolean hasCurrentPoint = false;
         if (canApplyPoint) {
             PlayerDataCache playerDataCache = plugin.getCacheManager().getPlayerDataCache();
             PlayerData playerData = playerDataCache.getAnyway(playerName);
             if (playerData != null) {
                 double before = playerData.getPoint();
                 double after = Math.max(0, before - pointPenalty);
+                deductedPoint = Math.max(0, before - after);
                 if (after != before) {
                     playerData.setPoint(after);
                     playerDataCache.set(playerName, playerData);
                 }
+                currentPoint = after;
+                hasCurrentPoint = true;
                 if (player.isOnline()) {
                     DynamicLang.send(player, true,
                             "Dynamic.leave-penalty.point-deducted",
@@ -209,6 +215,29 @@ public class ClassicArenaListener implements Listener {
                         "&eQueue cooldown applied: {seconds} second(s).",
                         "seconds", String.valueOf(queueCooldown));
             }
+        }
+
+        if (!hasCurrentPoint) {
+            PlayerData playerData = plugin.getCacheManager().getPlayerDataCache().getAnyway(playerName);
+            if (playerData != null) {
+                currentPoint = playerData.getPoint();
+                hasCurrentPoint = true;
+            }
+        }
+
+        if (plugin.getDiscordWebhookManager() != null) {
+            String reasonKey = switch (trigger) {
+                case QUIT_COMMAND -> "quit-command";
+                case DISCONNECT -> "disconnect";
+                default -> "unknown";
+            };
+            plugin.getDiscordWebhookManager().sendLeavePenalty(
+                    playerName,
+                    opponentName,
+                    reasonKey,
+                    deductedPoint,
+                    hasCurrentPoint ? currentPoint : 0D,
+                    canApplyCooldown ? queueCooldown : 0);
         }
     }
 
