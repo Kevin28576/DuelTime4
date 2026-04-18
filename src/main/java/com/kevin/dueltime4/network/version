@@ -1,5 +1,5 @@
-1.4.3
-download-url: https://github.com/Kevin28576/DuelTime4/releases/download/v1.4.3/Dueltime4-Bukkit-1.4.3.jar
+4.1.2
+download-url: https://github.com/Kevin28576/DuelTime4/releases/download/v4.1.2/Dueltime4-Bukkit-4.1.2.jar
 sha256:
 notes:
 - [Changed] 統一色碼轉換為 ChatColor.translateAlternateColorCodes('&', text)。
