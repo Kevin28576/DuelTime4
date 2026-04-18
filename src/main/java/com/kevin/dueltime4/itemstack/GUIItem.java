@@ -151,7 +151,7 @@ public class GUIItem {
                         "Dynamic.queue.gui-waiting-eta-suffix",
                         " &8| &7ETA: &f{eta}&7s",
                         "eta", String.valueOf(etaSeconds))
-                        .replace('\u00A7', '\u79AE');
+                        .replace('§', '&');
                 stateText = MsgBuilder.get(stateMsg, player, String.valueOf(waitingCount)) + etaSuffix;
                 break;
             case IN_PROGRESS_CLOSED:

@@ -2,6 +2,7 @@ package com.kevin.dueltime4.yaml.message;
 
 import com.kevin.dueltime4.DuelTimePlugin;
 import com.kevin.dueltime4.data.pojo.PlayerData;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -105,7 +106,7 @@ public final class DynamicLang {
         if (text == null) {
             return "";
         }
-        return text.replace('&', '\u00A7').replace('\u79AE', '\u00A7');
+        return ChatColor.translateAlternateColorCodes('&', text);
     }
 
     private static boolean isBlank(String value) {

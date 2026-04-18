@@ -70,7 +70,7 @@ public class CfgManager {
                 "https://raw.githubusercontent.com/Kevin28576/DuelTime4/refs/heads/main/src/main/java/com/kevin/dueltime4/network/version");
         updaterDownloadUrlTemplate = config.getString(
                 "Updater.download-url-template",
-                "https://github.com/Kevin28576/DuelTime4/releases/download/4.X/Dueltime4-Bukkit-{version}.jar");
+                "https://github.com/Kevin28576/DuelTime4/releases/download/v{version}/Dueltime4-Bukkit-{version}.jar");
         updaterConnectTimeoutMs = config.getInt("Updater.connect-timeout-ms", 5000);
         updaterReadTimeoutMs = config.getInt("Updater.read-timeout-ms", 5000);
         if (updaterConnectTimeoutMs < 1000) updaterConnectTimeoutMs = 1000;
@@ -103,6 +103,15 @@ public class CfgManager {
         arenaClassicStreakResetOnDraw = config.getBoolean("Arena.classic.streak.reset-on-draw", true);
         arenaClassicMatchConfirmTimeout = config.getInt("Arena.classic.matchmaking.confirm-timeout", 15);
         if (arenaClassicMatchConfirmTimeout < 5) arenaClassicMatchConfirmTimeout = 5;
+        arenaClassicMatchWatchdogEnabled = config.getBoolean("Arena.classic.matchmaking.watchdog.enabled", true);
+        arenaClassicMatchWatchdogIntervalSeconds = config.getInt("Arena.classic.matchmaking.watchdog.interval-seconds", 3);
+        if (arenaClassicMatchWatchdogIntervalSeconds < 1) arenaClassicMatchWatchdogIntervalSeconds = 1;
+        arenaClassicMatchWatchdogCleanupOfflinePlayers = config.getBoolean(
+                "Arena.classic.matchmaking.watchdog.cleanup-offline-players", true);
+        arenaClassicMatchWatchdogCleanupInvalidArena = config.getBoolean(
+                "Arena.classic.matchmaking.watchdog.cleanup-invalid-arena", true);
+        arenaClassicMatchWatchdogTriggerMatchCheck = config.getBoolean(
+                "Arena.classic.matchmaking.watchdog.trigger-match-check", true);
         arenaClassicLeavePenaltyEnabled = config.getBoolean("Arena.classic.matchmaking.leave-penalty.enabled",
                 config.getDouble("Arena.classic.matchmaking.leave-penalty.point",
                         config.getDouble("Arena.classic.matchmaking.leave-penalty-point", 0)) > 0
@@ -165,6 +174,11 @@ public class CfgManager {
     private boolean arenaClassicStreakShowMessage;
     private boolean arenaClassicStreakResetOnDraw;
     private int arenaClassicMatchConfirmTimeout;
+    private boolean arenaClassicMatchWatchdogEnabled;
+    private int arenaClassicMatchWatchdogIntervalSeconds;
+    private boolean arenaClassicMatchWatchdogCleanupOfflinePlayers;
+    private boolean arenaClassicMatchWatchdogCleanupInvalidArena;
+    private boolean arenaClassicMatchWatchdogTriggerMatchCheck;
     private boolean arenaClassicLeavePenaltyEnabled;
     private boolean arenaClassicLeavePenaltyApplyOnQuitCommand;
     private boolean arenaClassicLeavePenaltyApplyOnDisconnect;
@@ -302,6 +316,26 @@ public class CfgManager {
 
     public int getArenaClassicMatchConfirmTimeout() {
         return arenaClassicMatchConfirmTimeout;
+    }
+
+    public boolean isArenaClassicMatchWatchdogEnabled() {
+        return arenaClassicMatchWatchdogEnabled;
+    }
+
+    public int getArenaClassicMatchWatchdogIntervalSeconds() {
+        return arenaClassicMatchWatchdogIntervalSeconds;
+    }
+
+    public boolean isArenaClassicMatchWatchdogCleanupOfflinePlayers() {
+        return arenaClassicMatchWatchdogCleanupOfflinePlayers;
+    }
+
+    public boolean isArenaClassicMatchWatchdogCleanupInvalidArena() {
+        return arenaClassicMatchWatchdogCleanupInvalidArena;
+    }
+
+    public boolean isArenaClassicMatchWatchdogTriggerMatchCheck() {
+        return arenaClassicMatchWatchdogTriggerMatchCheck;
     }
 
     public boolean isArenaClassicLeavePenaltyEnabled() {

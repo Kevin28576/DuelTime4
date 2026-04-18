@@ -26,6 +26,11 @@ public class CMDBalance extends SubCommand {
         SETTINGS.put("win-point", new Setting("Arena.classic.reward.win-point", SettingType.DOUBLE, 0D, null));
         SETTINGS.put("lose-exp-rate", new Setting("Arena.classic.reward.lose-exp-rate", SettingType.DOUBLE, 0D, 1D));
         SETTINGS.put("confirm-timeout", new Setting("Arena.classic.matchmaking.confirm-timeout", SettingType.INTEGER, 5D, null));
+        SETTINGS.put("watchdog-enabled", new Setting("Arena.classic.matchmaking.watchdog.enabled", SettingType.BOOLEAN, null, null));
+        SETTINGS.put("watchdog-interval-seconds", new Setting("Arena.classic.matchmaking.watchdog.interval-seconds", SettingType.INTEGER, 1D, null));
+        SETTINGS.put("watchdog-cleanup-offline-players", new Setting("Arena.classic.matchmaking.watchdog.cleanup-offline-players", SettingType.BOOLEAN, null, null));
+        SETTINGS.put("watchdog-cleanup-invalid-arena", new Setting("Arena.classic.matchmaking.watchdog.cleanup-invalid-arena", SettingType.BOOLEAN, null, null));
+        SETTINGS.put("watchdog-trigger-match-check", new Setting("Arena.classic.matchmaking.watchdog.trigger-match-check", SettingType.BOOLEAN, null, null));
         SETTINGS.put("streak-enabled", new Setting("Arena.classic.streak.enabled", SettingType.BOOLEAN, null, null));
         SETTINGS.put("streak-show-message", new Setting("Arena.classic.streak.show-message", SettingType.BOOLEAN, null, null));
         SETTINGS.put("streak-reset-on-draw", new Setting("Arena.classic.streak.reset-on-draw", SettingType.BOOLEAN, null, null));
@@ -265,6 +270,9 @@ public class CMDBalance extends SubCommand {
         cfgManager.getConfig().set(setting.path, newValue);
         cfgManager.save();
         cfgManager.reload();
+        if (DuelTimePlugin.getInstance().getQueueWatchdogService() != null) {
+            DuelTimePlugin.getInstance().getQueueWatchdogService().restartFromConfig();
+        }
 
         DynamicLang.send(sender, true,
                 "Dynamic.balance.config-updated",

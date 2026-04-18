@@ -56,8 +56,7 @@ public class WaitingListener implements Listener {
                         onlinePlayer,
                         "Dynamic.queue.eta-suffix",
                         " &8| &7Estimated: &f{eta}&7s",
-                        "eta", String.valueOf(eta))
-                        .replace('\u00A7', '\u79AE');
+                        "eta", String.valueOf(eta));
                 MsgBuilder.sendActionBar(baseActionBar + etaSuffix, onlinePlayer, true);
             }
         }.runTaskTimer(DuelTimePlugin.getInstance(), 0L, 20L);

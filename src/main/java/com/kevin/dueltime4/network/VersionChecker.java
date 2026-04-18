@@ -3,6 +3,7 @@ package com.kevin.dueltime4.network;
 import com.kevin.dueltime4.DuelTimePlugin;
 import com.kevin.dueltime4.data.pojo.PlayerData;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -72,11 +73,11 @@ public class VersionChecker {
 
         String prefix = colorize(plugin.getCfgManager().getPrefix());
         if (prefix.isBlank()) {
-            prefix = "§8[§a§lDuel§2§l§oTime§2§l4§8] §r";
+            prefix = colorize("&8[&a&lDuel&2&l&oTime&2&l4&8] &r");
         }
 
         String separator = getLocalizedMessage(languageConfig, "VersionChecker.separator",
-                "&8&m───────────────────────────────────");
+                "&8&m----------------------------------------");
 
         player.sendMessage(separator);
         player.sendMessage(prefix + getLocalizedMessage(languageConfig, "VersionChecker.new-version-title",
@@ -173,7 +174,7 @@ public class VersionChecker {
         if (text == null) {
             return "";
         }
-        return text.replace('&', '\u00A7').replace('\u79AE', '\u00A7');
+        return ChatColor.translateAlternateColorCodes('&', text);
     }
 
     private boolean isNewerVersion(String currentVersion, String latestVersion) {
@@ -239,3 +240,4 @@ public class VersionChecker {
         }
     }
 }
+

@@ -37,6 +37,9 @@ public class CMDReload extends SubCommand {
         ins.getArenaManager().reload();
         ins.getCacheManager().reload();
         ins.getCacheManager().getPlayerDataCache().reloadRefreshRankingTimer();
+        if (ins.getQueueWatchdogService() != null) {
+            ins.getQueueWatchdogService().restartFromConfig();
+        }
         long end = System.currentTimeMillis();
         MsgBuilder.send(Msg.COMMAND_SUB_RELOAD_SUCCESSFULLY, sender,
                 "" + (end - start));

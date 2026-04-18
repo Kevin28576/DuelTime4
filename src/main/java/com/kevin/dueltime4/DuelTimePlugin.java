@@ -1,6 +1,7 @@
 package com.kevin.dueltime4;
 
 import com.kevin.dueltime4.arena.ArenaManager;
+import com.kevin.dueltime4.arena.QueueWatchdogService;
 import com.kevin.dueltime4.arena.base.BaseArena;
 import com.kevin.dueltime4.arena.type.ArenaTypeManager;
 import com.kevin.dueltime4.cache.CacheManager;
@@ -23,11 +24,11 @@ import com.kevin.dueltime4.viaversion.ViaVersion;
 import com.kevin.dueltime4.yaml.configuration.CfgManager;
 import com.kevin.dueltime4.yaml.message.MsgManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public final class DuelTimePlugin extends JavaPlugin {
     private static final String ANSI_RESET = "\u001B[0m";
@@ -56,6 +57,7 @@ public final class DuelTimePlugin extends JavaPlugin {
     private VersionChecker versionChecker;
     private UpdateManager updateManager;
     private DiscordWebhookManager discordWebhookManager;
+    private QueueWatchdogService queueWatchdogService;
 
     @Override
     public void onEnable() {
@@ -79,6 +81,8 @@ public final class DuelTimePlugin extends JavaPlugin {
         cacheManager.load();
         arenaTypeManager = new ArenaTypeManager();
         arenaManager = new ArenaManager();
+        queueWatchdogService = new QueueWatchdogService(this);
+        queueWatchdogService.start();
         logSuccess("Arena data successfully loaded. Arenas: " + arenaManager.size() + ", Types: " + arenaTypeManager.getList().size() + ".");
 
         commandHandler = new CommandHandler();
@@ -133,6 +137,10 @@ public final class DuelTimePlugin extends JavaPlugin {
             if (stoppedArenaCount > 0) {
                 logInfo("Stopped " + stoppedArenaCount + " active arena(s).");
             }
+        }
+        if (queueWatchdogService != null) {
+            queueWatchdogService.stop();
+            logInfo("Queue watchdog stopped.");
         }
         if (hologramManager != null) {
             hologramManager.disable();
@@ -234,6 +242,10 @@ public final class DuelTimePlugin extends JavaPlugin {
         return discordWebhookManager;
     }
 
+    public QueueWatchdogService getQueueWatchdogService() {
+        return queueWatchdogService;
+    }
+
     private int resolveServerVersionInt() {
         String bukkitVersion = Bukkit.getBukkitVersion();
         if (bukkitVersion == null || bukkitVersion.isEmpty()) {
@@ -298,8 +310,10 @@ public final class DuelTimePlugin extends JavaPlugin {
         if (text == null || text.isEmpty()) {
             return "unknown";
         }
-        String sectionSymbol = "\u00A7";
-        String normalized = text.replace("&", sectionSymbol).replace("\u79AE", sectionSymbol);
-        return Pattern.compile("(?i)\u00A7[0-9A-FK-ORX]").matcher(normalized).replaceAll("").trim();
+        String stripped = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', text));
+        if (stripped == null || stripped.trim().isEmpty()) {
+            return "unknown";
+        }
+        return stripped.trim();
     }
 }

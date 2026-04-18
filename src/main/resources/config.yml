@@ -31,11 +31,6 @@ Message:
   #  - zh_tw (繁體中文)
   #  - zh_cn (简体中文)
   #  - en_us (English)
-  #  - ja_jp (日本語)
-  #  - ko_kr (한국어)
-  #  - fr_fr (Français)
-  #  - es_es (Español)
-  #  - de_de (Deutsch)
   default-language: "en_us"
 
 # +----------------------------------------------------------------------------------------------+ #
@@ -57,7 +52,7 @@ Updater:
   fallback-version-url: "https://raw.githubusercontent.com/Kevin28576/DuelTime4/refs/heads/main/src/main/java/com/kevin/dueltime4/network/version"
   # Used when manifest has no download-url.
   # Available placeholder: {version}
-  download-url-template: "https://github.com/Kevin28576/DuelTime4/releases/download/4.X/Dueltime4-Bukkit-{version}.jar"
+  download-url-template: "https://github.com/Kevin28576/DuelTime4/releases/download/v{version}/Dueltime4-Bukkit-{version}.jar"
   # HTTP timeouts (milliseconds).
   connect-timeout-ms: 5000
   read-timeout-ms: 5000
@@ -143,6 +138,18 @@ Arena:
     matchmaking:
       # Seconds players have to confirm when a queue match is found (minimum 5).
       confirm-timeout: 15
+
+      watchdog:
+        # Master switch for queue watchdog (stale queue cleanup + match trigger checks).
+        enabled: true
+        # How often watchdog runs in seconds (minimum 1).
+        interval-seconds: 3
+        # Remove queued players who are offline.
+        cleanup-offline-players: true
+        # Remove queued players whose target arena is missing or not WAITING state.
+        cleanup-invalid-arena: true
+        # Trigger pending-match checks for waiting arenas.
+        trigger-match-check: true
 
       leave-penalty:
         # Master switch for quit/disconnect penalty logic.

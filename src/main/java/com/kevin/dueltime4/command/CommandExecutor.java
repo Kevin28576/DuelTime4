@@ -36,6 +36,7 @@ public class CommandExecutor implements TabExecutor {
             "adminhelp",
             "balance",
             "blacklist",
+            "doctor",
             "queue",
             "reload",
             "stop",
@@ -48,6 +49,7 @@ public class CommandExecutor implements TabExecutor {
             "balance",
             "blacklist",
             "decline",
+            "doctor",
             "help",
             "join",
             "language",
@@ -120,6 +122,8 @@ public class CommandExecutor implements TabExecutor {
                 return tabArena(sender, args);
             case "blacklist":
                 return tabBlacklist(sender, args);
+            case "doctor":
+                return tabDoctor(sender, args);
             case "accept":
             case "decline":
                 return tabAcceptOrDecline(sender, args);
@@ -131,6 +135,8 @@ public class CommandExecutor implements TabExecutor {
                 return tabPoint(sender, args);
             case "queue":
                 return tabQueue(sender, args);
+            case "record":
+                return tabRecord(sender, args);
             case "send":
                 return tabSend(sender, args);
             case "shop":
@@ -175,8 +181,18 @@ public class CommandExecutor implements TabExecutor {
         }
         return complete(args[1], Arrays.asList(
                 "arena", "shop", "point", "level",
-                "rank", "lobby", "blacklist", "stop", "reload"
+                "rank", "lobby", "blacklist", "doctor", "stop", "reload"
         ));
+    }
+
+    private List<String> tabDoctor(CommandSender sender, String[] args) {
+        if (!sender.hasPermission(CommandPermission.ADMIN)) {
+            return Collections.emptyList();
+        }
+        if (args.length == 2) {
+            return complete(args[1], Arrays.asList("all", "services", "database", "queue"));
+        }
+        return Collections.emptyList();
     }
 
     private List<String> tabArena(CommandSender sender, String[] args) {
@@ -430,12 +446,18 @@ public class CommandExecutor implements TabExecutor {
                 case "streak-enabled":
                 case "streak-show-message":
                 case "streak-reset-on-draw":
+                case "watchdog-enabled":
+                case "watchdog-cleanup-offline-players":
+                case "watchdog-cleanup-invalid-arena":
+                case "watchdog-trigger-match-check":
                 case "leave-penalty-enabled":
                 case "leave-penalty-apply-on-quit-command":
                 case "leave-penalty-apply-on-disconnect":
                 case "leave-penalty-apply-point-deduction":
                 case "leave-penalty-apply-queue-cooldown":
                     return complete(args[4], Arrays.asList("true", "false"));
+                case "watchdog-interval-seconds":
+                    return complete(args[4], Arrays.asList("1", "2", "3", "5", "10"));
                 case "leave-penalty-point":
                     return complete(args[4], Arrays.asList("1", "2", "3"));
                 case "leave-penalty-cooldown":
@@ -465,6 +487,48 @@ public class CommandExecutor implements TabExecutor {
             return complete(args[1], Arrays.asList("debug"));
         }
         return Collections.emptyList();
+    }
+
+    private List<String> tabRecord(CommandSender sender, String[] args) {
+        if (args.length == 2) {
+            if (!sender.hasPermission(CommandPermission.ADMIN)) {
+                return Collections.emptyList();
+            }
+            return complete(args[1], Collections.singletonList("export"));
+        }
+        if (!sender.hasPermission(CommandPermission.ADMIN)) {
+            return Collections.emptyList();
+        }
+        if (!isAlias(args[1], "export", "exp", "dump")) {
+            return Collections.emptyList();
+        }
+        if (args.length == 3) {
+            List<String> candidates = new ArrayList<>(Arrays.asList("json", "csv"));
+            candidates.addAll(getOnlinePlayerNames(sender, true));
+            return complete(args[2], candidates);
+        }
+        if (args.length == 4) {
+            if (isRecordExportFormat(args[2])) {
+                return complete(args[3], getRecordExportLimitSuggestions());
+            }
+            if (isPositiveInteger(args[2])) {
+                return Collections.emptyList();
+            }
+            List<String> candidates = new ArrayList<>(Arrays.asList("json", "csv"));
+            candidates.addAll(getRecordExportLimitSuggestions());
+            return complete(args[3], candidates);
+        }
+        if (args.length == 5) {
+            if (isRecordExportFormat(args[3])) {
+                return complete(args[4], getRecordExportLimitSuggestions());
+            }
+            return Collections.emptyList();
+        }
+        return Collections.emptyList();
+    }
+
+    private List<String> getRecordExportLimitSuggestions() {
+        return Arrays.asList("50", "100", "200", "500", "1000");
     }
 
     private List<String> tabArenaId(String[] args, int argIndex) {
@@ -632,6 +696,14 @@ public class CommandExecutor implements TabExecutor {
         } catch (NumberFormatException ignore) {
             return null;
         }
+    }
+
+    private boolean isPositiveInteger(String value) {
+        return parsePositiveInteger(value) != null;
+    }
+
+    private boolean isRecordExportFormat(String value) {
+        return isAlias(value, "json", "csv");
     }
 
     private boolean isAlias(String entered, String... aliases) {

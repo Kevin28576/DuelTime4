@@ -5,6 +5,7 @@ import com.kevin.dueltime4.arena.ClassicArena;
 import com.kevin.dueltime4.yaml.configuration.CfgManager;
 import com.kevin.dueltime4.yaml.message.DynamicLang;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.io.BufferedReader;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class DiscordWebhookManager {
-    private static final Pattern COLOR_PATTERN = Pattern.compile("(?i)(\u00A7|\u79AE)[0-9A-FK-ORX]");
+    private static final Pattern COLOR_PATTERN = Pattern.compile("(?i)\u00A7[0-9A-FK-ORX]");
     private static final int EMBED_COLOR_SUCCESS = 0x57F287;
     private static final int EMBED_COLOR_DRAW = 0xFEE75C;
     private static final int EMBED_COLOR_STOPPED = 0xED4245;
@@ -326,7 +327,7 @@ public class DiscordWebhookManager {
         if (text == null || text.isBlank()) {
             return "";
         }
-        String normalized = text.replace('&', '\u00A7');
+        String normalized = ChatColor.translateAlternateColorCodes('&', text);
         normalized = COLOR_PATTERN.matcher(normalized).replaceAll("");
         return normalized.trim();
     }
