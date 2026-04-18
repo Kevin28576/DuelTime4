@@ -13,6 +13,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class VersionChecker {
@@ -48,19 +49,20 @@ public class VersionChecker {
                     return;
                 }
 
-                String latestVersion = lines.get(0).trim();
+                ParsedVersionFile parsed = parseVersionFile(lines);
+                String latestVersion = parsed.latestVersion;
                 String currentVersion = plugin.getDescription().getVersion();
                 if (!isNewerVersion(currentVersion, latestVersion)) {
                     return;
                 }
 
-                Bukkit.getScheduler().runTask(plugin, () -> sendUpdateMessage(player, currentVersion, latestVersion, lines));
+                Bukkit.getScheduler().runTask(plugin, () -> sendUpdateMessage(player, currentVersion, latestVersion, parsed.notes));
             } catch (Exception ignored) {
             }
         });
     }
 
-    private void sendUpdateMessage(Player player, String currentVersion, String latestVersion, List<String> lines) {
+    private void sendUpdateMessage(Player player, String currentVersion, String latestVersion, List<String> notes) {
         if (player == null || !player.isOnline()) {
             return;
         }
@@ -88,19 +90,19 @@ public class VersionChecker {
         player.sendMessage(prefix + getLocalizedMessage(languageConfig, "VersionChecker.highlights",
                 "&7Update highlights:"));
 
-        if (lines.size() > 1) {
-            int maxNotes = Math.min(lines.size() - 1, 5);
+        if (!notes.isEmpty()) {
+            int maxNotes = Math.min(notes.size(), 5);
             String noteTemplate = getLocalizedMessage(languageConfig, "VersionChecker.note",
                     "&8  - &f{line}");
-            for (int i = 1; i <= maxNotes; i++) {
-                player.sendMessage(applyPlaceholders(noteTemplate, "line", lines.get(i)));
+            for (int i = 0; i < maxNotes; i++) {
+                player.sendMessage(applyPlaceholders(noteTemplate, "line", notes.get(i)));
             }
 
-            if (lines.size() - 1 > maxNotes) {
+            if (notes.size() > maxNotes) {
                 player.sendMessage(applyPlaceholders(
                         getLocalizedMessage(languageConfig, "VersionChecker.more",
                                 "&8  - &7...and {count} more update(s)"),
-                        "count", String.valueOf((lines.size() - 1) - maxNotes)
+                        "count", String.valueOf(notes.size() - maxNotes)
                 ));
             }
         } else {
@@ -197,5 +199,43 @@ public class VersionChecker {
             return 0;
         }
         return Integer.parseInt(digits);
+    }
+
+    private ParsedVersionFile parseVersionFile(List<String> lines) {
+        String latestVersion = lines.get(0).trim();
+        List<String> notes = new ArrayList<>();
+
+        for (int i = 1; i < lines.size(); i++) {
+            String raw = lines.get(i);
+            if (raw == null) {
+                continue;
+            }
+            String line = raw.trim();
+            if (line.isEmpty()) {
+                continue;
+            }
+
+            String lower = line.toLowerCase(Locale.ROOT);
+            if (lower.startsWith("download-url:") || lower.startsWith("sha256:") || lower.equals("notes:")) {
+                continue;
+            }
+            if (line.startsWith("- ")) {
+                line = line.substring(2).trim();
+            }
+            if (!line.isEmpty()) {
+                notes.add(line);
+            }
+        }
+        return new ParsedVersionFile(latestVersion, notes);
+    }
+
+    private static class ParsedVersionFile {
+        private final String latestVersion;
+        private final List<String> notes;
+
+        private ParsedVersionFile(String latestVersion, List<String> notes) {
+            this.latestVersion = latestVersion;
+            this.notes = notes;
+        }
     }
 }

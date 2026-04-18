@@ -37,7 +37,8 @@ public class CommandExecutor implements TabExecutor {
             "balance",
             "blacklist",
             "reload",
-            "stop"
+            "stop",
+            "update"
     ));
     private static final List<String> ROOT_COMMANDS = Arrays.asList(
             "accept",
@@ -61,7 +62,8 @@ public class CommandExecutor implements TabExecutor {
             "spectate",
             "start",
             "stats",
-            "stop"
+            "stop",
+            "update"
     );
 
     public CommandExecutor(Set<SubCommand> commands) {
@@ -137,6 +139,8 @@ public class CommandExecutor implements TabExecutor {
                 return tabStats(sender, args);
             case "balance":
                 return tabBalance(sender, args);
+            case "update":
+                return tabUpdate(sender, args);
             case "join":
             case "spectate":
                 return tabArenaId(args, 1);
@@ -435,6 +439,16 @@ public class CommandExecutor implements TabExecutor {
                 default:
                     return Collections.emptyList();
             }
+        }
+        return Collections.emptyList();
+    }
+
+    private List<String> tabUpdate(CommandSender sender, String[] args) {
+        if (!sender.hasPermission(CommandPermission.ADMIN)) {
+            return Collections.emptyList();
+        }
+        if (args.length == 2) {
+            return complete(args[1], Arrays.asList("check", "download", "status"));
         }
         return Collections.emptyList();
     }

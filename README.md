@@ -28,6 +28,7 @@ DuelTime4 是一個為新版 Paper 伺服器維護的競技場對戰插件，延
 
 - 主指令：`/dueltime4`
 - 別名：`/dueltime`、`/dt`、`/dt4`
+- 更新管理（管理員）：`/dt update check|download|status`
 
 > 實際子指令可在遊戲內使用 `/dt help` 與 `/dt adminhelp` 查看。
 

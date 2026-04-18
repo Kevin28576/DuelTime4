@@ -14,6 +14,7 @@
     <properties>
         <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <update.download.url.template>https://github.com/Kevin28576/DuelTime4/releases/download/v{version}/Dueltime4-Bukkit-{version}.jar</update.download.url.template>
     </properties>
 
     <build>
@@ -39,6 +40,32 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>generate-update-metadata</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>com.kevin.dueltime4.network.UpdateMetadataGenerator</mainClass>
+                            <classpathScope>runtime</classpathScope>
+                            <arguments>
+                                <argument>${project.version}</argument>
+                                <argument>${project.build.directory}/Dueltime4-Bukkit-${project.version}.jar</argument>
+                                <argument>${update.download.url.template}</argument>
+                                <argument>${project.basedir}/src/main/java/com/kevin/dueltime4/network/version</argument>
+                                <argument>${project.basedir}/src/main/java/com/kevin/dueltime4/network/update.yml</argument>
+                                <argument>${project.basedir}/CHANGELOG.md</argument>
+                            </arguments>
                         </configuration>
                     </execution>
                 </executions>

@@ -58,6 +58,23 @@ public class CfgManager {
             }
         }
         if (!hasDefaultLanguageEntered) defaultLanguage = null;
+        updaterEnabled = config.getBoolean("Updater.enabled", true);
+        updaterCheckOnStartup = config.getBoolean("Updater.check-on-startup", true);
+        updaterAutoDownload = config.getBoolean("Updater.auto-download", false);
+        updaterVerifySha256 = config.getBoolean("Updater.verify-sha256", true);
+        updaterManifestUrl = config.getString(
+                "Updater.manifest-url",
+                "https://raw.githubusercontent.com/Kevin28576/DuelTime4/refs/heads/main/src/main/java/com/kevin/dueltime4/network/update.yml");
+        updaterFallbackVersionUrl = config.getString(
+                "Updater.fallback-version-url",
+                "https://raw.githubusercontent.com/Kevin28576/DuelTime4/refs/heads/main/src/main/java/com/kevin/dueltime4/network/version");
+        updaterDownloadUrlTemplate = config.getString(
+                "Updater.download-url-template",
+                "https://github.com/Kevin28576/DuelTime4/releases/download/v{version}/Dueltime4-Bukkit-{version}.jar");
+        updaterConnectTimeoutMs = config.getInt("Updater.connect-timeout-ms", 5000);
+        updaterReadTimeoutMs = config.getInt("Updater.read-timeout-ms", 5000);
+        if (updaterConnectTimeoutMs < 1000) updaterConnectTimeoutMs = 1000;
+        if (updaterReadTimeoutMs < 1000) updaterReadTimeoutMs = 1000;
         arenaClassicRewardWinExp = config.getDouble("Arena.classic.reward.win-exp");
         arenaClassicRewardWinPoint = config.getDouble("Arena.classic.reward.win-point");
         arenaClassicRewardLoseExpRate = config.getDouble("Arena.classic.reward.lose-exp-rate");
@@ -108,6 +125,15 @@ public class CfgManager {
 
     private String prefix;
     private String defaultLanguage;
+    private boolean updaterEnabled;
+    private boolean updaterCheckOnStartup;
+    private boolean updaterAutoDownload;
+    private boolean updaterVerifySha256;
+    private String updaterManifestUrl;
+    private String updaterFallbackVersionUrl;
+    private String updaterDownloadUrlTemplate;
+    private int updaterConnectTimeoutMs;
+    private int updaterReadTimeoutMs;
     private double arenaClassicRewardWinExp;
     private double arenaClassicRewardWinPoint;
     private double arenaClassicRewardLoseExpRate;
@@ -140,6 +166,42 @@ public class CfgManager {
 
     public String getDefaultLanguage() {
         return defaultLanguage;
+    }
+
+    public boolean isUpdaterEnabled() {
+        return updaterEnabled;
+    }
+
+    public boolean isUpdaterCheckOnStartup() {
+        return updaterCheckOnStartup;
+    }
+
+    public boolean isUpdaterAutoDownload() {
+        return updaterAutoDownload;
+    }
+
+    public boolean isUpdaterVerifySha256() {
+        return updaterVerifySha256;
+    }
+
+    public String getUpdaterManifestUrl() {
+        return updaterManifestUrl;
+    }
+
+    public String getUpdaterFallbackVersionUrl() {
+        return updaterFallbackVersionUrl;
+    }
+
+    public String getUpdaterDownloadUrlTemplate() {
+        return updaterDownloadUrlTemplate;
+    }
+
+    public int getUpdaterConnectTimeoutMs() {
+        return updaterConnectTimeoutMs;
+    }
+
+    public int getUpdaterReadTimeoutMs() {
+        return updaterReadTimeoutMs;
     }
 
     public double getArenaClassicRewardWinExp() {

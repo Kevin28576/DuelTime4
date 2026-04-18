@@ -10,6 +10,7 @@ import com.kevin.dueltime4.gui.CustomInventoryManager;
 import com.kevin.dueltime4.hook.DuelTimeExpansion;
 import com.kevin.dueltime4.level.LevelManager;
 import com.kevin.dueltime4.listener.ListenerManager;
+import com.kevin.dueltime4.network.UpdateManager;
 import com.kevin.dueltime4.network.VersionChecker;
 import com.kevin.dueltime4.progress.ProgressManager;
 import com.kevin.dueltime4.ranking.RankingManager;
@@ -52,6 +53,7 @@ public final class DuelTimePlugin extends JavaPlugin {
     private HologramManager hologramManager;
     private Metrics metrics;
     private VersionChecker versionChecker;
+    private UpdateManager updateManager;
 
     @Override
     public void onEnable() {
@@ -106,6 +108,8 @@ public final class DuelTimePlugin extends JavaPlugin {
 
         metrics = new Metrics(this, 30767);
         versionChecker = new VersionChecker();
+        updateManager = new UpdateManager(this);
+        updateManager.checkOnStartup();
         logSuccess("DuelTime4 has been enabled! (" + (System.currentTimeMillis() - enableStart) + "ms)");
     }
 
@@ -217,6 +221,10 @@ public final class DuelTimePlugin extends JavaPlugin {
 
     public VersionChecker getVersionChecker() {
         return versionChecker;
+    }
+
+    public UpdateManager getUpdateManager() {
+        return updateManager;
     }
 
     private int resolveServerVersionInt() {

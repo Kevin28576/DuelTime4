@@ -34,6 +34,7 @@ public class CommandHandler {
         commands.add(new CMDJoin());
         commands.add(new CMDReload());
         commands.add(new CMDStop());
+        commands.add(new CMDUpdate());
         commands.add(new CMDClick());
         PluginCommand pluginCommand = Bukkit.getPluginCommand("dueltime4");
         if (pluginCommand == null) {

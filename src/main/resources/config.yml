@@ -39,6 +39,30 @@ Message:
   default-language: "en_us"
 
 # +----------------------------------------------------------------------------------------------+ #
+# | Updater Settings                                                                             | #
+# +----------------------------------------------------------------------------------------------+ #
+Updater:
+  # Master switch for update checker and downloader.
+  enabled: true
+  # Check for updates automatically when plugin starts.
+  check-on-startup: true
+  # Automatically download new version when startup check finds one.
+  # Downloaded file is placed into server update folder and applied on next restart.
+  auto-download: false
+  # Verify sha256 when manifest provides one.
+  verify-sha256: true
+  # Remote update manifest URL (YAML format).
+  manifest-url: "https://raw.githubusercontent.com/Kevin28576/DuelTime4/refs/heads/main/src/main/java/com/kevin/dueltime4/network/update.yml"
+  # Fallback plain-text version URL (legacy format, first line = version).
+  fallback-version-url: "https://raw.githubusercontent.com/Kevin28576/DuelTime4/refs/heads/main/src/main/java/com/kevin/dueltime4/network/version"
+  # Used when manifest has no download-url.
+  # Available placeholder: {version}
+  download-url-template: "https://github.com/Kevin28576/DuelTime4/releases/download/v{version}/Dueltime4-Bukkit-{version}.jar"
+  # HTTP timeouts (milliseconds).
+  connect-timeout-ms: 5000
+  read-timeout-ms: 5000
+
+# +----------------------------------------------------------------------------------------------+ #
 # | Database Settings                                                                            | #
 # +----------------------------------------------------------------------------------------------+ #
 Database:
