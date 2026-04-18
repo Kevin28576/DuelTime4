@@ -57,7 +57,7 @@ Updater:
   fallback-version-url: "https://raw.githubusercontent.com/Kevin28576/DuelTime4/refs/heads/main/src/main/java/com/kevin/dueltime4/network/version"
   # Used when manifest has no download-url.
   # Available placeholder: {version}
-  download-url-template: "https://github.com/Kevin28576/DuelTime4/releases/download/v{version}/Dueltime4-Bukkit-{version}.jar"
+  download-url-template: "https://github.com/Kevin28576/DuelTime4/releases/download/4.X/Dueltime4-Bukkit-{version}.jar"
   # HTTP timeouts (milliseconds).
   connect-timeout-ms: 5000
   read-timeout-ms: 5000

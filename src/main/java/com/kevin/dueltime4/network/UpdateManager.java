@@ -160,7 +160,7 @@ public class UpdateManager {
 
                 if (!newer) {
                     if (startupMode) {
-                        plugin.getLogger().info("[Updater] You are already on latest version: " + currentVersion);
+                        logUpdaterInfo("You are already on latest version: " + currentVersion);
                     } else {
                         sendSync(sender,
                                 "Dynamic.updater.up-to-date",
@@ -171,7 +171,7 @@ public class UpdateManager {
                 }
 
                 if (startupMode) {
-                    plugin.getLogger().info("[Updater] New version found: current=" + currentVersion + ", latest=" + latest.version);
+                    logUpdaterInfo("New version found: current=" + currentVersion + ", latest=" + latest.version);
                 } else {
                     sendSync(sender,
                             "Dynamic.updater.new-version",
@@ -197,7 +197,7 @@ public class UpdateManager {
                     DownloadResult result = downloadUpdate(latest);
                     if (result.success) {
                         if (startupMode) {
-                            plugin.getLogger().info("[Updater] Update downloaded: " + result.fileName + ". It will be applied after restart.");
+                            logUpdaterInfo("Update downloaded: " + result.fileName + ". It will be applied after restart.");
                         } else {
                             sendSync(sender,
                                     "Dynamic.updater.download-success",
@@ -206,7 +206,7 @@ public class UpdateManager {
                         }
                     } else {
                         if (startupMode) {
-                            plugin.getLogger().warning("[Updater] Auto download failed: " + result.errorMessage);
+                            logUpdaterWarning("Auto download failed: " + result.errorMessage);
                         } else {
                             sendSync(sender,
                                     "Dynamic.updater.download-failed",
@@ -223,7 +223,7 @@ public class UpdateManager {
                 lastCheckedAt = System.currentTimeMillis();
                 lastError = e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage();
                 if (startupMode) {
-                    plugin.getLogger().warning("[Updater] Check failed: " + lastError);
+                    logUpdaterWarning("Check failed: " + lastError);
                 } else {
                     sendSync(sender,
                             "Dynamic.updater.check-failed",
@@ -525,6 +525,29 @@ public class UpdateManager {
 
     private String safeTrim(String text) {
         return text == null ? "" : text.trim();
+    }
+
+    private void logUpdaterInfo(String message) {
+        sendConsoleWithPrefix("§bUpdater §8» §f" + message);
+    }
+
+    private void logUpdaterWarning(String message) {
+        sendConsoleWithPrefix("§6Updater §8» §e" + message);
+    }
+
+    private void sendConsoleWithPrefix(String message) {
+        Runnable task = () -> {
+            String prefix = "§7[§bDuelTime4§7] ";
+            if (plugin.getCfgManager() != null && plugin.getCfgManager().getPrefix() != null && !plugin.getCfgManager().getPrefix().isBlank()) {
+                prefix = plugin.getCfgManager().getPrefix();
+            }
+            Bukkit.getConsoleSender().sendMessage(prefix + message);
+        };
+        if (Bukkit.isPrimaryThread()) {
+            task.run();
+        } else {
+            Bukkit.getScheduler().runTask(plugin, task);
+        }
     }
 
     private static class UpdateInfo {
