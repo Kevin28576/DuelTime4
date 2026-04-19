@@ -103,9 +103,14 @@ Arena:
       lose-exp-rate: 0.3
 
     auto-respawn:
-      # Enable auto-respawn during match.
+      # Enable automatic respawn during classic matches.
       enabled: true
-      # Respawn method: SPIGOT / SETHEALTH
+      # Respawn method used by DuelTime4.
+      # If your server has issues with auto-respawn, try changing this option first.
+      # Available methods:
+      # SPIGOT    - respawn via player.spigot().respawn()
+      # SETHEALTH - recover player using player.setHealth(player.getMaxHealth())
+      # If both methods still do not work on your server, disable auto-respawn.
       code: "SPIGOT"
 
     delayed-back:
