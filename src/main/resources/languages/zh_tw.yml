@@ -542,7 +542,7 @@ Command:
       fail-no-arenas: "&c伺服器尚未設定任何競技場，無法發送戰鬥邀請。"
       fail-offline: "&c無法發送戰鬥邀請，玩家 &f'{player}' &c目前不在線上或不存在。"
       fail-recipient-in-black-list: "&c玩家 &f{player} &c目前位於黑名單中，無法向其發送戰鬥邀請。"
-      fail-invalid-arena-id: "&c不存在 ID 為 &e'{enter}' &c的競技場，請檢查輸入。"
+      fail-invalid-arena-id: "&c不存在編輯名或 ID 為 &e'{enter}' &c的競技場，請檢查輸入。"
       fail-arena-disabled: "&c競技場 &e{arena} &c目前已停用，請選擇其他競技場。"
       fail-frequently: "&c你已於 &f{second} 秒前向 &f{player} &c發送過戰鬥邀請，請等待對方回應。"
       successfully: "&a已成功向玩家 &f{player} &a發送戰鬥邀請，請等待對方回應。"

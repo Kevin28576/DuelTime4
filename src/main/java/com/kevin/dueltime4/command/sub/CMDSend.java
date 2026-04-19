@@ -1,16 +1,22 @@
 package com.kevin.dueltime4.command.sub;
 
 import com.kevin.dueltime4.DuelTimePlugin;
+import com.kevin.dueltime4.arena.ArenaManager;
 import com.kevin.dueltime4.arena.base.BaseArena;
 import com.kevin.dueltime4.command.SubCommand;
 import com.kevin.dueltime4.request.RequestData;
 import com.kevin.dueltime4.request.RequestReceiver;
+import com.kevin.dueltime4.util.UtilHelpList;
 import com.kevin.dueltime4.yaml.message.Msg;
 import com.kevin.dueltime4.yaml.message.MsgBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CMDSend extends SubCommand {
 
@@ -39,7 +45,8 @@ public class CMDSend extends SubCommand {
             MsgBuilder.send(Msg.COMMAND_SUB_SEND_FAIL_SEND_TO_SELF, sender);
             return true;
         }
-        if (DuelTimePlugin.getInstance().getArenaManager().getMap().isEmpty()) {
+        ArenaManager arenaManager = DuelTimePlugin.getInstance().getArenaManager();
+        if (arenaManager.getMap().isEmpty()) {
             MsgBuilder.send(Msg.COMMAND_SUB_SEND_FAIL_NO_ARENAS, sender);
             return true;
         }
@@ -56,11 +63,18 @@ public class CMDSend extends SubCommand {
         }
         BaseArena designatedArena = null;
         if (args.length > 2) {
-            String designatedArenaId = args[2];
-            designatedArena = DuelTimePlugin.getInstance().getArenaManager().get(designatedArenaId);
+            String designatedArenaEditNameOrId = String.join(" ", Arrays.copyOfRange(args, 2, args.length)).trim();
+            designatedArena = findArenaByEditNameOrId(arenaManager, designatedArenaEditNameOrId);
             if (designatedArena == null) {
                 MsgBuilder.send(Msg.COMMAND_SUB_SEND_FAIL_INVALID_ARENA_ID, sender,
-                        designatedArenaId);
+                        designatedArenaEditNameOrId);
+                if (args.length == 3) {
+                    List<String> arenaEditNameCandidates = arenaManager.getList().stream()
+                            .map(baseArena -> baseArena.getArenaData().getName())
+                            .distinct()
+                            .collect(Collectors.toList());
+                    UtilHelpList.sendSuggest(sender, 2, arenaEditNameCandidates, label, args);
+                }
                 return true;
             }
             if (designatedArena.getState() == BaseArena.State.DISABLED) {
@@ -76,7 +90,7 @@ public class CMDSend extends SubCommand {
                     "" + (int) ((System.currentTimeMillis() - requestData.getStartTime()) / 1000), receiverName);
             return true;
         }
-        requestReceiver.add(senderName, designatedArena != null ? args[2] : null);
+        requestReceiver.add(senderName, designatedArena != null ? designatedArena.getId() : null);
         MsgBuilder.send(Msg.COMMAND_SUB_SEND_SUCCESSFULLY, sender,
                 receiverName);
         MsgBuilder.sendsClickable(Msg.COMMAND_SUB_SEND_RECEIVE, receiver,false,
@@ -86,5 +100,14 @@ public class CMDSend extends SubCommand {
                     designatedArena.getArenaData().getName(), DuelTimePlugin.getInstance().getArenaTypeManager().get(designatedArena.getArenaTypeId()).getName(receiver));
         }
         return true;
+    }
+
+    private BaseArena findArenaByEditNameOrId(ArenaManager arenaManager, String entered) {
+        for (BaseArena arena : arenaManager.getList()) {
+            if (arena.getArenaData().getName().equalsIgnoreCase(entered)) {
+                return arena;
+            }
+        }
+        return arenaManager.get(entered);
     }
 }

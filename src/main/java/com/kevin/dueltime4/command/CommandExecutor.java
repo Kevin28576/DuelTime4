@@ -322,7 +322,7 @@ public class CommandExecutor implements TabExecutor {
             return complete(args[1], getOnlinePlayerNames(sender, false));
         }
         if (args.length == 3) {
-            return complete(args[2], getArenaIds());
+            return complete(args[2], getArenaEditNames());
         }
         return Collections.emptyList();
     }
@@ -616,6 +616,17 @@ public class CommandExecutor implements TabExecutor {
         }
         return plugin.getArenaManager().getList().stream()
                 .map(BaseArena::getId)
+                .collect(Collectors.toList());
+    }
+
+    private List<String> getArenaEditNames() {
+        DuelTimePlugin plugin = DuelTimePlugin.getInstance();
+        if (plugin == null || plugin.getArenaManager() == null) {
+            return Collections.emptyList();
+        }
+        return plugin.getArenaManager().getList().stream()
+                .map(baseArena -> baseArena.getArenaData().getName())
+                .distinct()
                 .collect(Collectors.toList());
     }
 

@@ -17,7 +17,7 @@ public class CMDHelp extends SubCommand {
                 .add("level", new String[]{"level", "lv"}, "level(l)", null, Msg.COMMAND_SUB_LEVEL_SERIES_DESCRIPTION, true)
                 .add("rank", new String[]{"rank", "rk"}, "rank(rk)", null, Msg.COMMAND_SUB_RANK_SERIES_DESCRIPTION, true)
                 .add("start", new String[]{"start", "st"}, "start(st)", null, Msg.COMMAND_SUB_START_DESCRIPTION)
-                .add("send", new String[]{"send", "sd"}, "send(sd) <%player%> [%arena_id%]", null, Msg.COMMAND_SUB_SEND_DESCRIPTION)
+                .add("send", new String[]{"send", "sd"}, "send(sd) <%player%> [%arena_edit_name%]", null, Msg.COMMAND_SUB_SEND_DESCRIPTION)
                 .add("accept", new String[]{"accept", "acc"}, "accept(acc) [%player%]", null, Msg.COMMAND_SUB_ACCEPT_DESCRIPTION)
                 .add("decline", new String[]{"decline", "dec","deny"}, "decline(dec) [%player%]", null, Msg.COMMAND_SUB_DECLINE_DESCRIPTION)
                 .add("join", new String[]{"join", "j"}, "join(j) <%arena_id%>", null, Msg.COMMAND_SUB_JOIN_DESCRIPTION)
