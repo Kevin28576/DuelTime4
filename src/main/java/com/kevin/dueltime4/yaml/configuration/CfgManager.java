@@ -11,6 +11,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class CfgManager {
     public CfgManager() {
@@ -103,6 +106,20 @@ public class CfgManager {
         arenaClassicStreakResetOnDraw = config.getBoolean("Arena.classic.streak.reset-on-draw", true);
         arenaClassicMatchConfirmTimeout = config.getInt("Arena.classic.matchmaking.confirm-timeout", 15);
         if (arenaClassicMatchConfirmTimeout < 5) arenaClassicMatchConfirmTimeout = 5;
+        arenaClassicMatchCommandWhitelist = new ArrayList<>();
+        List<String> configuredWhitelist = config.getStringList("Arena.classic.matchmaking.command-whitelist");
+        if (configuredWhitelist.isEmpty()) {
+            configuredWhitelist = config.getStringList("CommandWhitelist");
+        }
+        for (String keyword : configuredWhitelist) {
+            if (keyword == null) {
+                continue;
+            }
+            String normalizedKeyword = keyword.trim().toLowerCase(Locale.ROOT);
+            if (!normalizedKeyword.isEmpty()) {
+                arenaClassicMatchCommandWhitelist.add(normalizedKeyword);
+            }
+        }
         arenaClassicQueueSoundEnabled = config.getBoolean("Arena.classic.matchmaking.queue-sound.enabled", true);
         arenaClassicQueueSoundAllowPlayerToggle = config.getBoolean("Arena.classic.matchmaking.queue-sound.allow-player-toggle", true);
         arenaClassicQueueSoundIntervalSeconds = config.getInt("Arena.classic.matchmaking.queue-sound.interval-seconds", 5);
@@ -187,6 +204,7 @@ public class CfgManager {
     private boolean arenaClassicStreakShowMessage;
     private boolean arenaClassicStreakResetOnDraw;
     private int arenaClassicMatchConfirmTimeout;
+    private List<String> arenaClassicMatchCommandWhitelist;
     private boolean arenaClassicQueueSoundEnabled;
     private boolean arenaClassicQueueSoundAllowPlayerToggle;
     private int arenaClassicQueueSoundIntervalSeconds;
@@ -337,6 +355,10 @@ public class CfgManager {
 
     public int getArenaClassicMatchConfirmTimeout() {
         return arenaClassicMatchConfirmTimeout;
+    }
+
+    public List<String> getArenaClassicMatchCommandWhitelist() {
+        return arenaClassicMatchCommandWhitelist;
     }
 
     public boolean isArenaClassicQueueSoundEnabled() {

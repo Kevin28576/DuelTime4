@@ -126,6 +126,16 @@ Arena:
       # Seconds players have to confirm when a queue match is found (minimum 5).
       confirm-timeout: 15
 
+      # Command whitelist while player is in an active classic match.
+      # Matching rule: if the entered command text contains any keyword below,
+      # DuelTime4 will allow that command.
+      # Example: if you add "test", "/mycmd test abc" will be allowed.
+      command-whitelist: []
+      # command-whitelist:
+      #   - "test"
+      #   - "/dantiao test_whitelist_command1"
+      #   - "/dantiao test_whitelist_command2"
+
       queue-sound:
         # Master switch for queue searching reminder sound.
         enabled: true

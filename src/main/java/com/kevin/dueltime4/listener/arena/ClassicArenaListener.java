@@ -38,8 +38,11 @@ import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import static com.kevin.dueltime4.arena.type.ArenaType.FunctionInternalType.*;
 
@@ -328,23 +331,64 @@ public class ClassicArenaListener implements Listener {
             return;
         }
         String commandEntered = event.getMessage();
-        List<String> commandAliases = DuelTimePlugin.getInstance().getCommand("dueltime").getAliases();
-        boolean isQuitCommand = false;
-        for (String commandAlias : commandAliases) {
-            for (String labelAlias : DuelTimePlugin.getInstance().getCommandHandler().getSubCommand("quit").getAliases()) {
-                if (commandEntered.equals("/" + commandAlias + " " + labelAlias)) {
-                    isQuitCommand = true;
-                    break;
-                }
+        if (isQuitCommand(commandEntered) || isWhitelistedInMatch(commandEntered)) {
+            return;
+        }
+        if (player.hasPermission(CommandPermission.ADMIN)) {
+            return;
+        }
+        MsgBuilder.send(Msg.ARENA_TYPE_CLASSIC_USE_COMMAND_IN_GAME, player);
+        event.setCancelled(true);
+    }
+
+    private boolean isQuitCommand(String commandEntered) {
+        if (commandEntered == null || commandEntered.isEmpty()) {
+            return false;
+        }
+        String[] args = commandEntered.trim().split("\\s+");
+        if (args.length < 2) {
+            return false;
+        }
+        String commandLabel = args[0].startsWith("/") ? args[0].substring(1) : args[0];
+        String subCommand = args[1];
+        Set<String> commandAliases = new HashSet<>();
+        commandAliases.add("dueltime4");
+        if (DuelTimePlugin.getInstance().getCommand("dueltime4") != null) {
+            commandAliases.addAll(DuelTimePlugin.getInstance().getCommand("dueltime4").getAliases());
+        }
+        boolean matchedCommand = false;
+        for (String alias : commandAliases) {
+            if (alias.equalsIgnoreCase(commandLabel)) {
+                matchedCommand = true;
+                break;
             }
         }
-        if (!isQuitCommand) {
-            if (player.hasPermission(CommandPermission.ADMIN)) {
-                return;
-            }
-            MsgBuilder.send(Msg.ARENA_TYPE_CLASSIC_USE_COMMAND_IN_GAME, player);
-            event.setCancelled(true);
+        if (!matchedCommand) {
+            return false;
         }
+        for (String quitAlias : DuelTimePlugin.getInstance().getCommandHandler().getSubCommand("quit").getAliases()) {
+            if (quitAlias.equalsIgnoreCase(subCommand)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isWhitelistedInMatch(String commandEntered) {
+        if (commandEntered == null || commandEntered.isEmpty()) {
+            return false;
+        }
+        List<String> whitelist = DuelTimePlugin.getInstance().getCfgManager().getArenaClassicMatchCommandWhitelist();
+        if (whitelist == null || whitelist.isEmpty()) {
+            return false;
+        }
+        String normalizedCommand = commandEntered.toLowerCase(Locale.ROOT);
+        for (String keyword : whitelist) {
+            if (keyword != null && !keyword.isEmpty() && normalizedCommand.contains(keyword)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /*
