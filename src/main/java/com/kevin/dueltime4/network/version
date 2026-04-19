@@ -1,9 +1,11 @@
 4.1.3
 download-url: https://github.com/Kevin28576/DuelTime4/releases/download/v4.1.3/Dueltime4-Bukkit-4.1.3.jar
-sha256:
+sha256: dda5f8b54ec36f3d165cce29930c5273b4fe8710188dcc6002e24d6863caae90
 notes:
-- [Changed] 統一色碼轉換為 ChatColor.translateAlternateColorCodes('&', text)。
-- [Changed] 移除等待 ActionBar 與語言訊息中的特殊 Symbol 相容替換邏輯。
-- [Changed] 調整更新提示訊息的預設分隔線與前綴處理。
-- [Fixed] 移除 \u79AE（禮）相關替換，避免非標準色碼符號造成 bug。
-- [Fixed] 修正 Discord Webhook 去色碼流程與主程式啟動資訊去色碼流程。
+- [Added] 無
+- [Changed] 統一全專案色碼轉換流程，改為使用 Bukkit 標準 ChatColor.translateAlternateColorCodes('&', text)。
+- [Changed] 移除等待 ActionBar 與語言訊息中對特殊 Symbol 的相容轉換，避免因符號異常造成顯示或解析錯誤。
+- [Changed] 調整更新提示訊息的預設分隔線與前綴處理，改為穩定可讀的色碼格式。
+- [Fixed] 全面移除 \u79AE（禮）相關替換邏輯，修正由非標準色碼符號引發的潛在 bug。
+- [Fixed] 修正 Discord Webhook 訊息去色碼流程，避免因非標準符號造成內容處理異常。
+- [Fixed] 修正主程式語言名稱顯示去色碼流程，避免啟動資訊因符號替換而出現不一致結果。

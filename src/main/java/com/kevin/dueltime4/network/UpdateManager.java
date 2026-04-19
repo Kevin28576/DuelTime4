@@ -4,6 +4,7 @@ import com.kevin.dueltime4.DuelTimePlugin;
 import com.kevin.dueltime4.yaml.configuration.CfgManager;
 import com.kevin.dueltime4.yaml.message.DynamicLang;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -160,7 +161,7 @@ public class UpdateManager {
 
                 if (!newer) {
                     if (startupMode) {
-                        logUpdaterInfo("You are already on latest version: " + currentVersion);
+                        logUpdaterInfo("Already on latest version (" + currentVersion + ")");
                     } else {
                         sendSync(sender,
                                 "Dynamic.updater.up-to-date",
@@ -171,7 +172,7 @@ public class UpdateManager {
                 }
 
                 if (startupMode) {
-                    logUpdaterInfo("New version found: current=" + currentVersion + ", latest=" + latest.version);
+                    logUpdaterInfo("New version available (" + currentVersion + " -> " + latest.version + ")");
                 } else {
                     sendSync(sender,
                             "Dynamic.updater.new-version",
@@ -197,7 +198,7 @@ public class UpdateManager {
                     DownloadResult result = downloadUpdate(latest);
                     if (result.success) {
                         if (startupMode) {
-                            logUpdaterInfo("Update downloaded: " + result.fileName + ". It will be applied after restart.");
+                            logUpdaterInfo("Update downloaded: " + result.fileName + " (will apply after restart)");
                         } else {
                             sendSync(sender,
                                     "Dynamic.updater.download-success",
@@ -528,26 +529,33 @@ public class UpdateManager {
     }
 
     private void logUpdaterInfo(String message) {
-        sendConsoleWithPrefix("§bUpdater §8» §f" + message);
+        sendConsoleWithPrefix("&bUpdater&8 | &f" + message);
     }
 
     private void logUpdaterWarning(String message) {
-        sendConsoleWithPrefix("§6Updater §8» §e" + message);
+        sendConsoleWithPrefix("&6Updater&8 | &e" + message);
     }
 
     private void sendConsoleWithPrefix(String message) {
         Runnable task = () -> {
-            String prefix = "§7[§bDuelTime4§7] ";
+            String prefix = "&7[&bDuelTime4&7] &r";
             if (plugin.getCfgManager() != null && plugin.getCfgManager().getPrefix() != null && !plugin.getCfgManager().getPrefix().isBlank()) {
                 prefix = plugin.getCfgManager().getPrefix();
             }
-            Bukkit.getConsoleSender().sendMessage(prefix + message);
+            Bukkit.getConsoleSender().sendMessage(colorize(prefix) + colorize(message));
         };
         if (Bukkit.isPrimaryThread()) {
             task.run();
         } else {
             Bukkit.getScheduler().runTask(plugin, task);
         }
+    }
+
+    private String colorize(String text) {
+        if (text == null || text.isEmpty()) {
+            return "";
+        }
+        return ChatColor.translateAlternateColorCodes('&', text);
     }
 
     private static class UpdateInfo {
