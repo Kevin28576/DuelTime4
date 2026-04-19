@@ -20,6 +20,11 @@ public class CMDAdminHelp extends SubCommand {
                 .add("rank", new String[]{"rank", "r"}, "rank(r)", CommandPermission.ADMIN, Msg.COMMAND_SUB_RANK_SERIES_DESCRIPTION, true)
                 .add("lobby", new String[]{"lobby", "l"}, "lobby(l) help(h)", CommandPermission.ADMIN, Msg.COMMAND_SUB_LOBBY_SERIES_DESCRIPTION, true)
                 .add("blacklist", new String[]{"blacklist", "b", "blist", "bl"}, "blacklist(b)", CommandPermission.ADMIN, Msg.COMMAND_SUB_BLACKLIST_SERIES_DESCRIPTION, true)
+                .add("balance", new String[]{"balance", "bal"}, "balance(bal) view/set/config", CommandPermission.ADMIN, Msg.COMMAND_SUB_BALANCE_DESCRIPTION, true)
+                .add("doctor", new String[]{"doctor", "doc", "health"}, "doctor(doc) [all|services|database|queue]", CommandPermission.ADMIN, Msg.COMMAND_SUB_DOCTOR_DESCRIPTION, true)
+                .add("queue", new String[]{"queue", "q"}, "queue(q) debug/cooldown", CommandPermission.ADMIN, Msg.COMMAND_SUB_QUEUE_DESCRIPTION, true)
+                .add("record_export", new String[]{"record", "r", "records"}, "record(r) export [%player%] [json|csv] [limit]", CommandPermission.ADMIN, Msg.COMMAND_SUB_RECORD_EXPORT_DESCRIPTION, true)
+                .add("update", new String[]{"update", "upd"}, "update(upd) check/download/status", CommandPermission.ADMIN, Msg.COMMAND_SUB_UPDATE_DESCRIPTION, true)
                 .add("stop", new String[]{"stop"}, "stop <arena_id|all> [%reason%]", CommandPermission.ADMIN, Msg.COMMAND_SUB_STOP_DESCRIPTION, true)
                 .add("reload", new String[]{"reload", "rl"}, "reload(rl)", CommandPermission.ADMIN, Msg.COMMAND_SUB_RELOAD_DESCRIPTION, true);
     }

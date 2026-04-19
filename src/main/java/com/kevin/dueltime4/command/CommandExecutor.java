@@ -170,8 +170,8 @@ public class CommandExecutor implements TabExecutor {
         return complete(args[1], Arrays.asList(
                 "arena", "point", "level", "rank",
                 "start", "send", "accept", "decline",
-                "join", "shop", "lobby", "spectate",
-                "quit", "record", "language"
+                "join", "queue", "shop", "lobby", "spectate",
+                "quit", "record", "stats", "lang", "language"
         ));
     }
 
@@ -181,7 +181,9 @@ public class CommandExecutor implements TabExecutor {
         }
         return complete(args[1], Arrays.asList(
                 "arena", "shop", "point", "level",
-                "rank", "lobby", "blacklist", "doctor", "stop", "reload"
+                "rank", "lobby", "blacklist", "balance",
+                "doctor", "queue", "record", "update",
+                "stop", "reload"
         ));
     }
 

@@ -299,6 +299,7 @@ Command:
     player: "玩家名稱"
     value: "數值"
     arena-id: "比賽ID"
+    arena-edit-name: "競技場編輯名"
     source-arena-id: "來源比賽ID"
     target-arena-id: "目標比賽ID"
     arena-type: "比賽類型"
@@ -523,6 +524,14 @@ Command:
       view-heading: "&f黑名單玩家如下："
       view-body: "&2{index}. &a{player}[clickable]remove::&7(&f點擊移除&7)::&f點擊將玩家移出黑名單：&f{player}[clickable]"
       view-ending: "&f共計 &6{number} &f位玩家"
+    balance:
+      description: "&f查看與調整分數平衡設定"
+    doctor:
+      description: "&f執行系統健康檢查"
+    queue:
+      description: "&f管理匹配佇列（音效、冷卻、除錯）"
+    update:
+      description: "&f檢查與下載插件更新"
     stop:
       description: "&f強制終止指定競技場的比賽"
       fail-arena-not-exists: "&c競技場 &r'{arena}' &c不存在，無法執行停止操作。"
@@ -592,6 +601,9 @@ Command:
       successfully: "&f你已退出 &r{arena} &b中的戰鬥。"
     record:
       description: "&f開啟戰鬥紀錄介面"
+      export-description: "&f匯出玩家戰報（json/csv）"
+    stats:
+      description: "&f查看玩家統計資訊"
     lang:
       description: "&6切換語言環境"
       list-heading: "&6可用語言檔如下："

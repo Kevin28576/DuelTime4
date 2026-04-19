@@ -175,6 +175,7 @@ public class UtilHelpList {
         PLAYER("player", Msg.COMMAND_PARAMETER_PLAYER),
         VALUE("value", Msg.COMMAND_PARAMETER_VALUE),
         ARENA_ID("arena_id", Msg.COMMAND_PARAMETER_ARENA_ID),
+        ARENA_EDIT_NAME("arena_edit_name", Msg.COMMAND_PARAMETER_ARENA_EDIT_NAME),
         SOURCE_ARENA_ID("source_arena_id", Msg.COMMAND_PARAMETER_SOURCE_ARENA_ID),
         TARGET_ARENA_ID("target_arena_id", Msg.COMMAND_PARAMETER_TARGET_ARENA_ID),
         ARENA_TYPE("arena_type", Msg.COMMAND_PARAMETER_ARENA_TYPE),
