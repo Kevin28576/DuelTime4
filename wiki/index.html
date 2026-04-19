@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DuelTime4 Wiki</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="gb-shell">
+    <aside class="gb-sidebar">
+      <div class="gb-brand">
+        <h1 class="gb-brand-title">DuelTime4 Wiki</h1>
+        <p class="gb-brand-sub">v4.1.3 • Paper 1.21+</p>
+      </div>
+      <div class="gb-group">
+        <p class="gb-group-title">文件</p>
+        <a class="gb-link active" href="./index.html">首頁</a>
+        <a class="gb-link" href="./commands.html">指令</a>
+        <a class="gb-link" href="./config.html">設定</a>
+        <a class="gb-link" href="./features.html">功能說明</a>
+        <a class="gb-link" href="./troubleshooting.html">疑難排解</a>
+        <a class="gb-link" href="./release-notes.html">更新重點</a>
+      </div>
+    </aside>
+
+    <main class="gb-main">
+      <nav class="mobile-topnav">
+        <a class="active" href="./index.html">首頁</a>
+        <a href="./commands.html">指令</a>
+        <a href="./config.html">設定</a>
+        <a href="./features.html">功能</a>
+        <a href="./troubleshooting.html">疑難排解</a>
+        <a href="./release-notes.html">更新</a>
+      </nav>
+
+      <header class="page-head">
+        <h1 class="page-title">DuelTime4 文件首頁</h1>
+        <p class="page-subtitle">你可以從這裡快速找到安裝、指令、配置、維運與版本資訊。</p>
+      </header>
+
+      <section class="grid cards">
+        <article class="card">
+          <h3>快速開始</h3>
+          <p>安裝流程、必要環境、第一次啟動後要改的檔案。</p>
+        </article>
+        <article class="card">
+          <h3>指令總覽</h3>
+          <p>玩家與管理員常用指令，以及子系統指令語法。</p>
+        </article>
+        <article class="card">
+          <h3>核心功能</h3>
+          <p>匹配 GUI、隊列看門狗、離場懲罰、戰報匯出。</p>
+        </article>
+        <article class="card">
+          <h3>維運排錯</h3>
+          <p>利用 <code>/dt doctor</code>、<code>/dt queue debug</code> 快速定位問題。</p>
+        </article>
+      </section>
+
+      <section class="section">
+        <h2>安裝流程</h2>
+        <ol class="list">
+          <li>將 JAR 放入伺服器 <code>plugins/</code>。</li>
+          <li>啟動伺服器一次，產生 <code>plugins/DuelTime4/</code>。</li>
+          <li>調整 <code>config.yml</code> 與 <code>languages/zh_tw.yml</code>。</li>
+          <li>使用 <code>/dt reload</code> 套用，或直接重啟伺服器。</li>
+        </ol>
+        <p>打包檔名格式：<code>Dueltime4-Bukkit-{version}.jar</code></p>
+      </section>
+
+      <section class="section">
+        <h2>主指令與權限</h2>
+        <p>
+          主指令：<code>/dueltime4</code><br />
+          別名：<code>/dueltime</code>、<code>/dt</code>、<code>/dt4</code><br />
+          管理權限：<code>dueltime.admin</code>
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>4.1.3 版本重點</h2>
+        <span class="badge ok">已實作</span>
+        <span class="badge ok">可配置</span>
+        <span class="badge ok">可語言化</span>
+        <ul class="list">
+          <li>隊列 ActionBar 顯示秒數、等待人數與預估等待時間。</li>
+          <li>匹配成功優先使用 GUI 接受/拒絕，失敗時自動回退指令。</li>
+          <li><code>/dt queue sound</code> 支援玩家自行開關提示音效。</li>
+          <li><code>/dt queue cooldown [player]</code> 支援查詢冷卻狀態。</li>
+          <li><code>/dt doctor</code>、<code>/dt queue debug</code> 健康檢查與隊列診斷。</li>
+          <li><code>/dt record export [player] [json|csv] [limit]</code> 匯出戰報。</li>
+        </ul>
+      </section>
+
+      <p class="foot">本 Wiki 為純 HTML 多頁文件，可直接離線開啟。</p>
+    </main>
+  </div>
+</body>
+</html>

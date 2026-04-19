@@ -155,7 +155,7 @@ public class CommandExecutor implements TabExecutor {
             case "spectate":
                 return tabArenaId(args, 1);
             case "stop":
-                return sender.hasPermission(CommandPermission.ADMIN) ? tabArenaId(args, 1) : Collections.emptyList();
+                return tabStop(sender, args);
             case "click":
                 return args.length == 2 ? complete(args[1], Collections.singletonList("item")) : Collections.emptyList();
             default:
@@ -446,6 +446,8 @@ public class CommandExecutor implements TabExecutor {
                 case "streak-enabled":
                 case "streak-show-message":
                 case "streak-reset-on-draw":
+                case "queue-sound-enabled":
+                case "queue-sound-allow-player-toggle":
                 case "watchdog-enabled":
                 case "watchdog-cleanup-offline-players":
                 case "watchdog-cleanup-invalid-arena":
@@ -455,13 +457,20 @@ public class CommandExecutor implements TabExecutor {
                 case "leave-penalty-apply-on-disconnect":
                 case "leave-penalty-apply-point-deduction":
                 case "leave-penalty-apply-queue-cooldown":
+                case "restart-protection-enabled":
+                case "restart-protection-broadcast-message":
                     return complete(args[4], Arrays.asList("true", "false"));
                 case "watchdog-interval-seconds":
+                case "queue-sound-interval-seconds":
                     return complete(args[4], Arrays.asList("1", "2", "3", "5", "10"));
                 case "leave-penalty-point":
                     return complete(args[4], Arrays.asList("1", "2", "3"));
                 case "leave-penalty-cooldown":
                     return complete(args[4], Arrays.asList("10", "20", "30"));
+                case "queue-sound-volume":
+                    return complete(args[4], Arrays.asList("0.5", "1", "2"));
+                case "queue-sound-pitch":
+                    return complete(args[4], Arrays.asList("0.8", "1", "1.2", "1.5"));
                 default:
                     return Collections.emptyList();
             }
@@ -480,11 +489,21 @@ public class CommandExecutor implements TabExecutor {
     }
 
     private List<String> tabQueue(CommandSender sender, String[] args) {
-        if (!sender.hasPermission(CommandPermission.ADMIN)) {
-            return Collections.emptyList();
-        }
         if (args.length == 2) {
-            return complete(args[1], Arrays.asList("debug"));
+            List<String> candidates = new ArrayList<>(Arrays.asList("sound", "cooldown"));
+            if (sender.hasPermission(CommandPermission.ADMIN)) {
+                candidates.add("debug");
+            }
+            return complete(args[1], candidates);
+        }
+        if (isAlias(args[1], "sound", "notify", "reminder") && args.length == 3) {
+            return complete(args[2], Arrays.asList("on", "off", "toggle", "status"));
+        }
+        if (isAlias(args[1], "cooldown", "cd", "penalty") && args.length == 3) {
+            if (!sender.hasPermission(CommandPermission.ADMIN)) {
+                return Collections.emptyList();
+            }
+            return complete(args[2], getOnlinePlayerNames(sender, true));
         }
         return Collections.emptyList();
     }
@@ -536,6 +555,18 @@ public class CommandExecutor implements TabExecutor {
             return Collections.emptyList();
         }
         return complete(args[argIndex], getArenaIds());
+    }
+
+    private List<String> tabStop(CommandSender sender, String[] args) {
+        if (!sender.hasPermission(CommandPermission.ADMIN)) {
+            return Collections.emptyList();
+        }
+        if (args.length == 2) {
+            List<String> candidates = new ArrayList<>(getArenaIds());
+            candidates.add("all");
+            return complete(args[1], candidates);
+        }
+        return Collections.emptyList();
     }
 
     private List<String> tabShopLocationArgs(String[] args, int firstArgIndex) {

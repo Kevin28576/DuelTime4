@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DuelTime4 Wiki - 功能</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="gb-shell">
+    <aside class="gb-sidebar">
+      <div class="gb-brand">
+        <h1 class="gb-brand-title">DuelTime4 Wiki</h1>
+        <p class="gb-brand-sub">v4.1.3 • Paper 1.21+</p>
+      </div>
+      <div class="gb-group">
+        <p class="gb-group-title">文件</p>
+        <a class="gb-link" href="./index.html">首頁</a>
+        <a class="gb-link" href="./commands.html">指令</a>
+        <a class="gb-link" href="./config.html">設定</a>
+        <a class="gb-link active" href="./features.html">功能說明</a>
+        <a class="gb-link" href="./troubleshooting.html">疑難排解</a>
+        <a class="gb-link" href="./release-notes.html">更新重點</a>
+      </div>
+    </aside>
+
+    <main class="gb-main">
+      <nav class="mobile-topnav">
+        <a href="./index.html">首頁</a>
+        <a href="./commands.html">指令</a>
+        <a href="./config.html">設定</a>
+        <a class="active" href="./features.html">功能</a>
+        <a href="./troubleshooting.html">疑難排解</a>
+        <a href="./release-notes.html">更新</a>
+      </nav>
+
+      <header class="page-head">
+        <h1 class="page-title">功能說明</h1>
+        <p class="page-subtitle">以下內容以 4.1.3 的行為為準。</p>
+      </header>
+
+      <section class="section">
+        <h2>1. 匹配流程（Queue + Confirm GUI）</h2>
+        <ol class="list">
+          <li>玩家從匹配面板進入隊列。</li>
+          <li>關閉 GUI 後，ActionBar 仍會持續顯示搜尋秒數與等待人數。</li>
+          <li>配對成功後，優先用 GUI 提供接受/拒絕。</li>
+          <li>若 GUI 不可用，會自動回退到 <code>/dt accept</code> / <code>/dt decline</code>。</li>
+        </ol>
+      </section>
+
+      <section class="section">
+        <h2>2. 隊列看門狗（Queue Watchdog）</h2>
+        <ul class="list">
+          <li>定期清理離線玩家的卡住隊列資料。</li>
+          <li>定期清理目標競技場無效的等待資料。</li>
+          <li>定時觸發等待中的競技場做匹配檢查。</li>
+        </ul>
+        <p>可用 <code>/dt doctor queue</code> 或 <code>/dt queue debug</code> 觀察運作狀態。</p>
+      </section>
+
+      <section class="section">
+        <h2>3. 離場懲罰（可配置）</h2>
+        <span class="badge warn">主動 /quit 或斷線判負才套用</span>
+        <span class="badge ok">死亡不套用</span>
+        <ul class="list">
+          <li>可設定是否扣點。</li>
+          <li>可設定扣點數值。</li>
+          <li>可設定是否套用隊列冷卻與冷卻秒數。</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>4. 連勝/連敗（Streak）</h2>
+        <ul class="list">
+          <li>每場結束後更新 streak。</li>
+          <li>可顯示當前 streak。</li>
+          <li>可設定平手時是否重置。</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>5. 玩家自訂隊列音效</h2>
+        <p>玩家可用 <code>/dt queue sound on|off|toggle|status</code> 控制自己的排隊提醒音效。</p>
+        <p>管理員可透過設定限制玩家是否能自行切換。</p>
+      </section>
+
+      <section class="section">
+        <h2>6. 戰報匯出（管理員）</h2>
+        <p>指令：<code>/dt record export [player] [json|csv] [limit]</code></p>
+        <p>預設 <code>limit=100</code>，最大 <code>limit=1000</code>。</p>
+      </section>
+
+      <section class="section">
+        <h2>7. 重啟保護</h2>
+        <ul class="list">
+          <li>伺服器重啟時，戰鬥中玩家會收到 Title + 聊天提示。</li>
+          <li>重啟期間離線不套用中途離場懲罰。</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

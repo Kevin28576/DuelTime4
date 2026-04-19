@@ -21,6 +21,10 @@ public interface PlayerDataMapper {
 
     void createTableIfNotExists();
 
+    void ensureQueueSoundColumnMySQL();
+
+    void ensureQueueSoundColumnSQLite();
+
     List<RankingData> selectWinsRanking();
 
     List<RankingData> selectWinRateRanking();

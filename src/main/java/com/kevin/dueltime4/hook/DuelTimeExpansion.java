@@ -1,11 +1,13 @@
 package com.kevin.dueltime4.hook;
 
 import com.kevin.dueltime4.DuelTimePlugin;
+import com.kevin.dueltime4.arena.ArenaManager;
+import com.kevin.dueltime4.arena.base.BaseArena;
 import com.kevin.dueltime4.cache.CacheManager;
 import com.kevin.dueltime4.data.pojo.PlayerData;
 import com.kevin.dueltime4.ranking.RankingManager;
 import com.kevin.dueltime4.util.UtilFormat;
-import com.kevin.dueltime4.cache.PlayerDataCache;
+import com.kevin.dueltime4.yaml.message.DynamicLang;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +45,16 @@ public class DuelTimeExpansion extends PlaceholderExpansion {
     @Override
     public String onPlaceholderRequest(Player player, @NotNull String identifier) {
         if (player == null) return "";
+        ArenaManager arenaManager = DuelTimePlugin.getInstance().getArenaManager();
+        if (identifier.startsWith("arena_status_")) {
+            String arenaId = identifier.substring("arena_status_".length());
+            return resolveArenaStatus(arenaManager, arenaId);
+        }
+        if (identifier.startsWith("arena_is_in_game_")) {
+            String arenaId = identifier.substring("arena_is_in_game_".length());
+            return String.valueOf(isArenaInGame(arenaManager, arenaId));
+        }
+
         CacheManager cacheManager = DuelTimePlugin.getInstance().getCacheManager();
         PlayerData playerData = cacheManager.getPlayerDataCache().get(player.getName());
         if (playerData != null) {
@@ -114,5 +126,34 @@ public class DuelTimeExpansion extends PlaceholderExpansion {
             return null;
         }
         return null;
+    }
+
+    private String resolveArenaStatus(ArenaManager arenaManager, String arenaId) {
+        BaseArena arena = arenaManager == null ? null : arenaManager.get(arenaId);
+        if (arena == null) {
+            return DynamicLang.get(null,
+                    "Dynamic.placeholder.arena-status.unknown",
+                    "未知");
+        }
+        if (isInProgress(arena.getState())) {
+            return DynamicLang.get(null,
+                    "Dynamic.placeholder.arena-status.in-game",
+                    "對戰中");
+        }
+        return DynamicLang.get(null,
+                "Dynamic.placeholder.arena-status.idle",
+                "空閒");
+    }
+
+    private boolean isArenaInGame(ArenaManager arenaManager, String arenaId) {
+        BaseArena arena = arenaManager == null ? null : arenaManager.get(arenaId);
+        if (arena == null) {
+            return false;
+        }
+        return isInProgress(arena.getState());
+    }
+
+    private boolean isInProgress(BaseArena.State state) {
+        return state == BaseArena.State.IN_PROGRESS_OPENED || state == BaseArena.State.IN_PROGRESS_CLOSED;
     }
 }

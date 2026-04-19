@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DuelTime4 Wiki - 疑難排解</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="gb-shell">
+    <aside class="gb-sidebar">
+      <div class="gb-brand">
+        <h1 class="gb-brand-title">DuelTime4 Wiki</h1>
+        <p class="gb-brand-sub">v4.1.3 • Paper 1.21+</p>
+      </div>
+      <div class="gb-group">
+        <p class="gb-group-title">文件</p>
+        <a class="gb-link" href="./index.html">首頁</a>
+        <a class="gb-link" href="./commands.html">指令</a>
+        <a class="gb-link" href="./config.html">設定</a>
+        <a class="gb-link" href="./features.html">功能說明</a>
+        <a class="gb-link active" href="./troubleshooting.html">疑難排解</a>
+        <a class="gb-link" href="./release-notes.html">更新重點</a>
+      </div>
+    </aside>
+
+    <main class="gb-main">
+      <nav class="mobile-topnav">
+        <a href="./index.html">首頁</a>
+        <a href="./commands.html">指令</a>
+        <a href="./config.html">設定</a>
+        <a href="./features.html">功能</a>
+        <a class="active" href="./troubleshooting.html">疑難排解</a>
+        <a href="./release-notes.html">更新</a>
+      </nav>
+
+      <header class="page-head">
+        <h1 class="page-title">疑難排解</h1>
+        <p class="page-subtitle">常見錯誤與建議處理方式。</p>
+      </header>
+
+      <section class="section">
+        <h2>1) 啟動後大量 ClassNotFoundException</h2>
+        <p>例如：<code>net.minecraft.server.craftbukkit.Packet</code></p>
+        <ul class="list">
+          <li>多半是舊版 NMS 路徑在新 Paper 已變更。</li>
+          <li>先確認使用最新 DuelTime4。</li>
+          <li>避免在自訂功能中硬寫舊版 NMS class 名稱。</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>2) Maven 編譯錯誤：illegal character '\ufeff'</h2>
+        <ul class="list">
+          <li>有 Java 檔含 BOM（Byte Order Mark）。</li>
+          <li>把該檔另存成 UTF-8（無 BOM）。</li>
+          <li>IDE 預設儲存格式改為 UTF-8 without BOM。</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>3) YAML 無法載入（特殊字元 / code point）</h2>
+        <ul class="list">
+          <li>語言檔可能貼入了不可見字元。</li>
+          <li>確認縮排使用空白，不要用 Tab。</li>
+          <li>含 <code>:</code> 的字串建議加引號。</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>4) 更新器抓不到新版本</h2>
+        <p>優先檢查：</p>
+        <pre>Updater.manifest-url
+Updater.fallback-version-url
+Updater.download-url-template</pre>
+        <p>GitHub release 路徑要是 <code>v{version}</code>，例如 <code>v4.1.3</code>。</p>
+      </section>
+
+      <section class="section">
+        <h2>5) 隊列卡住 / 配不到對手</h2>
+        <ol class="list">
+          <li>執行 <code>/dt doctor queue</code> 確認 watchdog 是否啟用。</li>
+          <li>執行 <code>/dt queue debug</code> 檢查 waiting 與 pending。</li>
+          <li>確認競技場狀態是 WAITING 且可加入。</li>
+          <li>確認玩家沒有處於離場懲罰冷卻中。</li>
+        </ol>
+      </section>
+
+      <section class="section">
+        <h2>6) 快速自檢</h2>
+        <p>
+          <span class="badge ok">Java 21</span>
+          <span class="badge ok">Paper 1.21+</span>
+          <span class="badge ok">config.yml 縮排正確</span>
+          <span class="badge warn">語言檔無亂碼與控制字元</span>
+        </p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

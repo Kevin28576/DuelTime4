@@ -9,6 +9,7 @@
         exp,
         point,
         language,
+        COALESCE(queue_sound_enabled, 1) AS queueSoundEnabled,
         COALESCE(total_game_number, 0) AS totalGameNumber,
         COALESCE(total_game_time, 0) AS totalGameTime,
         COALESCE(arena_classic_wins, 0) AS arenaClassicWins,
@@ -23,6 +24,7 @@
         exp,
         point,
         language,
+        COALESCE(queue_sound_enabled, 1) AS queueSoundEnabled,
         COALESCE(total_game_number, 0) AS totalGameNumber,
         COALESCE(total_game_time, 0) AS totalGameTime,
         COALESCE(arena_classic_wins, 0) AS arenaClassicWins,
@@ -34,13 +36,14 @@
     </select>
     <insert id="insertOrUpdateMySQL" parameterType="com.kevin.dueltime4.data.pojo.PlayerData">
         INSERT INTO dueltime_playerdata
-        (id, exp, point, language, total_game_number, total_game_time, arena_classic_wins, arena_classic_draws,
+        (id, exp, point, language, queue_sound_enabled, total_game_number, total_game_time, arena_classic_wins, arena_classic_draws,
         arena_classic_loses, arena_classic_time)
         VALUES
         (#{id},
         #{exp},
         #{point},
         #{language},
+        #{queueSoundEnabled},
         CASE WHEN #{totalGameNumber} = 0 THEN NULL ELSE #{totalGameNumber} END,
         CASE WHEN #{totalGameTime} = 0 THEN NULL ELSE #{totalGameTime} END,
         CASE WHEN #{arenaClassicWins} = 0 THEN NULL ELSE #{arenaClassicWins} END,
@@ -52,6 +55,7 @@
             exp = #{exp},
             point = #{point},
             <if test="language != null">language = #{language},</if>
+            queue_sound_enabled = #{queueSoundEnabled},
             <if test="totalGameNumber != 0">total_game_number = CASE WHEN #{totalGameNumber} = 0 THEN NULL ELSE
                 #{totalGameNumber} END,
             </if>
@@ -74,11 +78,11 @@
     </insert>
     <insert id="insertOrUpdateSQLite" parameterType="com.kevin.dueltime4.data.pojo.PlayerData">
         INSERT OR REPLACE INTO dueltime_playerdata (
-        id, exp, point, language,
+        id, exp, point, language, queue_sound_enabled,
         total_game_number, total_game_time,
         arena_classic_wins, arena_classic_draws, arena_classic_loses, arena_classic_time)
         VALUES (
-        #{id}, #{exp}, #{point}, #{language},
+        #{id}, #{exp}, #{point}, #{language}, #{queueSoundEnabled},
         #{totalGameNumber}, #{totalGameTime},
         #{arenaClassicWins}, #{arenaClassicDraws}, #{arenaClassicLoses}, #{arenaClassicTime});
     </insert>
@@ -88,6 +92,7 @@
         `exp` double NOT NULL DEFAULT 0,
         `point` double NOT NULL DEFAULT 0,
         `language` varchar(64) NULL DEFAULT NULL,
+        `queue_sound_enabled` tinyint(1) NOT NULL DEFAULT 1,
         `total_game_number` int NULL DEFAULT NULL,
         `total_game_time` int NULL DEFAULT NULL,
         `arena_classic_wins` int NULL DEFAULT NULL,
@@ -96,6 +101,14 @@
         `arena_classic_time` int NULL DEFAULT NULL,
         PRIMARY KEY (`id`)
         );
+    </update>
+    <update id="ensureQueueSoundColumnMySQL">
+        ALTER TABLE dueltime_playerdata
+        ADD COLUMN queue_sound_enabled tinyint(1) NOT NULL DEFAULT 1;
+    </update>
+    <update id="ensureQueueSoundColumnSQLite">
+        ALTER TABLE dueltime_playerdata
+        ADD COLUMN queue_sound_enabled INTEGER NOT NULL DEFAULT 1;
     </update>
     <select id="selectWinsRanking" resultType="com.kevin.dueltime4.ranking.RankingData">
         SELECT id, COALESCE(arena_classic_wins, 0) AS data

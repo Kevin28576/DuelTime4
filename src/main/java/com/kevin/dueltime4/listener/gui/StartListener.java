@@ -54,7 +54,7 @@ public class StartListener implements Listener {
                     }
                     waitingOperationCooldown.put(player.getName(), System.currentTimeMillis() + 1000);
                 }
-                arenaManager.addWaitingPlayer(player, arenaClicked.getId());
+                arenaManager.addWaitingPlayer(player, arenaClicked.getId(), true);
                 player.playSound(player.getLocation(), ViaVersion.getSound(
                         "BLOCK_ANVIL_PLACE", "ANVIL_PLACE"), 1, 0);
             }

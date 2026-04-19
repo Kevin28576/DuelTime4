@@ -110,6 +110,10 @@ public class ClassicArenaListener implements Listener {
      */
     @EventHandler
     public void onLeaveServer(PlayerQuitEvent event) {
+        if (DuelTimePlugin.isServerShuttingDown()
+                && DuelTimePlugin.getInstance().getCfgManager().isRestartProtectionEnabled()) {
+            return;
+        }
         BaseArena arena = DuelTimePlugin.getInstance().getArenaManager().getOf(event.getPlayer());
         if (arena == null) return;
         if (!(arena instanceof ClassicArena)) return;
@@ -244,6 +248,9 @@ public class ClassicArenaListener implements Listener {
     private boolean shouldApplyQuitPenalty(QuitPenaltyTrigger trigger) {
         CfgManager cfgManager = DuelTimePlugin.getInstance().getCfgManager();
         if (!cfgManager.isArenaClassicLeavePenaltyEnabled()) {
+            return false;
+        }
+        if (DuelTimePlugin.isServerShuttingDown() && cfgManager.isRestartProtectionEnabled()) {
             return false;
         }
         return switch (trigger) {

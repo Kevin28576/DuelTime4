@@ -18,6 +18,7 @@ import com.kevin.dueltime4.event.arena.ArenaTryToStartEvent;
 import com.kevin.dueltime4.event.arena.ArenaTryToStopEvent;
 import com.kevin.dueltime4.event.arena.ArenaTryToWaitEvent;
 import com.kevin.dueltime4.event.arena.ArenaWaitEvent;
+import com.kevin.dueltime4.event.arena.StartMatchingEvent;
 import com.kevin.dueltime4.gui.CustomInventoryManager;
 import com.kevin.dueltime4.yaml.message.DynamicLang;
 import com.kevin.dueltime4.yaml.message.Msg;
@@ -162,6 +163,9 @@ public class ArenaManager {
 
     public void stop(String id, String reason) {
         BaseArena arena = get(id);
+        if (arena == null) {
+            return;
+        }
         Bukkit.getServer().getPluginManager().callEvent(new ArenaTryToStopEvent(arena, reason));
         queueMatchConfirmManager.cancelForArenaSilently(id);
         for (BaseGamerData gamerData : arena.getGamerDataList()) {
@@ -169,6 +173,18 @@ public class ArenaManager {
         }
         updateStartInventory();
         Bukkit.getServer().getPluginManager().callEvent(new ArenaStopEvent(arena, reason));
+    }
+
+    public int stopAllInProgress(String reason) {
+        int stoppedArenaCount = 0;
+        for (BaseArena arena : getList()) {
+            if (arena == null || !isInProgress(arena.getState())) {
+                continue;
+            }
+            stop(arena.getId(), reason);
+            stoppedArenaCount++;
+        }
+        return stoppedArenaCount;
     }
 
     public void join(Player player, String id, ArenaTryToJoinEvent.Way way) {
@@ -209,6 +225,10 @@ public class ArenaManager {
     }
 
     public void addWaitingPlayer(Player player, String id) {
+        addWaitingPlayer(player, id, false);
+    }
+
+    public void addWaitingPlayer(Player player, String id, boolean triggerStartMatchingEvent) {
         String playerName = player.getName();
         long penaltyRemainingSeconds = getQueuePenaltyRemainingSeconds(playerName);
         if (penaltyRemainingSeconds > 0) {
@@ -248,6 +268,9 @@ public class ArenaManager {
         }
         waitingArenaToPlayersMap.put(id, waitingPlayerList);
 
+        if (triggerStartMatchingEvent) {
+            Bukkit.getServer().getPluginManager().callEvent(new StartMatchingEvent(player, arena, isSwitch));
+        }
         Bukkit.getServer().getPluginManager().callEvent(new ArenaWaitEvent(player, arena));
         MsgBuilder.send(isSwitch ? Msg.ARENA_WAIT_SWITCH : Msg.ARENA_WAIT_START, player, arena.getName());
         tryCreatePendingMatch(id);
@@ -427,6 +450,10 @@ public class ArenaManager {
         return queueMatchConfirmManager.decline(player);
     }
 
+    public boolean hasPendingMatchForPlayer(String playerName) {
+        return queueMatchConfirmManager.hasPendingForPlayer(playerName);
+    }
+
     public void cancelAllPendingMatches() {
         queueMatchConfirmManager.cancelAll();
     }
@@ -474,5 +501,9 @@ public class ArenaManager {
     private void updateStartInventory() {
         CustomInventoryManager customInventoryManager = DuelTimePlugin.getInstance().getCustomInventoryManager();
         customInventoryManager.updatePage(customInventoryManager.getStart());
+    }
+
+    private boolean isInProgress(BaseArena.State state) {
+        return state == BaseArena.State.IN_PROGRESS_OPENED || state == BaseArena.State.IN_PROGRESS_CLOSED;
     }
 }

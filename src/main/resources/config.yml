@@ -34,28 +34,35 @@ Message:
   default-language: "en_us"
 
 # +----------------------------------------------------------------------------------------------+ #
-# | Updater Settings                                                                             | #
+# | System Settings                                                                              | #
 # +----------------------------------------------------------------------------------------------+ #
-Updater:
-  # Master switch for update checker and downloader.
-  enabled: true
-  # Check for updates automatically when plugin starts.
-  check-on-startup: true
-  # Automatically download new version when startup check finds one.
-  # Downloaded file is placed into server update folder and applied on next restart.
-  auto-download: false
-  # Verify sha256 when manifest provides one.
-  verify-sha256: true
-  # Remote update manifest URL (YAML format).
-  manifest-url: "https://raw.githubusercontent.com/Kevin28576/DuelTime4/refs/heads/main/src/main/java/com/kevin/dueltime4/network/update.yml"
-  # Fallback plain-text version URL (legacy format, first line = version).
-  fallback-version-url: "https://raw.githubusercontent.com/Kevin28576/DuelTime4/refs/heads/main/src/main/java/com/kevin/dueltime4/network/version"
-  # Used when manifest has no download-url.
-  # Available placeholder: {version}
-  download-url-template: "https://github.com/Kevin28576/DuelTime4/releases/download/v{version}/Dueltime4-Bukkit-{version}.jar"
-  # HTTP timeouts (milliseconds).
-  connect-timeout-ms: 5000
-  read-timeout-ms: 5000
+System:
+  restart-protection:
+    # Master switch for restart/shutdown protection mode.
+    enabled: true
+    # Notify players currently in active battles with title + chat message.
+    # Also print detailed restart snapshot logs in console.
+    broadcast-message: true
+
+# +----------------------------------------------------------------------------------------------+ #
+# | Database Settings                                                                            | #
+# +----------------------------------------------------------------------------------------------+ #
+Database:
+  # MySQL JDBC URL (only used by modules set to mysql below)
+  url: jdbc:mysql://localhost:3306/DuelTime4?useSSL=false
+  # MySQL username (only used when module type is mysql)
+  username: root
+  # MySQL password (only used when module type is mysql)
+  password: 1234567890
+  type:
+    # Storage type per module: mysql / sqlite
+    # If sqlite is selected, data is stored locally in plugin files.
+    arena: "sqlite"
+    location: "sqlite"
+    shop: "sqlite"
+    record: "sqlite"
+    player-data: "sqlite"
+    blacklist: "sqlite"
 
 # +----------------------------------------------------------------------------------------------+ #
 # | Network Integrations                                                                         | #
@@ -81,26 +88,6 @@ Network:
     leave-penalty:
       # Send a notification when leave penalty is applied.
       enabled: true
-
-# +----------------------------------------------------------------------------------------------+ #
-# | Database Settings                                                                            | #
-# +----------------------------------------------------------------------------------------------+ #
-Database:
-  # MySQL JDBC URL (only used by modules set to mysql below)
-  url: jdbc:mysql://localhost:3306/DuelTime4?useSSL=false
-  # MySQL username (only used when module type is mysql)
-  username: root
-  # MySQL password (only used when module type is mysql)
-  password: 1234567890
-  type:
-    # Storage type per module: mysql / sqlite
-    # If sqlite is selected, data is stored locally in plugin files.
-    arena: "sqlite"
-    location: "sqlite"
-    shop: "sqlite"
-    record: "sqlite"
-    player-data: "sqlite"
-    blacklist: "sqlite"
 
 # +----------------------------------------------------------------------------------------------+ #
 # | Arena Settings                                                                               | #
@@ -138,6 +125,20 @@ Arena:
     matchmaking:
       # Seconds players have to confirm when a queue match is found (minimum 5).
       confirm-timeout: 15
+
+      queue-sound:
+        # Master switch for queue searching reminder sound.
+        enabled: true
+        # Allow players to toggle their own queue reminder sound.
+        allow-player-toggle: true
+        # Play reminder sound every N seconds while player is waiting in queue.
+        interval-seconds: 5
+        # Bukkit sound enum name.
+        sound: "BLOCK_NOTE_BLOCK_PLING"
+        # Sound volume (0.0 to 5.0).
+        volume: 1.0
+        # Sound pitch (0.1 to 2.0).
+        pitch: 1.2
 
       watchdog:
         # Master switch for queue watchdog (stale queue cleanup + match trigger checks).
@@ -182,6 +183,30 @@ Record:
     enabled: true
     # Point cost for printing one record (minimum 0).
     cost: 1
+
+# +----------------------------------------------------------------------------------------------+ #
+# | Updater Settings                                                                             | #
+# +----------------------------------------------------------------------------------------------+ #
+Updater:
+  # Master switch for update checker and downloader.
+  enabled: true
+  # Check for updates automatically when plugin starts.
+  check-on-startup: true
+  # Automatically download new version when startup check finds one.
+  # Downloaded file is placed into server update folder and applied on next restart.
+  auto-download: false
+  # Verify sha256 when manifest provides one.
+  verify-sha256: true
+  # Remote update manifest URL (YAML format).
+  manifest-url: "https://raw.githubusercontent.com/Kevin28576/DuelTime4/refs/heads/main/src/main/java/com/kevin/dueltime4/network/update.yml"
+  # Fallback plain-text version URL (legacy format, first line = version).
+  fallback-version-url: "https://raw.githubusercontent.com/Kevin28576/DuelTime4/refs/heads/main/src/main/java/com/kevin/dueltime4/network/version"
+  # Used when manifest has no download-url.
+  # Available placeholder: {version}
+  download-url-template: "https://github.com/Kevin28576/DuelTime4/releases/download/v{version}/Dueltime4-Bukkit-{version}.jar"
+  # HTTP timeouts (milliseconds).
+  connect-timeout-ms: 5000
+  read-timeout-ms: 5000
 
 # +----------------------------------------------------------------------------------------------+ #
 # | Ranking Settings                                                                             | #

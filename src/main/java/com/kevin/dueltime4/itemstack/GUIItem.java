@@ -6,6 +6,7 @@ import com.kevin.dueltime4.arena.base.BaseArena;
 import com.kevin.dueltime4.arena.base.BaseArenaData;
 import com.kevin.dueltime4.arena.base.BaseRecordData;
 import com.kevin.dueltime4.arena.type.ArenaType;
+import com.kevin.dueltime4.data.pojo.PlayerData;
 import com.kevin.dueltime4.data.pojo.ShopRewardData;
 import com.kevin.dueltime4.util.UtilItemBuilder;
 import com.kevin.dueltime4.viaversion.ViaVersionItem;
@@ -126,6 +127,7 @@ public class GUIItem {
         String stateText;
         String leftPlayerNumber = String.valueOf(arena.getGamerDataList().size());
         String rightPlayerNumber = arenaData.getMaxPlayerNumber() > 0 ? String.valueOf(arenaData.getMaxPlayerNumber()) : "-";
+        String queueSoundLine = null;
 
         switch (arena.getState()) {
             case WAITING:
@@ -153,6 +155,14 @@ public class GUIItem {
                         "eta", String.valueOf(etaSeconds))
                         .replace('§', '&');
                 stateText = MsgBuilder.get(stateMsg, player, String.valueOf(waitingCount)) + etaSuffix;
+                PlayerData playerData = DuelTimePlugin.getInstance().getCacheManager().getPlayerDataCache().getAnyway(player.getName());
+                boolean queueSoundEnabled = playerData == null || playerData.isQueueSoundEnabled();
+                queueSoundLine = DynamicLang.get(player,
+                        "Dynamic.queue.sound.gui-line",
+                        "&7排隊提醒音效：{state}",
+                        "state", DynamicLang.get(player,
+                                queueSoundEnabled ? "Dynamic.queue.sound.state-on" : "Dynamic.queue.sound.state-off",
+                                queueSoundEnabled ? "&a開啟" : "&c關閉"));
                 break;
             case IN_PROGRESS_CLOSED:
                 stateMsg = Msg.ITEM_GUI_START_ARENA_STATE_IN_PROGRESS_CLOSED;
@@ -174,13 +184,18 @@ public class GUIItem {
                 break;
         }
 
-        itemMeta.setLore(MsgBuilder.gets(
+        List<String> lore = MsgBuilder.gets(
                 Msg.ITEM_GUI_START_ARENA_INFORMATION,
                 player,
                 stateText,
                 leftPlayerNumber,
                 rightPlayerNumber,
-                MsgBuilder.get(buttonMsg, player)));
+                MsgBuilder.get(buttonMsg, player));
+        if (queueSoundLine != null) {
+            lore.add("");
+            lore.add(queueSoundLine);
+        }
+        itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }

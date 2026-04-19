@@ -20,7 +20,6 @@ public class QueueMatchConfirmGUIListener implements Listener {
         }
 
         event.setCancelled(true);
-
         if (!(event.getWhoClicked() instanceof Player player)) {
             return;
         }
@@ -71,7 +70,7 @@ public class QueueMatchConfirmGUIListener implements Listener {
     private void onGuiError(Player player, Throwable throwable) {
         DynamicLang.send(player, true,
                 "Dynamic.queue.confirm.gui-error",
-                "&c確認介面發生錯誤，請改用指令操作。");
+                "&c確認介面發生錯誤，已切換為指令模式。");
         DynamicLang.send(player, true,
                 "Dynamic.queue.confirm.command-fallback",
                 "&7請輸入 &a{accept} &7接受，或輸入 &c{decline} &7拒絕。",
@@ -84,3 +83,4 @@ public class QueueMatchConfirmGUIListener implements Listener {
         player.closeInventory();
     }
 }
+

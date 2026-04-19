@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DuelTime4 Wiki - 指令</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="gb-shell">
+    <aside class="gb-sidebar">
+      <div class="gb-brand">
+        <h1 class="gb-brand-title">DuelTime4 Wiki</h1>
+        <p class="gb-brand-sub">v4.1.3 • Paper 1.21+</p>
+      </div>
+      <div class="gb-group">
+        <p class="gb-group-title">文件</p>
+        <a class="gb-link" href="./index.html">首頁</a>
+        <a class="gb-link active" href="./commands.html">指令</a>
+        <a class="gb-link" href="./config.html">設定</a>
+        <a class="gb-link" href="./features.html">功能說明</a>
+        <a class="gb-link" href="./troubleshooting.html">疑難排解</a>
+        <a class="gb-link" href="./release-notes.html">更新重點</a>
+      </div>
+    </aside>
+
+    <main class="gb-main">
+      <nav class="mobile-topnav">
+        <a href="./index.html">首頁</a>
+        <a class="active" href="./commands.html">指令</a>
+        <a href="./config.html">設定</a>
+        <a href="./features.html">功能</a>
+        <a href="./troubleshooting.html">疑難排解</a>
+        <a href="./release-notes.html">更新</a>
+      </nav>
+
+      <header class="page-head">
+        <h1 class="page-title">指令總覽</h1>
+        <p class="page-subtitle">主指令：<code>/dueltime4</code>（別名：<code>/dueltime</code>、<code>/dt</code>、<code>/dt4</code>）</p>
+      </header>
+
+      <section class="section">
+        <h2>玩家常用指令</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>指令</th>
+              <th>用途</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>/dt help</code></td><td>查看玩家指令說明</td></tr>
+            <tr><td><code>/dt start</code></td><td>開啟匹配面板</td></tr>
+            <tr><td><code>/dt join &lt;arena_id&gt;</code></td><td>加入指定競技場</td></tr>
+            <tr><td><code>/dt send &lt;player&gt; [arena_id]</code></td><td>發送對戰邀請</td></tr>
+            <tr><td><code>/dt accept [player]</code></td><td>接受邀請（GUI fallback）</td></tr>
+            <tr><td><code>/dt decline [player]</code></td><td>拒絕邀請（GUI fallback）</td></tr>
+            <tr><td><code>/dt queue sound [on|off|toggle|status]</code></td><td>控制個人隊列音效提醒</td></tr>
+            <tr><td><code>/dt queue cooldown [player]</code></td><td>查詢隊列冷卻（查他人需管理權限）</td></tr>
+            <tr><td><code>/dt stats [player]</code></td><td>查看玩家數據</td></tr>
+            <tr><td><code>/dt record</code></td><td>開啟戰績 GUI</td></tr>
+            <tr><td><code>/dt rank me</code></td><td>查看個人排名</td></tr>
+            <tr><td><code>/dt level me</code></td><td>查看個人等級</td></tr>
+            <tr><td><code>/dt point me</code></td><td>查看個人點數</td></tr>
+            <tr><td><code>/dt shop</code></td><td>開啟點數商店</td></tr>
+            <tr><td><code>/dt spectate &lt;arena_id&gt;</code></td><td>觀戰</td></tr>
+            <tr><td><code>/dt quit</code></td><td>離開目前對戰</td></tr>
+            <tr><td><code>/dt lang [file]</code></td><td>切換語言檔</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section">
+        <h2>管理員指令（<code>dueltime.admin</code>）</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>指令</th>
+              <th>用途</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>/dt adminhelp</code></td><td>查看管理指令說明</td></tr>
+            <tr><td><code>/dt reload</code></td><td>重載設定與語言</td></tr>
+            <tr><td><code>/dt stop [reason]</code></td><td>中止進行中的對戰</td></tr>
+            <tr><td><code>/dt doctor [all|services|database|queue]</code></td><td>健康檢查</td></tr>
+            <tr><td><code>/dt queue debug</code></td><td>隊列診斷</td></tr>
+            <tr><td><code>/dt update check|download|status</code></td><td>更新器操作</td></tr>
+            <tr><td><code>/dt balance view &lt;player&gt;</code></td><td>查看玩家點數</td></tr>
+            <tr><td><code>/dt balance set &lt;player&gt; &lt;value&gt;</code></td><td>設定玩家點數</td></tr>
+            <tr><td><code>/dt balance config view</code></td><td>查看可線上調整參數</td></tr>
+            <tr><td><code>/dt balance config set &lt;key&gt; &lt;value&gt;</code></td><td>線上調整平衡設定</td></tr>
+            <tr><td><code>/dt record export [player] [json|csv] [limit]</code></td><td>匯出戰報</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section">
+        <h2>子系統語法</h2>
+        <h3>競技場</h3>
+        <pre>/dt arena list
+/dt arena type
+/dt arena create &lt;arena_type&gt;
+/dt arena view &lt;arena_id&gt;
+/dt arena delete &lt;arena_id&gt;
+/dt arena function add|remove|reset|clear|list|type|copy ...</pre>
+
+        <h3>商店</h3>
+        <pre>/dt shop help
+/dt shop add &lt;point&gt; [description]
+/dt shop delete &lt;page&gt; &lt;row&gt; &lt;column&gt;
+/dt shop reset point|description|level ...
+/dt shop command add|remove|clear|list ...</pre>
+
+        <h3>其他管理</h3>
+        <pre>/dt point add|set|view ...
+/dt level view|exp ...
+/dt rank refresh|hologram ...
+/dt lobby set|delete
+/dt blacklist add|remove|view</pre>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

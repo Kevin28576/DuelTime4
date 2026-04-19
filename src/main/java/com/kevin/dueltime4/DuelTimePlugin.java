@@ -3,6 +3,7 @@ package com.kevin.dueltime4;
 import com.kevin.dueltime4.arena.ArenaManager;
 import com.kevin.dueltime4.arena.QueueWatchdogService;
 import com.kevin.dueltime4.arena.base.BaseArena;
+import com.kevin.dueltime4.arena.base.BaseGamerData;
 import com.kevin.dueltime4.arena.type.ArenaTypeManager;
 import com.kevin.dueltime4.cache.CacheManager;
 import com.kevin.dueltime4.command.CommandHandler;
@@ -22,13 +23,20 @@ import com.kevin.dueltime4.stats.MatchStreakManager;
 import com.kevin.dueltime4.stats.Metrics;
 import com.kevin.dueltime4.viaversion.ViaVersion;
 import com.kevin.dueltime4.yaml.configuration.CfgManager;
+import com.kevin.dueltime4.yaml.message.DynamicLang;
+import com.kevin.dueltime4.yaml.message.MsgBuilder;
 import com.kevin.dueltime4.yaml.message.MsgManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public final class DuelTimePlugin extends JavaPlugin {
     private static final String ANSI_RESET = "\u001B[0m";
@@ -37,6 +45,7 @@ public final class DuelTimePlugin extends JavaPlugin {
     private static final String ANSI_YELLOW = "\u001B[33m";
 
     private static DuelTimePlugin instance;
+    private static volatile boolean serverShuttingDown;
     public static String serverVersion;
     public static int serverVersionInt;
     private CfgManager cfgManager;
@@ -63,6 +72,7 @@ public final class DuelTimePlugin extends JavaPlugin {
     public void onEnable() {
         long enableStart = System.currentTimeMillis();
         instance = this;
+        serverShuttingDown = false;
 
         ListenerManager.register();
 
@@ -123,17 +133,38 @@ public final class DuelTimePlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         long disableStart = System.currentTimeMillis();
+        serverShuttingDown = true;
         logInfo("Disabling DuelTime4...");
+
+        if (cfgManager != null && cfgManager.isRestartProtectionEnabled()) {
+            int activeArenaCount = 0;
+            int waitingCount = 0;
+            int pendingCount = 0;
+            List<BaseArena> activeArenas = new ArrayList<>();
+            if (arenaManager != null) {
+                for (BaseArena arena : arenaManager.getList()) {
+                    if (arena.getState().equals(BaseArena.State.IN_PROGRESS_OPENED) || arena.getState().equals(BaseArena.State.IN_PROGRESS_CLOSED)) {
+                        activeArenaCount++;
+                        activeArenas.add(arena);
+                    }
+                }
+                waitingCount = arenaManager.getTotalWaitingCount();
+                if (arenaManager.getQueueMatchConfirmManager() != null) {
+                    pendingCount = arenaManager.getQueueMatchConfirmManager().getPendingArenaCount();
+                }
+            }
+            logWarn("Restart protection enabled: leave penalties are temporarily disabled during shutdown.");
+            if (cfgManager.isRestartProtectionBroadcastMessage()) {
+                notifyActiveBattlePlayers(activeArenas);
+                logInfo("Restart snapshot - active arenas: " + activeArenaCount
+                        + ", waiting queue players: " + waitingCount
+                        + ", pending confirmations: " + pendingCount + ".");
+            }
+        }
 
         if (arenaManager != null) {
             arenaManager.cancelAllPendingMatches();
-            int stoppedArenaCount = 0;
-            for (BaseArena arena : arenaManager.getList()) {
-                if (arena.getState().equals(BaseArena.State.IN_PROGRESS_OPENED) || arena.getState().equals(BaseArena.State.IN_PROGRESS_CLOSED)) {
-                    arenaManager.stop(arena.getId(), null);
-                    stoppedArenaCount++;
-                }
-            }
+            int stoppedArenaCount = arenaManager.stopAllInProgress("SERVER_SHUTDOWN");
             if (stoppedArenaCount > 0) {
                 logInfo("Stopped " + stoppedArenaCount + " active arena(s).");
             }
@@ -166,8 +197,40 @@ public final class DuelTimePlugin extends JavaPlugin {
         logSuccess("DuelTime4 has been disabled! (" + (System.currentTimeMillis() - disableStart) + "ms)");
     }
 
+    private void notifyActiveBattlePlayers(List<BaseArena> activeArenas) {
+        if (activeArenas == null || activeArenas.isEmpty()) {
+            return;
+        }
+        Set<String> notified = new HashSet<>();
+        for (BaseArena arena : activeArenas) {
+            for (BaseGamerData gamerData : arena.getGamerDataList()) {
+                Player player = gamerData.getPlayer();
+                if (player == null || !player.isOnline()) {
+                    continue;
+                }
+                if (!notified.add(player.getName())) {
+                    continue;
+                }
+                String title = DynamicLang.get(player,
+                        "Dynamic.restart-protection.pause-title",
+                        "&c&l戰鬥已暫停");
+                String subtitle = DynamicLang.get(player,
+                        "Dynamic.restart-protection.pause-subtitle",
+                        "&7伺服器正在重啟，請稍後重新連線");
+                MsgBuilder.sendTitle(title, subtitle, 0, 45, 10, player);
+                DynamicLang.send(player, true,
+                        "Dynamic.restart-protection.shutdown-warning",
+                        "&e伺服器正在重啟，本場對戰已暫停。這次不算中離，不會扣分也不會進入匹配冷卻。");
+            }
+        }
+    }
+
     public static DuelTimePlugin getInstance() {
         return instance;
+    }
+
+    public static boolean isServerShuttingDown() {
+        return serverShuttingDown;
     }
 
     public CfgManager getCfgManager() {

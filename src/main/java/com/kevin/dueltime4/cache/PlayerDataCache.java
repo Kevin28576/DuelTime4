@@ -39,13 +39,14 @@ public class PlayerDataCache {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             PlayerDataMapper mapper = sqlSession.getMapper(PlayerDataMapper.class);
             mapper.createTableIfNotExists();
+            ensureQueueSoundColumn(mapper);
             for (Player player : ViaVersion.getOnlinePlayers()) {
                 String playerName = player.getName();
                 PlayerData playerDataInDatabase = mapper.get(playerName);
                 PlayerData playerData =
                         playerDataInDatabase != null ?
                                 playerDataInDatabase :
-                                new PlayerData(playerName, 0, 0, null, 0, 0, 0, 0, 0, 0);
+                                new PlayerData(playerName, 0, 0, null, true, 0, 0, 0, 0, 0, 0);
                 playerDataMap.put(playerName, playerData);
                 DuelTimePlugin.getInstance().getLevelManager().load(playerName, playerData.getExp());
             }
@@ -59,11 +60,12 @@ public class PlayerDataCache {
             return;
         }
         try (SqlSession sqlSession = DuelTimePlugin.getInstance().getMyBatisManager().getFactory(this.getClass()).openSession()) {
-            PlayerData playerDataInDatabase = sqlSession.getMapper(PlayerDataMapper.class).get(playerName);
+            PlayerDataMapper mapper = sqlSession.getMapper(PlayerDataMapper.class);
+            PlayerData playerDataInDatabase = mapper.get(playerName);
             PlayerData playerData =
                     playerDataInDatabase != null ?
                             playerDataInDatabase :
-                            new PlayerData(playerName, 0, 0, null, 0, 0, 0, 0, 0, 0);
+                            new PlayerData(playerName, 0, 0, null, true, 0, 0, 0, 0, 0, 0);
             playerDataMap.put(playerName, playerData);
             DuelTimePlugin.getInstance().getLevelManager().load(playerName, playerData.getExp());
         }
@@ -135,6 +137,17 @@ public class PlayerDataCache {
             } else {
                 sqlSession.getMapper(PlayerDataMapper.class).insertOrUpdateSQLite(playerData);
             }
+        }
+    }
+
+    private void ensureQueueSoundColumn(PlayerDataMapper mapper) {
+        try {
+            if (DuelTimePlugin.getInstance().getMyBatisManager().getType(this.getClass()).equals(MyBatisManager.DatabaseType.MYSQL)) {
+                mapper.ensureQueueSoundColumnMySQL();
+            } else {
+                mapper.ensureQueueSoundColumnSQLite();
+            }
+        } catch (Exception ignored) {
         }
     }
 

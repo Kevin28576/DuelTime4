@@ -34,6 +34,11 @@ public class CMDBalance extends SubCommand {
         SETTINGS.put("streak-enabled", new Setting("Arena.classic.streak.enabled", SettingType.BOOLEAN, null, null));
         SETTINGS.put("streak-show-message", new Setting("Arena.classic.streak.show-message", SettingType.BOOLEAN, null, null));
         SETTINGS.put("streak-reset-on-draw", new Setting("Arena.classic.streak.reset-on-draw", SettingType.BOOLEAN, null, null));
+        SETTINGS.put("queue-sound-enabled", new Setting("Arena.classic.matchmaking.queue-sound.enabled", SettingType.BOOLEAN, null, null));
+        SETTINGS.put("queue-sound-allow-player-toggle", new Setting("Arena.classic.matchmaking.queue-sound.allow-player-toggle", SettingType.BOOLEAN, null, null));
+        SETTINGS.put("queue-sound-interval-seconds", new Setting("Arena.classic.matchmaking.queue-sound.interval-seconds", SettingType.INTEGER, 1D, null));
+        SETTINGS.put("queue-sound-volume", new Setting("Arena.classic.matchmaking.queue-sound.volume", SettingType.DOUBLE, 0D, 5D));
+        SETTINGS.put("queue-sound-pitch", new Setting("Arena.classic.matchmaking.queue-sound.pitch", SettingType.DOUBLE, 0.1D, 2D));
         SETTINGS.put("leave-penalty-enabled", new Setting("Arena.classic.matchmaking.leave-penalty.enabled", SettingType.BOOLEAN, null, null));
         SETTINGS.put("leave-penalty-apply-on-quit-command", new Setting("Arena.classic.matchmaking.leave-penalty.apply-on-quit-command", SettingType.BOOLEAN, null, null));
         SETTINGS.put("leave-penalty-apply-on-disconnect", new Setting("Arena.classic.matchmaking.leave-penalty.apply-on-disconnect", SettingType.BOOLEAN, null, null));
@@ -41,6 +46,8 @@ public class CMDBalance extends SubCommand {
         SETTINGS.put("leave-penalty-apply-queue-cooldown", new Setting("Arena.classic.matchmaking.leave-penalty.apply-queue-cooldown", SettingType.BOOLEAN, null, null));
         SETTINGS.put("leave-penalty-point", new Setting("Arena.classic.matchmaking.leave-penalty.point", SettingType.DOUBLE, 0D, null));
         SETTINGS.put("leave-penalty-cooldown", new Setting("Arena.classic.matchmaking.leave-penalty.cooldown", SettingType.INTEGER, 0D, null));
+        SETTINGS.put("restart-protection-enabled", new Setting("System.restart-protection.enabled", SettingType.BOOLEAN, null, null));
+        SETTINGS.put("restart-protection-broadcast-message", new Setting("System.restart-protection.broadcast-message", SettingType.BOOLEAN, null, null));
     }
 
     public CMDBalance() {

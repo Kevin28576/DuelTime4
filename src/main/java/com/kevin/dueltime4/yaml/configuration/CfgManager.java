@@ -103,6 +103,17 @@ public class CfgManager {
         arenaClassicStreakResetOnDraw = config.getBoolean("Arena.classic.streak.reset-on-draw", true);
         arenaClassicMatchConfirmTimeout = config.getInt("Arena.classic.matchmaking.confirm-timeout", 15);
         if (arenaClassicMatchConfirmTimeout < 5) arenaClassicMatchConfirmTimeout = 5;
+        arenaClassicQueueSoundEnabled = config.getBoolean("Arena.classic.matchmaking.queue-sound.enabled", true);
+        arenaClassicQueueSoundAllowPlayerToggle = config.getBoolean("Arena.classic.matchmaking.queue-sound.allow-player-toggle", true);
+        arenaClassicQueueSoundIntervalSeconds = config.getInt("Arena.classic.matchmaking.queue-sound.interval-seconds", 5);
+        if (arenaClassicQueueSoundIntervalSeconds < 1) arenaClassicQueueSoundIntervalSeconds = 1;
+        arenaClassicQueueSoundName = config.getString("Arena.classic.matchmaking.queue-sound.sound", "BLOCK_NOTE_BLOCK_PLING");
+        arenaClassicQueueSoundVolume = config.getDouble("Arena.classic.matchmaking.queue-sound.volume", 1.0D);
+        if (arenaClassicQueueSoundVolume < 0D) arenaClassicQueueSoundVolume = 0D;
+        if (arenaClassicQueueSoundVolume > 5D) arenaClassicQueueSoundVolume = 5D;
+        arenaClassicQueueSoundPitch = config.getDouble("Arena.classic.matchmaking.queue-sound.pitch", 1.2D);
+        if (arenaClassicQueueSoundPitch < 0.1D) arenaClassicQueueSoundPitch = 0.1D;
+        if (arenaClassicQueueSoundPitch > 2D) arenaClassicQueueSoundPitch = 2D;
         arenaClassicMatchWatchdogEnabled = config.getBoolean("Arena.classic.matchmaking.watchdog.enabled", true);
         arenaClassicMatchWatchdogIntervalSeconds = config.getInt("Arena.classic.matchmaking.watchdog.interval-seconds", 3);
         if (arenaClassicMatchWatchdogIntervalSeconds < 1) arenaClassicMatchWatchdogIntervalSeconds = 1;
@@ -131,6 +142,8 @@ public class CfgManager {
         arenaClassicLeavePenaltyCooldown = config.getInt("Arena.classic.matchmaking.leave-penalty.cooldown",
                 config.getInt("Arena.classic.matchmaking.leave-penalty-cooldown", 0));
         if (arenaClassicLeavePenaltyCooldown < 0) arenaClassicLeavePenaltyCooldown = 0;
+        restartProtectionEnabled = config.getBoolean("System.restart-protection.enabled", true);
+        restartProtectionBroadcastMessage = config.getBoolean("System.restart-protection.broadcast-message", true);
         recordShowEnabled = config.getBoolean("Record.show.enabled");
         recordShowCooldown = config.getInt("Record.show.cooldown");
         if (recordShowCooldown < 0) recordShowCooldown = 0;
@@ -174,6 +187,12 @@ public class CfgManager {
     private boolean arenaClassicStreakShowMessage;
     private boolean arenaClassicStreakResetOnDraw;
     private int arenaClassicMatchConfirmTimeout;
+    private boolean arenaClassicQueueSoundEnabled;
+    private boolean arenaClassicQueueSoundAllowPlayerToggle;
+    private int arenaClassicQueueSoundIntervalSeconds;
+    private String arenaClassicQueueSoundName;
+    private double arenaClassicQueueSoundVolume;
+    private double arenaClassicQueueSoundPitch;
     private boolean arenaClassicMatchWatchdogEnabled;
     private int arenaClassicMatchWatchdogIntervalSeconds;
     private boolean arenaClassicMatchWatchdogCleanupOfflinePlayers;
@@ -186,6 +205,8 @@ public class CfgManager {
     private boolean arenaClassicLeavePenaltyApplyQueueCooldown;
     private double arenaClassicLeavePenaltyPoint;
     private int arenaClassicLeavePenaltyCooldown;
+    private boolean restartProtectionEnabled;
+    private boolean restartProtectionBroadcastMessage;
     private boolean recordShowEnabled;
     private int recordShowCooldown;
     private boolean recordPrintEnabled;
@@ -318,6 +339,30 @@ public class CfgManager {
         return arenaClassicMatchConfirmTimeout;
     }
 
+    public boolean isArenaClassicQueueSoundEnabled() {
+        return arenaClassicQueueSoundEnabled;
+    }
+
+    public boolean isArenaClassicQueueSoundAllowPlayerToggle() {
+        return arenaClassicQueueSoundAllowPlayerToggle;
+    }
+
+    public int getArenaClassicQueueSoundIntervalSeconds() {
+        return arenaClassicQueueSoundIntervalSeconds;
+    }
+
+    public String getArenaClassicQueueSoundName() {
+        return arenaClassicQueueSoundName;
+    }
+
+    public double getArenaClassicQueueSoundVolume() {
+        return arenaClassicQueueSoundVolume;
+    }
+
+    public double getArenaClassicQueueSoundPitch() {
+        return arenaClassicQueueSoundPitch;
+    }
+
     public boolean isArenaClassicMatchWatchdogEnabled() {
         return arenaClassicMatchWatchdogEnabled;
     }
@@ -364,6 +409,14 @@ public class CfgManager {
 
     public int getArenaClassicLeavePenaltyCooldown() {
         return arenaClassicLeavePenaltyCooldown;
+    }
+
+    public boolean isRestartProtectionEnabled() {
+        return restartProtectionEnabled;
+    }
+
+    public boolean isRestartProtectionBroadcastMessage() {
+        return restartProtectionBroadcastMessage;
     }
 
     public boolean isRecordShowEnabled() {

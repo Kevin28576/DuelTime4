@@ -20,7 +20,7 @@ public class CMDAdminHelp extends SubCommand {
                 .add("rank", new String[]{"rank", "r"}, "rank(r)", CommandPermission.ADMIN, Msg.COMMAND_SUB_RANK_SERIES_DESCRIPTION, true)
                 .add("lobby", new String[]{"lobby", "l"}, "lobby(l) help(h)", CommandPermission.ADMIN, Msg.COMMAND_SUB_LOBBY_SERIES_DESCRIPTION, true)
                 .add("blacklist", new String[]{"blacklist", "b", "blist", "bl"}, "blacklist(b)", CommandPermission.ADMIN, Msg.COMMAND_SUB_BLACKLIST_SERIES_DESCRIPTION, true)
-                .add("stop", new String[]{"stop"}, "stop [%reason%]", CommandPermission.ADMIN, Msg.COMMAND_SUB_STOP_DESCRIPTION, true)
+                .add("stop", new String[]{"stop"}, "stop <arena_id|all> [%reason%]", CommandPermission.ADMIN, Msg.COMMAND_SUB_STOP_DESCRIPTION, true)
                 .add("reload", new String[]{"reload", "rl"}, "reload(rl)", CommandPermission.ADMIN, Msg.COMMAND_SUB_RELOAD_DESCRIPTION, true);
     }
 

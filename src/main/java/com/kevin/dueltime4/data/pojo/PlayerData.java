@@ -5,6 +5,7 @@ public class PlayerData implements Cloneable {
     private double exp;
     private double point;
     private String language;
+    private boolean queueSoundEnabled;
     private int totalGameNumber;
     private int totalGameTime;
     private int arenaClassicWins;
@@ -12,11 +13,22 @@ public class PlayerData implements Cloneable {
     private int arenaClassicLoses;
     private int arenaClassicTime;
 
-    public PlayerData(String id, double exp, double point, String language, int totalGameNumber, int totalGameTime, int arenaClassicWins,int arenaClassicDraws, int arenaClassicLoses, int arenaClassicTime) {
+    public PlayerData(String id,
+                      double exp,
+                      double point,
+                      String language,
+                      boolean queueSoundEnabled,
+                      int totalGameNumber,
+                      int totalGameTime,
+                      int arenaClassicWins,
+                      int arenaClassicDraws,
+                      int arenaClassicLoses,
+                      int arenaClassicTime) {
         this.id = id;
         this.exp = exp;
         this.point = point;
         this.language = language;
+        this.queueSoundEnabled = queueSoundEnabled;
         this.totalGameNumber = totalGameNumber;
         this.totalGameTime = totalGameTime;
         this.arenaClassicWins = arenaClassicWins;
@@ -39,6 +51,10 @@ public class PlayerData implements Cloneable {
 
     public String getLanguage() {
         return language;
+    }
+
+    public boolean isQueueSoundEnabled() {
+        return queueSoundEnabled;
     }
 
     public int getTotalGameNumber() {
@@ -75,6 +91,10 @@ public class PlayerData implements Cloneable {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public void setQueueSoundEnabled(boolean queueSoundEnabled) {
+        this.queueSoundEnabled = queueSoundEnabled;
     }
 
     public void accumulateTotalGameNumber() {
@@ -117,6 +137,7 @@ public class PlayerData implements Cloneable {
                 ", exp=" + exp +
                 ", point=" + point +
                 ", language='" + language + '\'' +
+                ", queueSoundEnabled=" + queueSoundEnabled +
                 ", totalGameNumber=" + totalGameNumber +
                 ", totalGameTime=" + totalGameTime +
                 ", arenaClassicWins=" + arenaClassicWins +
