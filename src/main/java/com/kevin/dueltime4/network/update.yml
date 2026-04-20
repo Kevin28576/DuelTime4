@@ -1,6 +1,6 @@
 version: "4.1.3"
 download-url: "https://github.com/Kevin28576/DuelTime4/releases/download/v4.1.3/Dueltime4-Bukkit-4.1.3.jar"
-sha256: "dda5f8b54ec36f3d165cce29930c5273b4fe8710188dcc6002e24d6863caae90"
+sha256: "7aa789f1e0c2a75a1866f93a503289b99c75c991e0ee21d4966a12194aaed22a"
 notes:
   - "[Added] 無"
   - "[Changed] 統一全專案色碼轉換流程，改為使用 Bukkit 標準 ChatColor.translateAlternateColorCodes('&', text)。"

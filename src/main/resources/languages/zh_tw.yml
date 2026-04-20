@@ -556,11 +556,12 @@ Command:
       fail-frequently: "&c你已於 &f{second} 秒前向 &f{player} &c發送過戰鬥邀請，請等待對方回應。"
       successfully: "&a已成功向玩家 &f{player} &a發送戰鬥邀請，請等待對方回應。"
       receive:
-        - "&7&m───&f&l&m───────────────────────────────────"
+        - "&7&m───&f&l&m──────────────────────────&7&m───"
         - ""
-        - " &f你收到來自 &f{player} &f的戰鬥邀請 [clickable]accept::&7[&a✔&7]::&a點擊接受邀請[clickable] [clickable]decline::&7[&c✘&7]::&c點擊拒絕邀請[clickable]"
+        - "         &e你收到來自 &b{player} &e的戰鬥邀請"
+        - "                   [clickable]accept::&a✔ 接受::&a點擊接受邀請[clickable]      [clickable]decline::&c✘ 拒絕::&c點擊拒絕邀請[clickable]"
         - ""
-        - "&7&m───&f&l&m───────────────────────────────────"
+        - "&7&m───&f&l&m──────────────────────────&7&m───"
       receive-notify-designated-arena: "&f對方指定競技場：&r{arena_name} &7(&f{arena_type}&7)"
     accept:
       description: "&a接受來自其他玩家的戰鬥邀請"
@@ -958,4 +959,3 @@ VersionChecker:
   more: "&8  - &7...還有 {count} 條更新"
   no-summary: "&8  - &7本次未提供更新摘要"
   recommend: "&7建議儘快更新以獲得最佳相容性與修正。"
-
