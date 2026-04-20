@@ -190,7 +190,7 @@ mvn clean package
 
 ## 文件與支援
 
-- 文件站：<https://cloudxact.com/DuelTime4>
+- 教學文擋：<https://cloudxact.com/DuelTime4>
 - 問題回報：<https://github.com/Kevin28576/DuelTime4/issues>
 - 更新日誌：[CHANGELOG.md](CHANGELOG.md)
 
