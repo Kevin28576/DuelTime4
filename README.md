@@ -191,5 +191,11 @@ mvn clean package
 
 本專案採用 Apache License 2.0，詳見 [LICENSE](LICENSE)。
 
-## 宣傳圖
+## 宣傳圖（點擊展開）
+
+<details>
+<summary>點我查看 DuelTime4 宣傳圖</summary>
+
 ![DuelTime4](.github/DuelTime4.png)
+
+</details>
