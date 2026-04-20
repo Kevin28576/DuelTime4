@@ -9,6 +9,12 @@
 
 DuelTime4 是一個以 Paper 為目標平台的 PvP 插件，主打可配置的 1v1 競技場、配對隊列、排行系統與可上線運行的管理功能。
 
+## 公開宣傳圖
+<details>
+<summary>點我查看 DuelTime4 公開宣傳圖</summary>
+![DuelTime4](.github/DuelTime4.png)
+</details>
+
 ## 功能重點
 
 - 經典 1v1 競技場流程與隊列配對
@@ -190,12 +196,3 @@ mvn clean package
 ## 授權
 
 本專案採用 Apache License 2.0，詳見 [LICENSE](LICENSE)。
-
-## 宣傳圖（點擊展開）
-
-<details>
-<summary>點我查看 DuelTime4 宣傳圖</summary>
-
-![DuelTime4](.github/DuelTime4.png)
-
-</details>
