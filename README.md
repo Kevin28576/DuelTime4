@@ -12,6 +12,7 @@ DuelTime4 是一個以 Paper 為目標平台的 PvP 插件，主打可配置的 
 ## 公開宣傳圖
 <details>
 <summary>點我查看 DuelTime4 公開宣傳圖</summary>
+
 ![DuelTime4](.github/DuelTime4.png)
 </details>
 
