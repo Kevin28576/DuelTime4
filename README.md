@@ -24,7 +24,7 @@ DuelTime4 是一個以 Paper 為目標平台的 PvP 插件，主打可配置的 
 ## 環境需求
 
 - Java 21+
-- Paper 1.21.x +
+- Paper 1.21 +
 
 可選整合：
 
@@ -191,3 +191,5 @@ mvn clean package
 
 本專案採用 Apache License 2.0，詳見 [LICENSE](LICENSE)。
 
+## 宣傳圖
+![DuelTime4](.github/DuelTime4.png)
