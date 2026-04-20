@@ -559,6 +559,7 @@ Command:
         - "&7&m───&f&l&m──────────────────────────&7&m───"
         - ""
         - "         &e你收到來自 &b{player} &e的戰鬥邀請"
+        - ""
         - "                   [clickable]accept::&a✔ 接受::&a點擊接受邀請[clickable]      [clickable]decline::&c✘ 拒絕::&c點擊拒絕邀請[clickable]"
         - ""
         - "&7&m───&f&l&m──────────────────────────&7&m───"
